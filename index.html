@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Callijatra Foundation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* Hero banner */
+    .hero {
+      position: relative;
+      height: 75vh;
+      background: url(./images/banners/banner_1.jpg) center / cover no-repeat;
+      color: #fff;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.15));
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Resource cards */
+    .resource-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .resource-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15);
+    }
+
+    /* Gallery images */
+    .gallery img {
+      object-fit: cover;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <!-- Replace with your logo -->
+      <img src="images/logos/callijatra_logo.svg" alt="Logo" class="me-3" height="60px" />
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#resources">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/ranjana-script">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero d-flex align-items-end">
+  <div class="container hero-content pb-5">
+    <h1 class="display-1 font-nithya-ranjana">क्यालिजात्रा फाउनदेसन</h1>
+    <p class="lead col-md-8">
+      Preserving, promoting, and digitizing indigenous scripts and calligraphy
+      such as Ranjana Lipi and Nepal Lipi through fonts, apps, learning resources,
+      and open digital tools.
+    </p>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="py-5">
+  <div class="container" id="resources">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Our Resources</h2>
+      <p class="text-muted">
+        Open tools, educational content, and digital creations by Calllijatra Foundation
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Fonts -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 resource-card">
+          <div class="card-body">
+            <h5 class="card-title">Fonts Showcase</h5>
+            <p class="card-text">
+              Explore and download our custom-designed fonts for Ranjana Lipi
+              and Nepal Lipi, crafted for digital and print use.
+            </p>
+            <div class="row g-2 gallery">
+              <div class="col">
+                <img src="https://github.com/EkType/Nithya-Ranjana/raw/385f8d73ea7061dde0598744db0d31b6e6a1a555/Promotion/NithyaRanjana.gif"
+                     class="img-fluid rounded" alt="Fonts">
+              </div>
+            </div>
+            <a href="https://drive.google.com/drive/folders/1rQ230ntI61BmHbvrksQZ82tLmLzSuXw8" class="btn btn-outline-primary btn-sm mt-3">Download Fonts</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apps -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 resource-card">
+          <div class="card-body">
+            <h5 class="card-title">Apps Showcase</h5>
+            <p class="card-text">
+              Mobile apps for Android and iOS including
+              <strong>Nepal Lipi – Type Newa</strong> and
+              <strong>Nepal Lipi Keyboard</strong>, readily available to download
+              from app stores.
+            </p>
+            <div class="row g-2 gallery">
+              <div class="col">
+                <img src="https://cdn.appsplayground.com/headers/com.paoneking.nepallipi_typenewa-header.png"
+                     class="img-fluid rounded" alt="Type Newa App">
+              </div>
+            </div>
+            <div class="mt-3">
+              <a href="https://play.google.com/store/apps/details?id=com.paoneking.nepallipi_typenewa&hl=en" class="btn btn-outline-primary btn-sm mb-3">Download for Android</a>
+              <a href="https://apps.apple.com/np/app/nepal-lipi-ranjana-lipi/id1458885224" class="btn btn-outline-primary btn-sm mb-3">Download for iOS</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learning -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 resource-card">
+          <div class="card-body">
+            <h5 class="card-title">Learning Materials</h5>
+            <p class="card-text">
+              Free video tutorials on YouTube covering calligraphy strokes,
+              Ranjana Lipi basics, and Nepal Lipi writing techniques.
+            </p>
+            <div class="row g-2 gallery">
+              <div class="col">
+                <div class="col">
+                  <img src="https://img.youtube.com/vi/3Samu1XNSj4/0.jpg" class="img-fluid rounded" alt="Video 1">
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <img src="https://img.youtube.com/vi/D93FYQZqzfY/0.jpg" class="img-fluid rounded" alt="Video 2">
+                </div>
+              </div>
+            </div>
+            <a href="https://www.youtube.com/playlist?list=PLdEyNClbX3oKxRiNS3kzV3N2minTXUdEF" target="_blank"
+               class="btn btn-outline-primary btn-sm mt-3">
+              Watch Tutorials
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="col-md-6 col-lg-8" id="gallery">
+        <div class="card h-100 resource-card">
+          <div class="card-body">
+            <h5 class="card-title">Events & Photo Gallery</h5>
+            <p class="card-text">
+              Highlights from our workshops, exhibitions, and cultural events.
+            </p>
+
+            <div class="row g-2 gallery">
+              <div class="col-4">
+                <img src="images/events/events_1.jpg"
+                     class="img-fluid rounded" alt="Event 1">
+              </div>
+              <div class="col-4">
+                <img src="images/events/events_2.jpg"
+                     class="img-fluid rounded" alt="Event 2">
+              </div>
+              <div class="col-4">
+                <img src="images/events/events_3.jpg"
+                     class="img-fluid rounded" alt="Event 3">
+              </div>
+            </div>
+
+            <a href="https://drive.google.com/drive/folders/135KGT46EKb3QBMHx5hosfX_lpJECo6ki" class="btn btn-outline-primary btn-sm mt-3">
+              View Full Gallery
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widgets -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 resource-card">
+          <div class="card-body">
+            <h5 class="card-title">Widgets & Plugins for Web</h5>
+            <p class="card-text">
+              Web widgets and plugins that allow easy rendering of our fonts
+              and scripts on any website.
+            </p>
+            <div class="justify-content-center">
+              <a href="https://callijatra.github.io/nithya-ranjana-webfont1" class="btn btn-outline-primary btn-sm mb-3">Render Ranjana Lipi on Webpages</a>
+              <a href="https://callijatra.github.io/newa-font-switch-widget" class="btn btn-outline-primary btn-sm mb-3">Newa Font Switcher Widget</a>
+              <a href="https://suyogyart.github.io/DTNConverter" class="btn btn-outline-primary btn-sm">Nepal Lipi Unicode Converter</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-light py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <h6 class="fw-bold">Calllijatra Foundation</h6>
+        <p class="small mb-0">
+          Promoting indigenous scripts through technology, education, and design.
+        </p>
+      </div>
+
+      <div class="col-md-6 text-md-end">
+        <ul class="list-inline mb-2">
+          <li class="list-inline-item">
+            <a href="#" class="text-light text-decoration-none">Home</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#" class="text-light text-decoration-none">Resources</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#" class="text-light text-decoration-none">Gallery</a>
+          </li>
+        </ul>
+        <p class="small mb-0">
+          © 2026 Calllijatra Foundation. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>
