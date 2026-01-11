@@ -18,3 +18,36 @@
       font-feature-settings: "ss01" 1;
     }
 }
+
+ /* Hero banner */
+.hero {
+  position: relative;
+  height: 75vh;
+  background: url(../images/banners/banner_1.jpg) center / cover no-repeat;
+  color: #fff;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.15));
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Resource cards */
+.resource-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.resource-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15);
+}
+
+/* Gallery images */
+.gallery img {
+  object-fit: cover;
+  height: 100%;
+}
