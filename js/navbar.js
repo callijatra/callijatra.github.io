@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+function renderNavbar() {
     // Determine base path based on current location
     const isPagesDir = window.location.pathname.includes("/pages/");
     const basePath = isPagesDir ? "../" : "";
@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#mainNav"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -33,7 +34,14 @@ document.addEventListener("DOMContentLoaded", function() {
 `;
 
     const placeholder = document.getElementById("navbar");
-    if (placeholder) {
+    if (placeholder && !placeholder.innerHTML.trim()) {
         placeholder.innerHTML = navbarHTML;
     }
-});
+}
+
+// Support both early execution (DOMContentLoaded) and late async injection
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderNavbar);
+} else {
+    renderNavbar();
+}

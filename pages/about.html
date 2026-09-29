@@ -1,33 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Callijatra Foundation</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>About Us - Callijatra Foundation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <!-- Local CSS -->
+  <link rel="stylesheet" type="text/css" href="../css/styles.css" />
 
-    <!-- Bootstrap CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-    />
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
-    <div id="navbar"></div>
+  <!-- NAVBAR -->
+  <div id="navbar"></div>
 
+  <!-- HERO / HEADER -->
+  <header class="bg-dark text-white py-5 text-center position-relative" style="background: linear-gradient(135deg, #1f2937 0%, #111827 100%);">
+    <div class="container py-4">
+      <span class="badge bg-danger text-uppercase px-3 py-2 mb-3">About Us</span>
+      <h1 class="display-4 fw-bold font-nithya-ranjana mb-2">क्यालिजात्रा फाउण्डेशन</h1>
+      <p class="fs-4 text-light opacity-75 mx-auto" style="max-width: 700px;">
+        Preserving, digitizing, and revitalizing the indigenous scripts and calligraphy of Nepal.
+      </p>
+    </div>
+  </header>
 
+  <!-- MAIN CONTENT -->
+  <main class="py-5">
+    <div class="container">
+      
+      <!-- MISSION & VISION SECTION -->
+      <section class="row align-items-center mb-5 pb-lg-4 g-4">
+        <div class="col-lg-6">
+          <h2 class="fw-bold mb-3">Our Mission & Purpose</h2>
+          <p class="lead text-muted">
+            Callijatra Foundation is a non-profit cultural and technological initiative dedicated to keeping indigenous scripts like <strong>Ranjana Lipi</strong> and <strong>Nepal Lipi (Newa Script)</strong> alive, accessible, and functional in the digital age.
+          </p>
+          <p class="text-secondary">
+            Nepal possesses a millennium-long history of epigraphy, manuscript culture, and aesthetic calligraphy. However, the lack of modern digital infrastructure—such as Unicode support, web-ready fonts, input tools, and educational guides—threatened to isolate these scripts from contemporary usage.
+          </p>
+          <p class="text-secondary">
+            Callijatra bridges this gap between ancient heritage and modern computing through open digital fonts, software widgets, educational video series, and community calligraphy workshops.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <div class="card border-0 shadow-sm overflow-hidden rounded-4">
+            <img src="../images/events/events_4.jpg" alt="Callijatra Workshop & Exhibition" class="img-fluid" style="max-height: 420px; object-fit: cover;" />
+          </div>
+        </div>
+      </section>
 
-    <div id="footer"></div>
-<!-- Bootstrap JS -->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+      <!-- THREE PILLARS -->
+      <section class="mb-5 py-4">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">What We Do</h2>
+          <p class="text-muted">Our core focus areas in cultural technology and preservation</p>
+        </div>
 
-<!-- Custom JS -->
-<script src="../js/script.js"></script>
-<script src="../js/navbar.js"></script>
+        <div class="row g-4">
+          <!-- Pillar 1 -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 resource-card rounded-4">
+              <div class="card-body">
+                <div class="fs-1 text-danger mb-3">𑐎𑐏</div>
+                <h4 class="card-title fw-bold">Digital Typography & Fonts</h4>
+                <p class="card-text text-secondary">
+                  Designing modern, Unicode-compliant typefaces like <em>Nithya Ranjana</em> and Nepal Lipi fonts optimized for web displays, apps, and print publications.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 resource-card rounded-4">
+              <div class="card-body">
+                <div class="fs-1 text-danger mb-3">⚙️</div>
+                <h4 class="card-title fw-bold">Open Web Tools & Converters</h4>
+                <p class="card-text text-secondary">
+                  Building open-source script converters (Devanagari ↔ Nepal Lipi), transliteration keyboards, and JavaScript widgets that make script switching effortless on any website.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 resource-card rounded-4">
+              <div class="card-body">
+                <div class="fs-1 text-danger mb-3">🖋️</div>
+                <h4 class="card-title fw-bold">Workshops & Education</h4>
+                <p class="card-text text-secondary">
+                  Conducting hands-on calligraphy training, exhibitions, masterclasses, and producing free educational video tutorials to teach younger generations the art of writing indigenous scripts.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY & GET INVOLVED -->
+      <section class="bg-light p-5 rounded-4 text-center my-4">
+        <h3 class="fw-bold mb-3">Get Involved</h3>
+        <p class="col-md-8 mx-auto text-secondary mb-4">
+          Whether you are a developer looking to integrate Newa scripts into your software, a researcher, or a calligraphy enthusiast, we welcome collaboration and contributions.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="../index.html#resources" class="btn btn-primary px-4 py-2">Explore Resources</a>
+          <a href="https://www.facebook.com/ranjana-script" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark px-4 py-2">Connect on Facebook</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footer"></div>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+  <!-- Custom JS -->
+  <script src="../js/script.js"></script>
 </body>
 </html>
