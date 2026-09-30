@@ -1,11 +1,11 @@
-(function() {
-    const isPagesDir = window.location.pathname.includes("/pages/");
-    const basePath = isPagesDir ? "../" : "";
+(function () {
+  const isPagesDir = window.location.pathname.includes("/pages/");
+  const basePath = isPagesDir ? "../" : "";
 
-    function renderNavbar() {
-        const placeholder = document.getElementById("navbar");
-        if (placeholder && !placeholder.innerHTML.trim()) {
-            placeholder.innerHTML = `
+  function renderNavbar() {
+    const placeholder = document.getElementById("navbar");
+    if (placeholder && !placeholder.innerHTML.trim()) {
+      placeholder.innerHTML = `
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="${basePath}index.html">
@@ -28,19 +28,19 @@
         <li class="nav-item"><a class="nav-link" href="${basePath}index.html#resources">Resources</a></li>
         <li class="nav-item"><a class="nav-link" href="${basePath}index.html#gallery">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="${basePath}pages/about.html">About Us</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/ranjana-script">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/callijatra">Contact</a></li>
       </ul>
     </div>
   </div>
 </nav>
 `;
-        }
     }
+  }
 
-    function renderFooter() {
-        const placeholder = document.getElementById("footer");
-        if (placeholder && !placeholder.innerHTML.trim()) {
-            placeholder.innerHTML = `
+  function renderFooter() {
+    const placeholder = document.getElementById("footer");
+    if (placeholder && !placeholder.innerHTML.trim()) {
+      placeholder.innerHTML = `
 <footer class="bg-dark text-light py-4">
   <div class="container">
     <div class="row">
@@ -74,17 +74,17 @@
   </div>
 </footer>
 `;
-        }
     }
+  }
 
-    function init() {
-        renderNavbar();
-        renderFooter();
-    }
+  function init() {
+    renderNavbar();
+    renderFooter();
+  }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
-    }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
