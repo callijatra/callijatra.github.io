@@ -21,3 +21,6 @@ Thumbs.db
 *.log
 *.tmp
 *.temp
+
+# Config files
+*.yaml
