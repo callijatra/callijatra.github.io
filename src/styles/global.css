@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Tell Tailwind v4 to scan all component and page files */
+@source "../src/**/*.{astro,html,js,ts}";
+
+/* Enable class-based dark mode */
+@variant dark (&:where(.dark, .dark *));
+
+/* ── Brand color: muted brick-red ───────────────────────────────────────
+   Replaces the too-bright red-600 (#dc2626) with a softer terracotta.
+   Use these CSS variables instead of Tailwind red-* classes on CTAs.     */
+:root {
+  --brand:        #c0392b;   /* main — muted crimson */
+  --brand-hover:  #a93226;   /* darker on hover      */
+  --brand-light:  #e8877f;   /* text on dark bg      */
+  --brand-subtle: #fbeae9;   /* light tint bg        */
+}
+.dark {
+  --brand-subtle: #3b1212;
+}
+
+@layer utilities {
+  .bg-brand          { background-color: var(--brand); }
+  .hover\:bg-brand-hover:hover { background-color: var(--brand-hover); }
+  .text-brand        { color: var(--brand); }
+  .text-brand-light  { color: var(--brand-light); }
+  .border-brand      { border-color: var(--brand); }
+  .hover\:border-brand-hover:hover { border-color: var(--brand-hover); }
+}
+
+/* NithyaRanjana web font */
+@font-face {
+  font-family: 'NithyaRanjana';
+  src:
+    url('https://cdn.staticdelivr.com/gh/callijatra/nithya-ranjana-webfont1/main/fonts/NithyaRanjanaDU-Regular.woff2') format('woff2'),
+    url('https://cdn.staticdelivr.com/gh/callijatra/nithya-ranjana-webfont1/main/fonts/NithyaRanjanaDU-Regular.woff') format('woff');
+  font-weight: 100;
+  font-display: swap;
+}
+
+@layer utilities {
+  .font-nithya-ranjana {
+    font-family: 'NithyaRanjana', sans-serif;
+  }
+  .font-nithya-ranjana-ss01 {
+    font-family: 'NithyaRanjana', sans-serif;
+    font-feature-settings: "ss01" 1;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth dark mode transition */
+body, header, footer, section, div, a, p, h1, h2, h3, h4, span {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+}
+
+/* ── Mobile nav animation ─────────────────────────────────────────────── */
+.menu-item-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* .nav-collapsed hides the menu */
+.nav-collapsed {
+  height: 0;
+  overflow: hidden;
+}
+
+/* .nav-open sets explicit height via JS, with smooth transition */
+.nav-open {
+  overflow: hidden;
+  transition: height 0.3s ease;
+}

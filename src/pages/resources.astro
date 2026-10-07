@@ -1,0 +1,564 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StoreBadge from '../components/StoreBadge.astro';
+---
+
+<Layout
+  title="Resources — Callijatra Foundation"
+  description="Explore open-source tools, fonts, web widgets, and mobile apps by Callijatra Foundation for digitizing Ranjana Lipi, Nepal Lipi and indigenous scripts."
+>
+
+  <!-- ── HERO ──────────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 text-white py-24 text-center">
+    <div class="parallax-orb absolute -top-16 -left-16 w-80 h-80 rounded-full bg-[#c0392b]/20 blur-3xl pointer-events-none" data-speed="0.3" aria-hidden="true"></div>
+    <div class="parallax-orb absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#c0392b]/10 blur-3xl pointer-events-none" data-speed="0.18" aria-hidden="true"></div>
+
+    <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-light bg-red-900/40 px-3 py-1 rounded-full border border-red-700/40 mb-4">
+        What We Offer
+      </span>
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
+        Our Resources
+      </h1>
+      <p class="text-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
+        Open tools, fonts, web widgets, and mobile apps to bring indigenous scripts into the digital age — freely available to everyone.
+      </p>
+
+      <!-- Frosted glass quick-nav pills -->
+      <nav aria-label="Jump to resource" class="flex flex-wrap justify-center gap-2">
+        {[
+          { href: '#durgalal-font',   label: 'Durga Lal Shrestha Font' },
+          { href: '#newa-fonts',      label: 'Newa Fonts'              },
+          { href: '#converter',       label: 'Unicode Converter'       },
+          { href: '#ranjana-webfont', label: 'Ranjana Webfont'         },
+          { href: '#font-switcher',   label: 'Font Switcher'           },
+          { href: '#transliteration', label: 'Transliteration'         },
+          { href: '#apps',            label: 'Mobile Apps'             },
+        ].map(({ href, label }) => (
+          <a
+            href={href}
+            class="px-4 py-1.5 rounded-full text-sm font-medium
+                   bg-white/10 hover:bg-white/20
+                   border border-white/20 hover:border-white/40
+                   text-white/80 hover:text-white
+                   backdrop-blur-md
+                   transition-all duration-200"
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- ── RESOURCE BLOCKS ───────────────────────────────────────────────── -->
+  <div class="resource-stream">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         1. Durga Lal Shrestha Font  (visual LEFT, text RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="durgalal-font" class="resource-block py-24 bg-white dark:bg-gray-950">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          <div class="resource-visual order-1 lg:order-1">
+            <div class="rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg">
+              <div class="bg-gray-900 text-white text-xs font-medium px-5 py-3 text-center tracking-wide uppercase border-b border-gray-700">
+                Font Preview
+              </div>
+              <img src="/images/gifs/durgalalfont.gif" alt="Durga Lal Shrestha handwritten font animation" class="w-full" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="resource-text order-2 lg:order-2">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">Font Download · Free</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Durga Lal Shrestha<br/>Handwritten Font
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              A faithful digital preservation of the handwriting of <strong class="text-gray-800 dark:text-gray-200">Janakabi Durga Lal Shrestha</strong> — one of Nepal's most celebrated Newari poets — crafted for literary typography and cultural publications.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Authentic handwritten character forms, digitized with precision
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Ideal for book covers, poetry collections, and heritage publications
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Free to download and use in personal and cultural projects
+              </li>
+            </ul>
+            <a href="https://drive.google.com/drive/folders/101GYVHsxILe09p_Dly3hzgF30CTUo2rh" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download Font
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         2. Nithya Ranjana / Newa Fonts  (text LEFT, visual RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="newa-fonts" class="resource-block py-24
+      bg-[radial-gradient(ellipse_at_top_right,_#fdf1f0_0%,_#f9f5f4_50%,_#f3ede9_100%)]
+      dark:bg-none dark:bg-gray-900">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          <div class="resource-text order-2 lg:order-1">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">Font Download · Free</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Nithya Ranjana<br/>&amp; Newa Fonts
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              Nithya Ranjana is an innovative Unicode typeface by <a href="https://ektype.in" target="_blank" rel="noopener noreferrer" class="text-brand dark:text-brand-light underline underline-offset-2">EkType</a> that bridges the ancient aesthetic of Ranjana calligraphy with modern digital typography — the most comprehensive digital Ranjana font available.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Full Unicode Ranjana Lipi coverage with OpenType features
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                WOFF2 web-optimised format for fast page loads
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Suitable for signage, manuscripts, digital art, and web content
+              </li>
+            </ul>
+            <a href="https://drive.google.com/drive/folders/1rQ230ntI61BmHbvrksQZ82tLmLzSuXw8" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download Newa Fonts
+            </a>
+          </div>
+
+          <div class="resource-visual order-1 lg:order-2">
+            <div class="rounded-3xl overflow-hidden border border-red-100 dark:border-gray-800 shadow-lg">
+              <div class="bg-gray-900 text-white text-xs font-medium px-5 py-3 text-center tracking-wide uppercase border-b border-gray-700">
+                Nithya Ranjana — Font Preview
+              </div>
+              <img
+                src="https://github.com/EkType/Nithya-Ranjana/raw/385f8d73ea7061dde0598744db0d31b6e6a1a555/Promotion/NithyaRanjana.gif"
+                alt="Nithya Ranjana font glyphs animation"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         3. Nepal Lipi Unicode Converter  (visual LEFT, text RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="converter" class="resource-block py-24 bg-white dark:bg-gray-950">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          <div class="resource-visual order-1 lg:order-1">
+            <a href="https://suyogyart.github.io/DTNConverter" target="_blank" rel="noopener noreferrer"
+               class="group block rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-gray-900">
+              <div class="bg-gray-900 text-white text-xs font-medium px-5 py-3 text-center tracking-wide uppercase border-b border-gray-700">
+                Nepal Lipi Unicode Converter — Live Demo
+              </div>
+              <div class="p-10 flex flex-col items-center gap-6 bg-white dark:bg-gray-950">
+                <p class="text-5xl sm:text-6xl font-bold text-brand dark:text-brand-light leading-none tracking-tight">कखग</p>
+                <div class="flex items-center gap-4">
+                  <div class="h-px w-12 bg-gray-300 dark:bg-gray-600"></div>
+                  <span class="text-2xl text-gray-400">↕</span>
+                  <div class="h-px w-12 bg-gray-300 dark:bg-gray-600"></div>
+                </div>
+                <p class="text-5xl sm:text-6xl font-bold text-brand dark:text-brand-light leading-none tracking-tight">𑐎𑐏𑐐</p>
+                <span class="text-xs text-gray-400 dark:text-gray-500 tracking-widest uppercase">Devanagari ↔ Nepal Lipi</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="resource-text order-2 lg:order-2">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">Web Tool · Open Source</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Nepal Lipi<br/>Unicode Converter
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              Instantly convert text between Devanagari and Nepal Lipi (Newa Script) — the ancient script used for over a millennium in the Kathmandu Valley.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Bidirectional conversion — Devanagari to Nepal Lipi and back
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Unicode-compliant output — works with any font supporting Nepal Lipi
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Useful for writers, publishers, and researchers digitizing classical texts
+              </li>
+            </ul>
+            <a href="https://suyogyart.github.io/DTNConverter" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+              Open Converter
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         4. Ranjana Lipi Webfont  (text LEFT, visual RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="ranjana-webfont" class="resource-block py-24
+      bg-[radial-gradient(ellipse_at_bottom_left,_#fdf1f0_0%,_#f9f5f4_50%,_#f3ede9_100%)]
+      dark:bg-none dark:bg-gray-900">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          <div class="resource-text order-2 lg:order-1">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">CSS Webfont · Free</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Render Ranjana Lipi<br/>on Webpages
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              A drop-in CSS solution to display the ancient Ranjana script on any website — no server-side processing needed. Just include the stylesheet and the font renders instantly.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Single CSS import — works in any HTML page or CMS
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Uses the Nithya Ranjana WOFF2 font, optimised for web performance
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Ideal for blogs, news portals, and cultural institutions publishing in Newa
+              </li>
+            </ul>
+            <a href="https://callijatra.github.io/nithya-ranjana-webfont1" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+              View Integration Guide
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+
+          <div class="resource-visual order-1 lg:order-2">
+            <div class="rounded-3xl overflow-hidden border border-red-100 dark:border-gray-800 shadow-lg bg-white dark:bg-gray-800">
+              <div class="bg-gray-900 text-white text-xs font-medium px-5 py-3 text-center tracking-wide uppercase border-b border-gray-700">
+                Nithya Ranjana — Live Render
+              </div>
+              <div class="p-10 flex flex-col items-center gap-5">
+                <p class="text-6xl sm:text-7xl text-brand dark:text-brand-light font-nithya-ranjana leading-none">रञ्जना</p>
+                <p class="text-4xl text-brand/70 dark:text-brand-light/70 font-nithya-ranjana leading-none">लिपि</p>
+                <div class="mt-2 rounded-lg bg-gray-50 dark:bg-gray-900 px-4 py-2 font-mono text-xs text-gray-500 dark:text-gray-400 text-center">
+                  &lt;link rel="stylesheet" href="nithya-ranjana.css"&gt;
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         5. Newa Font Switcher Widget  (visual LEFT, text RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="font-switcher" class="resource-block py-24 bg-white dark:bg-gray-950">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          <div class="resource-visual order-1 lg:order-1">
+            <div class="rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg bg-gray-50 dark:bg-gray-900">
+              <div class="bg-gray-900 text-white text-xs font-medium px-5 py-3 text-center tracking-wide uppercase border-b border-gray-700">
+                Font Switcher — Concept
+              </div>
+              <div class="p-8 flex flex-col gap-5">
+                <div class="flex gap-2 justify-center mb-2">
+                  <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-brand text-white shadow-sm">Devanagari</button>
+                  <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Nepal Lipi</button>
+                  <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Ranjana</button>
+                </div>
+                <div class="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 text-center space-y-2">
+                  <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">नेपाल भाषा</p>
+                  <p class="text-2xl font-bold text-gray-400 dark:text-gray-500">𑐣𑐾𑐥𑐵𑐮 𑐨𑐵𑐲𑐵</p>
+                  <p class="text-2xl font-bold text-brand/60 dark:text-brand-light/60 font-nithya-ranjana">नेपाल भाषा</p>
+                </div>
+                <p class="text-center text-xs text-gray-400 dark:text-gray-500">One click — three scripts, same text.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="resource-text order-2 lg:order-2">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">JavaScript Widget · Open Source</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Newa Font<br/>Switcher Widget
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              A lightweight JavaScript widget that lets readers switch any webpage's Devanagari text into Nepal Lipi or Ranjana Lipi — dynamically, without a page reload.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Embed in any website with one script tag
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Real-time toggle — readers choose their preferred script
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Supports both Nepal Lipi and Ranjana Lipi rendering
+              </li>
+            </ul>
+            <a href="https://callijatra.github.io/newa-font-switch-widget" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+              View Widget Docs
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         6. Transliteration Keyboard  (text LEFT, visual RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="transliteration" class="resource-block py-24
+      bg-[radial-gradient(ellipse_at_top_right,_#fdf1f0_0%,_#f9f5f4_50%,_#f3ede9_100%)]
+      dark:bg-none dark:bg-gray-900">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          <div class="resource-text order-2 lg:order-1">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">Web App · Free</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Transliteration<br/>Keyboard
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              Type in English phonetics and get instant transliteration into Devanagari and Nepal Lipi — making script input accessible to anyone without a specialized keyboard.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Type "namaste" → नमस्ते → 𑐣𑐩𑐳𑑂𑐟𑐾 automatically
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                No installation needed — runs entirely in your browser
+              </li>
+              <li class="flex items-start gap-3 text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-brand dark:text-brand-light mt-0.5 shrink-0">✦</span>
+                Great for beginners learning to write in indigenous scripts
+              </li>
+            </ul>
+            <a href="https://callijatra.github.io/newa-font-switch-widget/demo/transliterate.html" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+              Try the Keyboard
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+
+          <div class="resource-visual order-1 lg:order-2">
+            <div class="rounded-3xl overflow-hidden border border-red-100 dark:border-gray-800 shadow-lg bg-white dark:bg-gray-800">
+              <div class="bg-gray-900 text-white text-xs font-medium px-5 py-3 text-center tracking-wide uppercase border-b border-gray-700">
+                Transliteration — Example
+              </div>
+              <div class="p-8 flex flex-col gap-4">
+                <div class="flex flex-col gap-1">
+                  <span class="text-xs text-gray-400 uppercase tracking-wide font-medium">You type (English)</span>
+                  <div class="rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-4 py-3 font-mono text-gray-700 dark:text-gray-300 text-sm">
+                    kaa<span class="text-brand dark:text-brand-light">Tha</span>maa<span class="text-brand dark:text-brand-light">Dau</span>M
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 text-gray-300 dark:text-gray-600">
+                  <div class="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+                  <span class="text-lg">↓</span>
+                  <div class="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <div class="rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-center">
+                    <span class="text-xs text-gray-400 block mb-1">Devanagari</span>
+                    <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">काठमाडौं</span>
+                  </div>
+                  <div class="rounded-xl border border-brand/20 dark:border-brand-light/20 bg-red-50/50 dark:bg-red-950/20 px-4 py-3 text-center">
+                    <span class="text-xs text-gray-400 block mb-1">Nepal Lipi</span>
+                    <span class="text-2xl font-bold text-brand dark:text-brand-light">𑐎𑐵𑐛𑐩𑐵𑐜𑑁𑑄</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         7. Mobile Apps  (visual LEFT, text RIGHT)
+    ════════════════════════════════════════════════════════════════════ -->
+    <section id="apps" class="resource-block py-24 bg-white dark:bg-gray-950">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="resource-row grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+          <div class="resource-visual order-1 lg:order-1 flex flex-col gap-5">
+
+            <div class="rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-md">
+              <img src="https://img.youtube.com/vi/_O9ri4kz0mE/0.jpg" alt="Nepal Lipi – Type Newa app" class="w-full object-cover" loading="lazy" />
+              <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 flex items-center justify-between gap-3 flex-wrap">
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Nepal Lipi – Type Newa</span>
+                <div class="flex gap-2 items-center">
+                  <StoreBadge store="google" href="https://play.google.com/store/apps/details?id=com.paoneking.nepallipi_typenewa&hl=en" />
+                  <StoreBadge store="apple" href="https://apps.apple.com/np/app/nepal-lipi-ranjana-lipi/id1458885224" />
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-md">
+              <img src="/images/apps/nepal-lipi-keyboard-feature.jpg" alt="Nepal Lipi Keyboard app" class="w-full object-cover" loading="lazy" />
+              <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 flex items-center justify-between gap-3 flex-wrap">
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Nepal Lipi Keyboard</span>
+                <div class="flex gap-2 items-center">
+                  <StoreBadge store="google" href="https://play.google.com/store/apps/details?id=com.paoneking.nepallipikeyboard&hl=en" />
+                  <StoreBadge store="apple" href="https://apps.apple.com/np/app/nepal-lipi-keyboard/id1539281394" />
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-md">
+              <img src="/images/apps/callijatra-calligraphy-feature.jpg" alt="Callijatra Calligraphy app" class="w-full object-cover" loading="lazy" />
+              <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 flex flex-col gap-2">
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Callijatra Calligraphy
+                  <span class="ml-2 text-xs bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 font-medium px-2 py-0.5 rounded-full">Review pending</span>
+                </span>
+                <div class="flex gap-2 items-center flex-wrap">
+                  <a href="https://github.com/callijatra/callijatra.github.io/releases/download/callijatra-calligraphy-v1.0.0-build2/callijatra-calligraphy-1.0.0-build2.apk"
+                     download aria-label="Download APK"
+                     class="inline-flex items-center gap-2 h-9 px-3 rounded-lg bg-black text-white text-xs hover:opacity-85 active:scale-95 transition-all duration-150">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17.523 15.341a.694.694 0 0 1-.694-.695.694.694 0 0 1 .694-.694.694.694 0 0 1 .694.694.694.694 0 0 1-.694.695m-11.046 0a.694.694 0 0 1-.694-.695.694.694 0 0 1 .694-.694.694.694 0 0 1 .694.694.694.694 0 0 1-.694.695M17.69 9.535l1.385-2.4a.288.288 0 0 0-.105-.393.288.288 0 0 0-.393.105l-1.402 2.428A8.415 8.415 0 0 0 12 8.297a8.415 8.415 0 0 0-3.175.978L7.423 6.847a.288.288 0 0 0-.393-.105.288.288 0 0 0-.105.393l1.385 2.4C5.824 10.812 4.098 13.048 4 15.7h16c-.098-2.652-1.824-4.888-4.31-6.165"/>
+                    </svg>
+                    Download APK (61 MB)
+                  </a>
+                </div>
+                <p class="text-xs text-gray-400 dark:text-gray-500">Version 1.0.0 · Android 7.0+</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="resource-text order-2 lg:order-2 lg:sticky lg:top-24">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-3">Mobile Apps · Android &amp; iOS</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              Apps for<br/>Indigenous Scripts
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              A suite of mobile apps that make Nepal Lipi and Ranjana Lipi practical for everyday digital use — from typing and keyboarding to practising the art of calligraphy.
+            </p>
+            <div class="space-y-5 mb-8">
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Nepal Lipi – Type Newa</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Read and write in Nepal Lipi (Newa Script) and Ranjana Lipi. Available on Android and iOS.</p>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Nepal Lipi Keyboard</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">A system-wide keyboard for typing Nepalbhasa and Nepali in Nepal Lipi and Devanagari across any app.</p>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Callijatra Calligraphy</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Write Ranjana, Prachalit, and Devanagari with simulated broad-nib pen strokes — ink and paper feel on your screen. Currently pending App Store review.</p>
+              </div>
+            </div>
+            <a href="https://play.google.com/store/apps/developer?id=Callijatra&hl=en" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              View All on Play Store
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /.resource-stream -->
+
+  <!-- ── CTA FOOTER BAND ────────────────────────────────────────────────── -->
+  <section class="py-20 bg-gray-900 dark:bg-gray-950 text-white text-center">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-4xl mb-4 font-nithya-ranjana text-brand-light">𑐎𑐏𑐐</p>
+      <h2 class="text-2xl sm:text-3xl font-bold mb-3">Want to contribute or collaborate?</h2>
+      <p class="text-gray-400 mb-8 leading-relaxed">
+        Callijatra Foundation is a community effort. Whether you're a developer, designer, linguist, or just passionate about indigenous scripts — there's a place for you.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="https://github.com/callijatra" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-100 transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.82 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          View on GitHub
+        </a>
+        <a href="/about"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-600 text-gray-300 font-semibold hover:bg-gray-800 transition-colors">
+          About Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<!-- ── SCROLL ANIMATIONS + PARALLAX ──────────────────────────────────────── -->
+<script>
+  document.querySelectorAll<HTMLElement>('.resource-visual, .resource-text').forEach((el) => {
+    el.style.transition = 'opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1)';
+    el.classList.add('opacity-0');
+    el.style.transform = 'translateY(40px)';
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const delay = el.classList.contains('resource-text') ? 120 : 0;
+          setTimeout(() => {
+            el.classList.remove('opacity-0');
+            el.style.transform = 'translateY(0)';
+          }, delay);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll<HTMLElement>('.resource-visual, .resource-text').forEach((el) => {
+    observer.observe(el);
+  });
+
+  const orbs = Array.from(document.querySelectorAll<HTMLElement>('.parallax-orb'));
+  function onScroll() {
+    const scrollY = window.scrollY;
+    orbs.forEach((orb) => {
+      const speed = parseFloat(orb.dataset.speed ?? '0.2');
+      orb.style.transform = `translateY(${scrollY * speed}px)`;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>

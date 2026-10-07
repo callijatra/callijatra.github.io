@@ -1,0 +1,33 @@
+---
+interface Props {
+  store: 'google' | 'apple';
+  href: string;
+}
+const { store, href } = Astro.props;
+---
+
+{store === 'google' && (
+  <a href={href} target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play"
+     class="inline-block hover:opacity-85 active:scale-95 transition-all duration-150">
+    <!-- The Google Play PNG has ~20% built-in padding, so h-[2.6rem] makes
+         the visible badge art the same height as the App Store badge at h-10. -->
+    <img
+      src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+      alt="Get it on Google Play"
+      class="h-[2.6rem] w-auto -my-1"
+      loading="lazy"
+    />
+  </a>
+)}
+
+{store === 'apple' && (
+  <a href={href} target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store"
+     class="inline-block hover:opacity-85 active:scale-95 transition-all duration-150">
+    <img
+      src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+      alt="Download on the App Store"
+      class="h-10 w-auto"
+      loading="lazy"
+    />
+  </a>
+)}

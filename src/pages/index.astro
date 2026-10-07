@@ -1,0 +1,389 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StoreBadge from '../components/StoreBadge.astro';
+---
+
+<Layout title="Callijatra Foundation — Preserving Nepal's Indigenous Scripts">
+
+  <!-- ── HERO CAROUSEL ─────────────────────────────────────────────────── -->
+  <section id="hero" class="relative min-h-[60vh] sm:min-h-[80vh] flex items-end overflow-hidden" aria-label="Hero section">
+
+    <!-- Slides (opacity + z-index managed by JS) -->
+    {[
+      '/images/banners/banner_1.jpg',
+      '/images/events/events_1.jpg',
+      '/images/events/events_2.jpg',
+      '/images/events/events_3.jpg',
+      '/images/events/events_4.jpg',
+    ].map((src, i) => (
+      <div
+        data-slide={i}
+        class="hero-slide absolute inset-0 bg-center bg-cover"
+        style={`background-image: url('${src}')`}
+        aria-hidden={i !== 0}
+      />
+    ))}
+
+    <!-- Gradient overlay — just enough to darken the bottom edge -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none z-10"></div>
+
+    <!-- Content: no background, text shadows for readability -->
+    <div class="relative z-20 w-full pb-10 sm:pb-14">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-xl">
+          <span class="inline-block mb-3 text-xs font-semibold tracking-widest uppercase text-white/90 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/25 shadow-sm"
+                style="text-shadow: 0 1px 4px rgba(0,0,0,0.5);">
+            Callijatra Foundation
+          </span>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-light text-white mb-3 font-nithya-ranjana leading-tight"
+              style="text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);">
+            क्यालिजात्रा फाउण्डेशन
+          </h1>
+          <p class="text-sm sm:text-base text-gray-100 mb-6 leading-relaxed"
+             style="text-shadow: 0 1px 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.7);">
+            Preserving, promoting, and digitizing indigenous scripts and calligraphy
+            such as Ranjana Lipi and Nepal Lipi through fonts, apps, learning
+            resources, and open digital tools.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 mb-6">
+            <a href="/resources" class="px-6 py-2.5 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-lg text-center text-sm">
+              Explore Resources
+            </a>
+            <a href="/about" class="px-6 py-2.5 rounded-xl bg-white/15 text-white font-semibold hover:bg-white/25 transition-colors border border-white/40 text-center text-sm backdrop-blur-sm">
+              About Us
+            </a>
+          </div>
+
+          <!-- Dot indicators -->
+          <div class="flex items-center gap-2" role="tablist" aria-label="Slide indicators">
+            {[0,1,2,3,4].map((i) => (
+              <button
+                data-dot={i}
+                role="tab"
+                aria-label={`Slide ${i + 1}`}
+                aria-selected={i === 0}
+                class={`hero-dot rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${i === 0 ? 'w-6 h-2 bg-white' : 'w-2 h-2 bg-white/50 hover:bg-white/80'}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll<HTMLElement>('.hero-slide'));
+      const dots   = Array.from(document.querySelectorAll<HTMLButtonElement>('.hero-dot'));
+      const TOTAL  = slides.length;
+      const FADE   = 1200;   // ms — must match CSS transition duration
+      const DELAY  = 4500;   // ms between slides
+      let current  = 0;
+      let busy     = false;
+      let timer: ReturnType<typeof setInterval>;
+
+      function goTo(next: number) {
+        if (busy) return;
+        next = (next + TOTAL) % TOTAL;
+        if (next === current) return;
+        busy = true;
+
+        const prev = current;
+        current = next;
+
+        // Elevate incoming slide so it fades in on top
+        slides[current].style.zIndex = '3';
+        slides[prev].style.zIndex    = '2';
+
+        // Dot state
+        dots[prev].classList.replace('w-6', 'w-2');
+        dots[prev].classList.replace('bg-white', 'bg-white/50');
+        dots[prev].setAttribute('aria-selected', 'false');
+        dots[current].classList.replace('w-2', 'w-6');
+        dots[current].classList.replace('bg-white/50', 'bg-white');
+        dots[current].setAttribute('aria-selected', 'true');
+
+        // Trigger fade-in on incoming (double rAF to ensure paint before transition)
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          slides[current].style.opacity = '1';
+
+          // After fade completes, hide old slide and reset z-index
+          setTimeout(() => {
+            slides[prev].style.opacity  = '0';
+            slides[prev].style.zIndex   = '1';
+            slides[current].style.zIndex = '2';
+            busy = false;
+          }, FADE);
+        }));
+      }
+
+      // Initialise inline styles (take over from Tailwind classes)
+      slides.forEach((slide, i) => {
+        slide.style.opacity    = i === 0 ? '1' : '0';
+        slide.style.zIndex     = i === 0 ? '2' : '1';
+        slide.style.transition = `opacity ${FADE}ms ease-in-out`;
+      });
+
+      function startTimer() {
+        timer = setInterval(() => goTo(current + 1), DELAY);
+      }
+      function resetTimer() {
+        clearInterval(timer);
+        startTimer();
+      }
+
+      // Dot clicks
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => { goTo(i); resetTimer(); });
+      });
+
+      // Pause on hover
+      const hero = document.getElementById('hero');
+      hero?.addEventListener('mouseenter', () => clearInterval(timer));
+      hero?.addEventListener('mouseleave', () => { if (!busy) startTimer(); });
+
+      startTimer();
+    })();
+  </script>
+
+  <!-- ── RESOURCES ─────────────────────────────────────────────────────── -->
+  <section id="resources" class="py-20 relative overflow-hidden
+    bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_45%,_#f3ede9_100%)]
+    dark:bg-none dark:bg-gray-900">
+
+    <!-- Decorative background orbs (light mode only) -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#c0392b]/5 blur-3xl pointer-events-none dark:hidden" aria-hidden="true"></div>
+    <div class="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-[#c0392b]/4 blur-3xl pointer-events-none dark:hidden" aria-hidden="true"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">What We Offer</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Our Resources</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          Open tools, fonts, web widgets, and mobile apps by Callijatra Foundation — freely available to everyone.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+
+        <!-- Fonts -->
+        <div data-card-href="/resources#durgalal-font"
+             class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-brand/10 dark:bg-brand/20 flex items-center justify-center text-xl shrink-0">🖋️</div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Fonts</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Durga Lal Shrestha handwritten font and Nithya Ranjana — Unicode typefaces for digital and print use.</p>
+          </div>
+          <img src="/images/gifs/durgalalfont.gif" alt="Durga Lal Font preview" class="rounded-xl w-full object-cover" loading="lazy" />
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <a href="/resources#durgalal-font" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Durga Lal Shrestha Font
+            </a>
+            <a href="/resources#newa-fonts" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Newa Fonts
+            </a>
+          </div>
+        </div>
+
+        <!-- Web Tools -->
+        <div data-card-href="/resources#converter"
+             class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-brand/10 dark:bg-brand/20 flex items-center justify-center text-xl shrink-0">⚙️</div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Web Tools</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Unicode converter, Ranjana webfont, font switcher widget, and transliteration keyboard for the web.</p>
+          </div>
+          <div class="flex-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-5 flex flex-col items-center justify-center gap-2">
+            <p class="text-3xl font-bold text-brand dark:text-brand-light">कखग</p>
+            <p class="text-gray-400 text-lg">↕</p>
+            <p class="text-3xl font-bold text-brand dark:text-brand-light">𑐎𑐏𑐐</p>
+            <p class="text-xs text-gray-400 tracking-widest uppercase mt-1">Devanagari ↔ Nepal Lipi</p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <a href="/resources#converter" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Unicode Converter
+            </a>
+            <a href="/resources#ranjana-webfont" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Ranjana Webfont
+            </a>
+            <a href="/resources#font-switcher" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Font Switcher
+            </a>
+            <a href="/resources#transliteration" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Transliteration
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile Apps -->
+        <div data-card-href="/resources#apps"
+             class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-brand/10 dark:bg-brand/20 flex items-center justify-center text-xl shrink-0">📱</div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Mobile Apps</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Nepal Lipi Type Newa, Nepal Lipi Keyboard, and Callijatra Calligraphy — for Android and iOS.</p>
+          </div>
+          <img src="/images/apps/nepal-lipi-keyboard-feature.jpg" alt="Nepal Lipi Keyboard app" class="rounded-xl w-full object-cover" loading="lazy" />
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Nepal Lipi – Type Newa
+            </a>
+            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Nepal Lipi Keyboard
+            </a>
+            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Callijatra Calligraphy
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center">
+        <a href="/resources"
+           class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand text-white font-semibold hover:bg-brand-hover transition-colors shadow-sm">
+          View All Resources
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <script>
+    (function () {
+      document.querySelectorAll('.resource-card').forEach((card) => {
+        const href = card.getAttribute('data-card-href');
+        if (href) {
+          card.addEventListener('click', (e) => {
+            // Don't trigger if clicking on a pill/link inside
+            if ((e.target as HTMLElement).closest('a')) return;
+            window.location.href = href;
+          });
+        }
+      });
+    })();
+  </script>
+
+  <!-- ── GALLERY ────────────────────────────────────────────────────────── -->
+  <section id="gallery" class="py-20 bg-white dark:bg-gray-950">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Community</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Events &amp; Gallery</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Highlights from our workshops, exhibitions, and cultural events.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <img src="/images/events/events_1.jpg" alt="Callijatra Event 1" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
+        <img src="/images/events/events_2.jpg" alt="Callijatra Event 2" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
+        <img src="/images/events/events_3.jpg" alt="Callijatra Event 3" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
+      </div>
+      <div class="text-center mt-8">
+        <a href="https://drive.google.com/drive/folders/135KGT46EKb3QBMHx5hosfX_lpJECo6ki" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+          View Full Gallery
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LEARNING MATERIALS ─────────────────────────────────────────────── -->
+  <section class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Learn</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Learning Materials</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          Free video tutorials covering calligraphy strokes, Ranjana Lipi basics, and Nepal Lipi writing techniques.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <a href="https://www.youtube.com/watch?v=3Samu1XNSj4" target="_blank" rel="noopener noreferrer"
+           class="group block rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-brand dark:hover:border-brand hover:shadow-md transition-all">
+          <div class="relative">
+            <img src="https://img.youtube.com/vi/3Samu1XNSj4/0.jpg" alt="Tutorial video 1" class="w-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+              <div class="w-12 h-12 bg-brand rounded-full flex items-center justify-center shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=D93FYQZqzfY" target="_blank" rel="noopener noreferrer"
+           class="group block rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-brand dark:hover:border-brand hover:shadow-md transition-all">
+          <div class="relative">
+            <img src="https://img.youtube.com/vi/D93FYQZqzfY/0.jpg" alt="Tutorial video 2" class="w-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+              <div class="w-12 h-12 bg-brand rounded-full flex items-center justify-center shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="text-center mt-8">
+        <a href="https://www.youtube.com/playlist?list=PLdEyNClbX3oKxRiNS3kzV3N2minTXUdEF" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand text-white font-medium hover:bg-brand-hover transition-colors">
+          Watch All Tutorials
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+<script>
+  // Clicking anywhere on a resource card navigates to its href,
+  // unless the click was on a pill link (which has its own href).
+  document.querySelectorAll<HTMLElement>('.resource-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('.resource-pill')) return;
+      const href = card.dataset.cardHref;
+      if (href) window.location.href = href;
+    });
+  });
+</script>
+
+</Layout>
