@@ -6,26 +6,18 @@
 /* Enable class-based dark mode */
 @variant dark (&:where(.dark, .dark *));
 
-/* ── Brand color: muted brick-red ───────────────────────────────────────
-   Replaces the too-bright red-600 (#dc2626) with a softer terracotta.
-   Use these CSS variables instead of Tailwind red-* classes on CTAs.     */
+@theme {
+  --color-brand: #c0392b;
+  --color-brand-hover: #a93226;
+  --color-brand-light: #e8877f;
+  --color-brand-subtle: #fbeae9;
+}
+
 :root {
-  --brand:        #c0392b;   /* main — muted crimson */
-  --brand-hover:  #a93226;   /* darker on hover      */
-  --brand-light:  #e8877f;   /* text on dark bg      */
-  --brand-subtle: #fbeae9;   /* light tint bg        */
+  --brand-subtle: #fbeae9;
 }
 .dark {
   --brand-subtle: #3b1212;
-}
-
-@layer utilities {
-  .bg-brand          { background-color: var(--brand); }
-  .hover\:bg-brand-hover:hover { background-color: var(--brand-hover); }
-  .text-brand        { color: var(--brand); }
-  .text-brand-light  { color: var(--brand-light); }
-  .border-brand      { border-color: var(--brand); }
-  .hover\:border-brand-hover:hover { border-color: var(--brand-hover); }
 }
 
 /* NithyaRanjana web font */
