@@ -167,7 +167,68 @@ import StoreBadge from '../components/StoreBadge.astro';
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
 
-        <!-- Fonts -->
+        <!-- 1. Mobile Apps -->
+        <div data-card-href="/resources#apps"
+             class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
+          <div class="w-11 h-11 rounded-xl bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand dark:text-brand-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Mobile Apps</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Nepal Lipi Type Newa, Nepal Lipi Keyboard, and Callijatra Calligraphy — for Android and iOS.</p>
+          </div>
+
+          <!-- Apps Thumbnails Grid -->
+          <div class="grid grid-cols-3 gap-2">
+            <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+              <img src="https://img.youtube.com/vi/_O9ri4kz0mE/0.jpg" alt="Nepal Lipi – Type Newa preview" class="w-full h-20 sm:h-24 object-cover" loading="lazy" />
+              <div class="py-1 px-1.5 text-center bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700/60 mt-auto">
+                <span class="text-[11px] font-medium text-gray-700 dark:text-gray-300 block truncate">Type Newa</span>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+              <img src="/images/apps/nepal-lipi-keyboard-feature.jpg" alt="Nepal Lipi Keyboard preview" class="w-full h-20 sm:h-24 object-cover" loading="lazy" />
+              <div class="py-1 px-1.5 text-center bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700/60 mt-auto">
+                <span class="text-[11px] font-medium text-gray-700 dark:text-gray-300 block truncate">Keyboard</span>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+              <img src="/images/apps/callijatra-calligraphy-feature.jpg" alt="Callijatra Calligraphy preview" class="w-full h-20 sm:h-24 object-cover" loading="lazy" />
+              <div class="py-1 px-1.5 text-center bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700/60 mt-auto">
+                <span class="text-[11px] font-medium text-gray-700 dark:text-gray-300 block truncate">Calligraphy</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Nepal Lipi – Type Newa
+            </a>
+            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Nepal Lipi Keyboard
+            </a>
+            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
+                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
+                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
+                      text-brand dark:text-gray-200 dark:hover:text-white
+                      backdrop-blur-sm transition-all duration-200">
+              Callijatra Calligraphy
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. Fonts -->
         <div data-card-href="/resources#durgalal-font"
              class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
           <div class="w-11 h-11 rounded-xl bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 flex items-center justify-center shrink-0">
@@ -180,7 +241,23 @@ import StoreBadge from '../components/StoreBadge.astro';
             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Fonts</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Durga Lal Shrestha handwritten font and Nithya Ranjana — Unicode typefaces for digital and print use.</p>
           </div>
-          <img src="/images/gifs/durgalalfont.gif" alt="Durga Lal Font preview" class="rounded-xl w-full object-cover" loading="lazy" />
+
+          <!-- Fonts Thumbnails Grid -->
+          <div class="grid grid-cols-2 gap-2">
+            <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+              <img src="/images/gifs/durgalalfont.gif" alt="Durga Lal Font preview" class="w-full h-20 sm:h-24 object-cover" loading="lazy" />
+              <div class="py-1 px-1.5 text-center bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700/60 mt-auto">
+                <span class="text-[11px] font-medium text-gray-700 dark:text-gray-300 block truncate">Durga Lal Font</span>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+              <img src="https://github.com/EkType/Nithya-Ranjana/raw/385f8d73ea7061dde0598744db0d31b6e6a1a555/Promotion/NithyaRanjana.gif" alt="Nithya Ranjana font preview" class="w-full h-20 sm:h-24 object-cover" loading="lazy" />
+              <div class="py-1 px-1.5 text-center bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700/60 mt-auto">
+                <span class="text-[11px] font-medium text-gray-700 dark:text-gray-300 block truncate">Nithya Ranjana</span>
+              </div>
+            </div>
+          </div>
+
           <div class="flex flex-wrap gap-2 mt-auto">
             <a href="/resources#durgalal-font" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
                       bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
@@ -199,7 +276,7 @@ import StoreBadge from '../components/StoreBadge.astro';
           </div>
         </div>
 
-        <!-- Web Tools -->
+        <!-- 3. Web Tools -->
         <div data-card-href="/resources#converter"
              class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
           <div class="w-11 h-11 rounded-xl bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 flex items-center justify-center shrink-0">
@@ -212,11 +289,11 @@ import StoreBadge from '../components/StoreBadge.astro';
             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Web Tools</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Unicode converter, Ranjana webfont, font switcher widget, and transliteration keyboard for the web.</p>
           </div>
-          <div class="flex-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-5 flex flex-col items-center justify-center gap-2">
-            <p class="text-3xl font-bold text-brand dark:text-brand-light">कखग</p>
-            <p class="text-gray-400 text-lg">↕</p>
-            <p class="text-3xl font-bold text-brand dark:text-brand-light">𑐎𑐏𑐐</p>
-            <p class="text-xs text-gray-400 tracking-widest uppercase mt-1">Devanagari ↔ Nepal Lipi</p>
+          <div class="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 flex flex-col items-center justify-center gap-1.5 min-h-[104px]">
+            <p class="text-2xl font-bold text-brand dark:text-brand-light">कखग</p>
+            <p class="text-gray-400 text-sm">↕</p>
+            <p class="text-2xl font-bold text-brand dark:text-brand-light">𑐎𑐏𑐐</p>
+            <p class="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">Devanagari ↔ Nepal Lipi</p>
           </div>
           <div class="flex flex-wrap gap-2 mt-auto">
             <a href="/resources#converter" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
@@ -246,45 +323,6 @@ import StoreBadge from '../components/StoreBadge.astro';
                       text-brand dark:text-gray-200 dark:hover:text-white
                       backdrop-blur-sm transition-all duration-200">
               Transliteration
-            </a>
-          </div>
-        </div>
-
-        <!-- Mobile Apps -->
-        <div data-card-href="/resources#apps"
-             class="resource-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all">
-          <div class="w-11 h-11 rounded-xl bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 flex items-center justify-center shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand dark:text-brand-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-              <line x1="12" y1="18" x2="12.01" y2="18"></line>
-            </svg>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Mobile Apps</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Nepal Lipi Type Newa, Nepal Lipi Keyboard, and Callijatra Calligraphy — for Android and iOS.</p>
-          </div>
-          <img src="/images/apps/nepal-lipi-keyboard-feature.jpg" alt="Nepal Lipi Keyboard app" class="rounded-xl w-full object-cover" loading="lazy" />
-          <div class="flex flex-wrap gap-2 mt-auto">
-            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
-                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
-                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
-                      text-brand dark:text-gray-200 dark:hover:text-white
-                      backdrop-blur-sm transition-all duration-200">
-              Nepal Lipi – Type Newa
-            </a>
-            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
-                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
-                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
-                      text-brand dark:text-gray-200 dark:hover:text-white
-                      backdrop-blur-sm transition-all duration-200">
-              Nepal Lipi Keyboard
-            </a>
-            <a href="/resources#apps" class="resource-pill px-3 py-1.5 rounded-full text-xs font-medium
-                      bg-brand/8 hover:bg-brand/15 dark:bg-white/10 dark:hover:bg-white/20
-                      border border-brand/20 hover:border-brand/40 dark:border-white/20 dark:hover:border-white/40
-                      text-brand dark:text-gray-200 dark:hover:text-white
-                      backdrop-blur-sm transition-all duration-200">
-              Callijatra Calligraphy
             </a>
           </div>
         </div>
