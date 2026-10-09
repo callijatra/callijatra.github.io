@@ -318,33 +318,8 @@ import StoreBadge from '../components/StoreBadge.astro';
     })();
   </script>
 
-  <!-- ── GALLERY ────────────────────────────────────────────────────────── -->
-  <section id="gallery" class="py-20 bg-white dark:bg-gray-950">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Community</span>
-        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Events &amp; Gallery</h2>
-        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Highlights from our workshops, exhibitions, and cultural events.</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <img src="/images/events/events_1.jpg" alt="Callijatra Event 1" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
-        <img src="/images/events/events_2.jpg" alt="Callijatra Event 2" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
-        <img src="/images/events/events_3.jpg" alt="Callijatra Event 3" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
-      </div>
-      <div class="text-center mt-8">
-        <a href="https://drive.google.com/drive/folders/135KGT46EKb3QBMHx5hosfX_lpJECo6ki" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-          View Full Gallery
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- ── LEARNING MATERIALS ─────────────────────────────────────────────── -->
-  <section class="py-20 bg-gray-50 dark:bg-gray-900">
+  <section id="learn" class="py-20 bg-white dark:bg-gray-950">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Learn</span>
@@ -356,7 +331,7 @@ import StoreBadge from '../components/StoreBadge.astro';
 
       <!-- Primary: interactive learn preview -->
       <a href="/learn#ranjana"
-         class="group block rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md hover:border-brand/30 dark:hover:border-brand/40 transition-all overflow-hidden mb-10">
+         class="group block rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md hover:border-brand/30 dark:hover:border-brand/40 transition-all overflow-hidden mb-10">
         <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-0">
           <div class="p-7 sm:p-9 flex flex-col justify-center">
             <span class="inline-flex w-fit text-[10px] font-semibold tracking-widest uppercase text-brand dark:text-brand-light bg-brand/10 dark:bg-brand/20 px-2.5 py-1 rounded-full mb-3">
@@ -417,6 +392,31 @@ import StoreBadge from '../components/StoreBadge.astro';
            class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-brand-light transition-colors">
           Watch all tutorials
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ────────────────────────────────────────────────────────── -->
+  <section id="gallery" class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Community</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Events &amp; Gallery</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Highlights from our workshops, exhibitions, and cultural events.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <img src="/images/events/events_1.jpg" alt="Callijatra Event 1" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
+        <img src="/images/events/events_2.jpg" alt="Callijatra Event 2" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
+        <img src="/images/events/events_3.jpg" alt="Callijatra Event 3" class="rounded-2xl w-full h-64 object-cover shadow-sm hover:shadow-md transition-shadow" loading="lazy" />
+      </div>
+      <div class="text-center mt-8">
+        <a href="https://drive.google.com/drive/folders/135KGT46EKb3QBMHx5hosfX_lpJECo6ki" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
+          View Full Gallery
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
         </a>

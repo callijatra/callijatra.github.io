@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added standalone [public/sitemap.xml](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/sitemap.xml) for direct submission in Google Search Console.
 
 ### Changed
+- **Home Page Section Ordering**: Moved Learning Materials section before Events & Gallery on the homepage to mirror the navbar hierarchy (Resources → Learn → Gallery) with balanced alternating section backgrounds.
 - **Resources Hero Quick Links**: Harmonized light mode styling to use the same frosted glass white aesthetics (`bg-white/10`, `border-white/20`, `text-white/80`) as dark mode against the dark hero background.
 
 ## [0.2.0] - 2026-10-08
