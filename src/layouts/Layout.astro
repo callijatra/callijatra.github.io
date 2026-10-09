@@ -366,13 +366,13 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <!-- Bottom FAB dock: optional leading slot (e.g. learn filter) + scroll to top -->
     <div
       id="fab-dock"
-      class="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 flex flex-col-reverse items-end sm:flex-row sm:items-end max-w-[calc(100vw-0.75rem)] sm:max-w-[calc(100vw-1.5rem)] pb-[env(safe-area-inset-bottom)]"
+      class="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 flex flex-row items-center justify-end max-w-[calc(100vw-0.75rem)] sm:max-w-[calc(100vw-1.5rem)] pb-[env(safe-area-inset-bottom)]"
     >
       <div id="fab-dock-leading" class="w-max"></div>
       <button
         id="scroll-top"
         aria-label="Scroll to top"
-        class="scroll-top-btn inline-flex items-center justify-center shrink-0 rounded-full bg-brand text-white shadow-lg
+        class="scroll-top-btn inline-flex items-center justify-center shrink-0 self-center rounded-full bg-brand text-white shadow-lg
                opacity-0 w-0 h-0 p-0 m-0 overflow-hidden pointer-events-none
                transition-all duration-300 ease-out
                hover:bg-brand-hover active:scale-90"
@@ -396,9 +396,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
         btn?.classList.toggle('w-11', visible);
         btn?.classList.toggle('h-11', visible);
         btn?.classList.toggle('p-3', visible);
-        // Mobile: sit above the filter; sm+: sit to the right with a gap
-        btn?.classList.toggle('mb-2', visible);
-        btn?.classList.toggle('sm:mb-0', visible);
+        btn?.classList.toggle('ml-2', visible);
         btn?.classList.toggle('sm:ml-3', visible);
         btn?.classList.toggle('overflow-hidden', !visible);
         btn?.classList.toggle('pointer-events-none', !visible);
