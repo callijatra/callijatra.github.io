@@ -363,20 +363,25 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
         });
       });
     </script>
-    <!-- Scroll to top button -->
-    <button
-      id="scroll-top"
-      aria-label="Scroll to top"
-      class="fixed bottom-6 right-6 z-50 p-3 rounded-full
-             bg-brand text-white shadow-lg
-             opacity-0 translate-y-4 pointer-events-none
-             transition-all duration-300 ease-out
-             hover:bg-brand-hover active:scale-90"
+    <!-- Bottom FAB dock: optional leading slot (e.g. learn filter) + scroll to top -->
+    <div
+      id="fab-dock"
+      class="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 flex flex-col-reverse items-end sm:flex-row sm:items-end max-w-[calc(100vw-0.75rem)] sm:max-w-[calc(100vw-1.5rem)] pb-[env(safe-area-inset-bottom)]"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
-      </svg>
-    </button>
+      <div id="fab-dock-leading" class="w-max"></div>
+      <button
+        id="scroll-top"
+        aria-label="Scroll to top"
+        class="scroll-top-btn inline-flex items-center justify-center shrink-0 rounded-full bg-brand text-white shadow-lg
+               opacity-0 w-0 h-0 p-0 m-0 overflow-hidden pointer-events-none
+               transition-all duration-300 ease-out
+               hover:bg-brand-hover active:scale-90"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
+    </div>
 
     <script>
       const btn = document.getElementById('scroll-top');
@@ -384,10 +389,22 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
         const visible = window.scrollY > 300;
         btn?.classList.toggle('opacity-0', !visible);
         btn?.classList.toggle('opacity-100', visible);
-        btn?.classList.toggle('translate-y-4', !visible);
-        btn?.classList.toggle('translate-y-0', visible);
+        btn?.classList.toggle('w-0', !visible);
+        btn?.classList.toggle('h-0', !visible);
+        btn?.classList.toggle('p-0', !visible);
+        btn?.classList.toggle('m-0', !visible);
+        btn?.classList.toggle('w-11', visible);
+        btn?.classList.toggle('h-11', visible);
+        btn?.classList.toggle('p-3', visible);
+        // Mobile: sit above the filter; sm+: sit to the right with a gap
+        btn?.classList.toggle('mb-2', visible);
+        btn?.classList.toggle('sm:mb-0', visible);
+        btn?.classList.toggle('sm:ml-3', visible);
+        btn?.classList.toggle('overflow-hidden', !visible);
         btn?.classList.toggle('pointer-events-none', !visible);
+        document.documentElement.dataset.scrollTop = visible ? '1' : '0';
       }
+      syncBtn();
       window.addEventListener('scroll', syncBtn, { passive: true });
       btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>

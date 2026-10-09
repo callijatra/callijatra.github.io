@@ -33,7 +33,7 @@ const letterPayload = JSON.stringify({
     <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
       Tap a letter to explore. Glyphs are colored by their <strong class="text-gray-900 dark:text-white">calligraphy shape</strong> —
       because matras attach differently to each family. Small grey labels are Devanagari mappings.
-      Use the floating filter at the bottom-left anytime while you scroll.
+      Use the floating filter at the bottom-right anytime while you scroll.
     </p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400">
@@ -53,76 +53,41 @@ const letterPayload = JSON.stringify({
     </div>
   </div>
 
-  <!-- Floating trait filter: compact color strip on mobile, labeled panel on sm+ -->
+  <!-- Compact trait filter — mounted into #fab-dock-leading (left of scroll-to-top) -->
   <div
     id="trait-filter-dock"
-    class="fixed bottom-3 left-3 z-40 sm:bottom-4 sm:left-4 max-w-[calc(100vw-1.5rem)] pb-[env(safe-area-inset-bottom)]"
+    class="flex items-stretch gap-0.5 sm:gap-1 rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg p-1 sm:p-1.5 w-max"
+    role="group"
+    aria-label="Filter by letter characteristic"
   >
-    <!-- Mobile strip: color + short trait name -->
-    <div
-      class="sm:hidden flex items-stretch gap-0.5 rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg p-1"
-      role="group"
-      aria-label="Filter by letter characteristic"
+    <button
+      type="button"
+      data-trait-filter="all"
+      class="trait-filter trait-filter-chip is-active inline-flex flex-col items-center justify-center gap-0.5 shrink-0 px-2 sm:px-2.5 py-1.5 rounded-xl border border-transparent text-gray-600 dark:text-gray-300"
+      aria-label="All letters"
+      title="All letters"
     >
-      <button
-        type="button"
-        data-trait-filter="all"
-        class="trait-filter trait-filter-chip is-active inline-flex flex-col items-center justify-center gap-0.5 min-w-[2.75rem] px-1.5 py-1.5 rounded-xl border border-transparent text-gray-600 dark:text-gray-300"
-        aria-label="All letters"
-        title="All letters"
-      >
-        <span class="w-3 h-3 rounded-full bg-gray-400 dark:bg-gray-500" aria-hidden="true"></span>
-        <span class="text-[8px] font-semibold leading-tight tracking-wide">All</span>
-      </button>
-      {traitOrder.map((id) => {
-        const t = letterTraits[id];
-        const short = t.label.replace(' letters', '');
-        return (
-          <button
-            type="button"
-            data-trait-filter={id}
-            class="trait-filter trait-filter-chip inline-flex flex-col items-center justify-center gap-0.5 min-w-[2.75rem] px-1.5 py-1.5 rounded-xl border border-transparent text-gray-600 dark:text-gray-300"
-            aria-label={short}
-            title={`${short} — ${t.matraTip}`}
-          >
-            <span class={`w-3 h-3 rounded-full ${t.swatchClass}`} aria-hidden="true"></span>
-            <span class="text-[8px] font-semibold leading-tight tracking-wide text-center">{short}</span>
-          </button>
-        );
-      })}
-    </div>
-
-    <!-- Desktop / tablet panel -->
-    <div
-      class="hidden sm:block w-[13.5rem] rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg p-2"
-      role="group"
-      aria-label="Filter by letter characteristic"
-    >
-      <p class="px-2 pt-1 pb-1.5 text-[10px] font-semibold tracking-widest uppercase text-gray-400">Filter</p>
-      <div class="flex flex-col gap-1">
+      <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-gray-400 dark:bg-gray-500" aria-hidden="true"></span>
+      <span class="text-[10px] sm:text-[11px] font-semibold leading-tight tracking-wide whitespace-nowrap">All</span>
+    </button>
+    {traitOrder.map((id) => {
+      const t = letterTraits[id];
+      const short = t.label.replace(' letters', '');
+      return (
         <button
           type="button"
-          data-trait-filter="all"
-          class="trait-filter is-active inline-flex items-center gap-2 rounded-xl border border-transparent px-2.5 py-2 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          data-trait-filter={id}
+          class="trait-filter trait-filter-chip inline-flex flex-col items-center justify-center gap-0.5 shrink-0 px-2 sm:px-2.5 py-1.5 rounded-xl border border-transparent text-gray-600 dark:text-gray-300"
+          aria-label={short}
+          title={`${short} — ${t.matraTip}`}
         >
-          All letters
+          <span class={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0 ${t.swatchClass}`} aria-hidden="true"></span>
+          <span class="text-[10px] sm:text-[11px] font-semibold leading-tight tracking-wide text-center whitespace-nowrap">
+            {short}
+          </span>
         </button>
-        {traitOrder.map((id) => {
-          const t = letterTraits[id];
-          return (
-            <button
-              type="button"
-              data-trait-filter={id}
-              class="trait-filter inline-flex items-center gap-2 rounded-xl border border-transparent px-2.5 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-              title={t.matraTip}
-            >
-              <span class={`w-2.5 h-2.5 rounded-full shrink-0 ${t.swatchClass}`} aria-hidden="true"></span>
-              <span class="leading-snug">{t.label.replace(' letters', '')}</span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
+      );
+    })}
   </div>
 
   <!-- Focus stage -->
@@ -439,7 +404,15 @@ const letterPayload = JSON.stringify({
     const baseTiles = Array.from(root.querySelectorAll<HTMLButtonElement>('.letter-tile[data-letter-id]'));
     const compoundTiles = Array.from(root.querySelectorAll<HTMLButtonElement>('.compound-tile'));
     const compoundColumns = Array.from(root.querySelectorAll<HTMLElement>('.compound-column'));
-    const filters = Array.from(root.querySelectorAll<HTMLButtonElement>('.trait-filter'));
+
+    // Sit beside scroll-to-top in the shared FAB dock (slides left when that button appears)
+    const traitDock = document.getElementById('trait-filter-dock');
+    const fabLeading = document.getElementById('fab-dock-leading');
+    if (traitDock && fabLeading) fabLeading.appendChild(traitDock);
+
+    const filters = Array.from(
+      (traitDock ?? root).querySelectorAll<HTMLButtonElement>('.trait-filter')
+    );
 
     let activeFilter: LetterTrait | 'all' = 'all';
     let selectedId: string | null = null;

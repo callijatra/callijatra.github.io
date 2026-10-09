@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added standalone [public/sitemap.xml](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/sitemap.xml) for direct submission in Google Search Console.
 
 ### Changed
-- **Learn trait filter dock**: Floating bottom-left filter stays reachable while scrolling; mobile uses a compact labeled color strip (All / Normal / Headless / Hand-down / Hand-up), desktop keeps the full panel.
+- **Learn trait filter dock**: Compact labeled color strip for all screen sizes, docked bottom-right beside scroll-to-top (occupies that corner until the button appears, then slides left).
 - **Learn mobile topic picker**: Custom chevron with extra right padding so the native select arrow no longer sits flush on the edge.
 - **Learn Ranjana UX polish**: Larger vowel/consonant/matra/compound glyphs and labels; smoother focus glyph animation; improved scroll-to-viewer targeting; darkened hand-up blue for light and dark themes.
 - **Home Resource Cards**: Replaced per-tool pill clusters with single “View all apps / fonts / web tools” CTAs; thumbnails deep-link to matching Resources sections.
