@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implemented Schema.org JSON-LD structured data (`Organization` and `WebSite` graph entities) for rich search engine snippets.
   - Added search engine directives (`robots`, `googlebot`, `bingbot`) with `max-image-preview:large` and `max-snippet:-1`.
   - Added accessible heading text (`sr-only`) and optimized page titles across Home, Resources, About, and Gallery pages for keyword indexing.
-  - Added Google Search Console site verification meta tag.
+  - Added Google Search Console site verification meta tag and verification HTML file (`google70c79cec13865349.html`).
 
 ## [0.2.0] - 2026-10-08
 
