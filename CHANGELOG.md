@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New learning space with sidebar topics (Ranjana Lipi live; Nepal Lipi and calligraphy pen marked soon).
   - Ranjana letter explorer with vowels/consonants, Devanagari mappings, and interactive matra chips (ka → kaa → ki → …).
   - Letter characteristic color coding from calligraphy practice: normal (black/white), headless (red), hand-down (green), hand-up (blue), with filter chips, legend, and matra-attachment tips.
+  - Compound (conjunct) letters section grouped in four trait columns, with vertical tiles matching the alphabet layout.
+  - Letter viewer previous/next controls (and arrow-key support) to step through filtered letters or compounds.
   - Nepalbhasa trait labels shown in Devanagari for easier reading.
   - Homepage Learning Materials leads with an interactive preview CTA; YouTube tutorials kept as a secondary row.
   - Learn link added to site navigation.
@@ -29,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added standalone [public/sitemap.xml](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/sitemap.xml) for direct submission in Google Search Console.
 
 ### Changed
+- **Learn Ranjana UX polish**: Larger vowel/consonant/matra/compound glyphs and labels; smoother focus glyph animation; improved scroll-to-viewer targeting; darkened hand-up blue for light and dark themes.
 - **Home Resource Cards**: Replaced per-tool pill clusters with single “View all apps / fonts / web tools” CTAs; thumbnails deep-link to matching Resources sections.
 - **Home Page Section Ordering**: Moved Learning Materials section before Events & Gallery on the homepage to mirror the navbar hierarchy (Resources → Learn → Gallery) with balanced alternating section backgrounds.
 - **Resources Hero Quick Links**: Harmonized light mode styling to use the same frosted glass white aesthetics (`bg-white/10`, `border-white/20`, `text-white/80`) as dark mode against the dark hero background.

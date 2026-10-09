@@ -41,7 +41,7 @@ export const letterTraits: Record<
   normal: {
     id: 'normal',
     label: 'Normal letters',
-    nepalBhasa: 'सामान्य आख:',
+    nepalBhasa: 'सामान्य आखः',
     short: 'Standard head & body',
     matraTip:
       'Matras follow the usual pattern: ā to the right of the stem, i/ī along the head-line, u/ū under the body, and e/ai/o/au on the head corners.',
@@ -52,7 +52,7 @@ export const letterTraits: Record<
   headless: {
     id: 'headless',
     label: 'Headless letters',
-    nepalBhasa: 'छ्वं मदुगु आख:',
+    nepalBhasa: 'छ्यं मदुगु आखः',
     short: 'No top bar (shirorekha)',
     matraTip:
       'These letters have no head-line. Matras for i/ī arch over the open top, and e/ai sit on the top tip of the stroke instead of a full bar.',
@@ -63,7 +63,7 @@ export const letterTraits: Record<
   'hand-down': {
     id: 'hand-down',
     label: 'Hand-down letters',
-    nepalBhasa: 'ल्हा क्वे पिहाँवगु आख:',
+    nepalBhasa: 'ल्हा क्वय् पिहाँवःगु आखः',
     short: 'Stroke extends downward',
     matraTip:
       'The right-side “hand” hangs down. Long ā often merges with that hand; u/ū attach under the center, not on the hanging stroke.',
@@ -74,13 +74,13 @@ export const letterTraits: Record<
   'hand-up': {
     id: 'hand-up',
     label: 'Hand-up letters',
-    nepalBhasa: 'ल्हा च्वे पिहाँवगु आख:',
+    nepalBhasa: 'ल्हाः च्वय् पिहाँवंगु आखः',
     short: 'Stroke extends upward',
     matraTip:
       'The right-side “hand” lifts up. Long ā is drawn as a separate bar to the right of that hand; u/ū sit under the main stem.',
-    glyphClass: 'text-blue-600 dark:text-blue-400',
-    swatchClass: 'bg-blue-600 dark:bg-blue-400',
-    ringClass: 'ring-blue-500/40',
+    glyphClass: 'text-blue-800 dark:text-blue-500',
+    swatchClass: 'bg-blue-800 dark:bg-blue-500',
+    ringClass: 'ring-blue-700/40 dark:ring-blue-500/40',
   },
 };
 
@@ -156,6 +156,65 @@ export const consonants: LipiLetter[] = [
 ];
 
 export const allLetters: LipiLetter[] = [...vowels, ...consonants];
+
+export type CompoundLetter = {
+  id: string;
+  /** Devanagari conjunct rendered as Ranjana via Nithya Ranjana */
+  char: string;
+  roman: string;
+  trait: LetterTrait;
+};
+
+/**
+ * Sample compound (conjunct) letters from the Ranjana Lipi Calligraphy Manual,
+ * grouped by the same structural families as base letters.
+ */
+export const compoundLetters: CompoundLetter[] = [
+  // Normal
+  { id: 'nma', char: 'न्म', roman: 'nma', trait: N },
+  { id: 'tya', char: 'त्य', roman: 'tya', trait: N },
+  { id: 'sva', char: 'स्व', roman: 'sva', trait: N },
+  { id: 'shtha', char: 'ष्ठ', roman: 'ṣṭha', trait: N },
+  { id: 'nda', char: 'न्द', roman: 'nda', trait: N },
+  { id: 'ntra', char: 'न्त्र', roman: 'ntra', trait: N },
+  { id: 'dva', char: 'द्व', roman: 'dva', trait: N },
+  { id: 'mpa', char: 'म्प', roman: 'mpa', trait: N },
+  { id: 'dya', char: 'द्य', roman: 'dya', trait: N },
+  { id: 'pra', char: 'प्र', roman: 'pra', trait: N },
+  // Headless
+  { id: 'gya-c', char: 'ग्य', roman: 'gya', trait: H },
+  { id: 'shmaa', char: 'श्मा', roman: 'śmā', trait: H },
+  { id: 'nyaa', char: 'ण्या', roman: 'ṇyā', trait: H },
+  { id: 'nja', char: 'ञ्ज', roman: 'ñja', trait: H },
+  { id: 'dhva', char: 'ध्व', roman: 'dhva', trait: H },
+  { id: 'thvaa', char: 'थ्वा', roman: 'thvā', trait: H },
+  { id: 'ncha', char: 'ञ्छ', roman: 'ñcha', trait: H },
+  { id: 'shva', char: 'श्व', roman: 'śva', trait: H },
+  { id: 'tththa', char: 'ठ्ठ', roman: 'ṭṭha', trait: H },
+  { id: 'khya', char: 'ख्य', roman: 'khya', trait: H },
+  // Hand-down
+  { id: 'kya', char: 'क्य', roman: 'kya', trait: D },
+  { id: 'kva', char: 'क्व', roman: 'kva', trait: D },
+  { id: 'jya', char: 'ज्य', roman: 'jya', trait: D },
+  { id: 'jva', char: 'ज्व', roman: 'jva', trait: D },
+  { id: 'hya', char: 'ह्य', roman: 'hya', trait: D },
+  { id: 'hra', char: 'ह्र', roman: 'hra', trait: D },
+  { id: 'kshma', char: 'क्ष्म', roman: 'kṣma', trait: D },
+  { id: 'kshya', char: 'क्ष्य', roman: 'kṣya', trait: D },
+  { id: 'hma', char: 'ह्म', roman: 'hma', trait: D },
+  { id: 'jhya', char: 'झ्य', roman: 'jhya', trait: D },
+  // Hand-up
+  { id: 'phta', char: 'फ्ट', roman: 'phṭa', trait: U },
+  { id: 'ttaa', char: 'ट्टा', roman: 'ṭṭā', trait: U },
+  { id: 'thya', char: 'ठ्य', roman: 'ṭhya', trait: U },
+  { id: 'dyaa', char: 'ड्या', roman: 'ḍyā', trait: U },
+  { id: 'ddda', char: 'ड्ड', roman: 'ḍḍa', trait: U },
+  { id: 'dddha', char: 'ड्ढ', roman: 'ḍḍha', trait: U },
+  { id: 'ttta', char: 'ट्ट', roman: 'ṭṭa', trait: U },
+  { id: 'ttra', char: 'ट्र', roman: 'ṭra', trait: U },
+  { id: 'ddva', char: 'ड्व', roman: 'ḍva', trait: U },
+  { id: 'phla', char: 'फ्ल', roman: 'phla', trait: U },
+];
 
 export const matras: MatraForm[] = [
   { id: 'a', vowelLabel: 'अ', mark: '', romanPattern: '{c}', romanStandalone: 'a' },
