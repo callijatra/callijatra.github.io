@@ -10,12 +10,14 @@ interface Props {
 
 const {
   title,
-  description = 'Preserving, promoting, and digitizing indigenous scripts and calligraphy such as Ranjana Lipi and Nepal Lipi through fonts, apps, learning resources, and open digital tools.',
+  description = 'Callijatra Foundation preserves, promotes, and digitizes indigenous scripts and calligraphy such as Ranjana Lipi and Nepal Lipi through free fonts, mobile apps, web widgets, and learning resources.',
   ogImage = '/images/banners/banner_1.jpg',
-  canonicalURL = Astro.url.href,
 } = Astro.props;
 
 const siteName = 'Callijatra Foundation';
+const siteOrigin = Astro.site ? Astro.site.href : 'https://callijatra.github.io/';
+const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteOrigin).href;
+const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteOrigin).href;
 ---
 
 <!doctype html>
@@ -25,23 +27,74 @@ const siteName = 'Callijatra Foundation';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content="Callijatra, Ranjana, Ranjana Lipi, Callijatra Foundation, Nepal Lipi, Newa Lipi, Nepal Bhasa, Calligraphy, Ranjana Font, Durga Lal Shrestha font, Nithya Ranjana, Newa font, Newa script, Ranjana webfont, Newa converter, Unicode Converter, Nepal Lipi Keyboard, Callijatra Calligraphy" />
+    <meta name="author" content="Callijatra Foundation" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Open Graph -->
+    <!-- Search Engine Directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="bingbot" content="index, follow" />
+    <meta name="theme-color" content="#c0392b" />
+    <meta name="application-name" content="Callijatra Foundation" />
+
+    <!-- Open Graph (Facebook, LinkedIn, Discord, etc.) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={fullOgImage} />
+    <meta property="og:image:alt" content="Callijatra Foundation — Ranjana & Nepal Lipi Digital Heritage" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ne_NP" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={fullOgImage} />
+    <meta name="twitter:image:alt" content="Callijatra Foundation — Ranjana & Nepal Lipi Digital Heritage" />
 
     <link rel="icon" href="/images/logos/callijatra_logo.svg" type="image/svg+xml" />
+
+    <!-- Schema.org JSON-LD Structured Data for Search Engines -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://callijatra.github.io/#organization",
+          "name": "Callijatra Foundation",
+          "alternateName": ["Callijatra", "क्यालिजात्रा फाउण्डेशन"],
+          "url": "https://callijatra.github.io/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://callijatra.github.io/images/logos/callijatra_logo.svg"
+          },
+          "sameAs": [
+            "https://github.com/callijatra",
+            "https://www.instagram.com/callijatra",
+            "https://play.google.com/store/apps/developer?id=Callijatra"
+          ],
+          "description": "Callijatra Foundation is a non-profit cultural initiative preserving, promoting, and digitizing indigenous scripts and calligraphy such as Ranjana Lipi and Nepal Lipi."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://callijatra.github.io/#website",
+          "url": "https://callijatra.github.io/",
+          "name": "Callijatra Foundation",
+          "alternateName": "Callijatra - Ranjana & Nepal Lipi Digital Heritage",
+          "publisher": {
+            "@id": "https://callijatra.github.io/#organization"
+          },
+          "inLanguage": ["en", "ne", "new"]
+        }
+      ]
+    })} />
 
     <!-- Apply dark mode before paint to prevent flash -->
     <script is:inline>

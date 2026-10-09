@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Search Engine Optimization (SEO)**:
+  - Added [public/robots.txt](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/robots.txt) allowing search engine crawlers with direct pointer to `sitemap-index.xml`.
+  - Added comprehensive meta tags across pages targeting "Callijatra", "Ranjana", "Ranjana Lipi", "Nepal Lipi", and calligraphy keywords.
+  - Added Open Graph and Twitter Card tags with absolute image URLs, dimensions, and locale metadata.
+  - Implemented Schema.org JSON-LD structured data (`Organization` and `WebSite` graph entities) for rich search engine snippets.
+  - Added search engine directives (`robots`, `googlebot`, `bingbot`) with `max-image-preview:large` and `max-snippet:-1`.
+  - Added accessible heading text (`sr-only`) and optimized page titles across Home, Resources, About, and Gallery pages for keyword indexing.
+
 ## [0.2.0] - 2026-10-08
 
 ### Added
