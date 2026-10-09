@@ -1,0 +1,222 @@
+---
+import type { TeamMember } from '../data/team';
+
+interface Props {
+  member: TeamMember;
+}
+
+const { member } = Astro.props;
+const {
+  name,
+  role,
+  profession,
+  photo,
+  initials,
+  socialWorks,
+  organizations,
+  hobbies,
+  email,
+  phone,
+  socials,
+} = member;
+
+const panelId = `member-panel-${initials.replace(/\s+/g, '-').toLowerCase()}`;
+
+const socialEntries = socials
+  ? (Object.entries(socials) as [string, string | undefined][]).filter(
+      (entry): entry is [string, string] => Boolean(entry[1])
+    )
+  : [];
+---
+
+<article class="team-card group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
+  <div class="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-[#c0392b]/90 via-[#8b2e24] to-gray-900">
+    {photo ? (
+      <img
+        src={photo}
+        alt={`Portrait of ${name}`}
+        class="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+      />
+    ) : (
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" aria-hidden="true">
+        <span class="text-4xl sm:text-5xl font-light text-white/90 tracking-wide">{initials}</span>
+        <span class="text-[10px] uppercase tracking-[0.2em] text-white/50">Photo coming soon</span>
+      </div>
+    )}
+
+    <!-- Collapsed “More” cue -->
+    <div class="team-card-cue pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-black/45 px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-white/90 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-0 group-[.is-open]:opacity-0">
+      <span>More</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+      </svg>
+    </div>
+
+    <!-- Slide-up reveal panel -->
+    <div
+      id={panelId}
+      class="team-card-panel absolute inset-0 z-20 flex flex-col justify-end overflow-y-auto bg-gradient-to-t from-gray-950 via-gray-950/95 to-gray-900/80 p-4 sm:p-5 text-left"
+      aria-hidden="true"
+    >
+      <button
+        type="button"
+        class="team-card-close absolute top-3 right-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10 border border-white/20 text-white/90 hover:bg-white/20 transition-colors"
+        aria-label={`Hide details about ${name}`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="space-y-3 text-white pr-6">
+        {socialWorks.length > 0 && (
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-light mb-1">Social work</p>
+            <ul class="space-y-0.5">
+              {socialWorks.map((item) => (
+                <li class="text-xs text-gray-200 leading-snug">{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {organizations.length > 0 && (
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-light mb-1">Organizations</p>
+            <ul class="space-y-0.5">
+              {organizations.map((item) => (
+                <li class="text-xs text-gray-200 leading-snug">{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {hobbies.length > 0 && (
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-light mb-1">Hobbies</p>
+            <p class="text-xs text-gray-200 leading-snug">{hobbies.join(' · ')}</p>
+          </div>
+        )}
+
+        {(email || phone) && (
+          <div class="pt-1 border-t border-white/15 space-y-1">
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-light mb-1">Contact</p>
+            {email && (
+              <a href={`mailto:${email}`} class="block text-xs text-gray-200 hover:text-white underline-offset-2 hover:underline break-all">
+                {email}
+              </a>
+            )}
+            {phone && (
+              <a href={`tel:${phone}`} class="block text-xs text-gray-200 hover:text-white underline-offset-2 hover:underline">
+                {phone}
+              </a>
+            )}
+          </div>
+        )}
+
+        {socialEntries.length > 0 && (
+          <div class="flex flex-wrap gap-2 pt-1">
+            {socialEntries.map(([network, href]) => (
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10 border border-white/20 text-white/90 hover:bg-brand hover:border-brand transition-colors"
+                aria-label={`${name} on ${network}`}
+              >
+                {network === 'facebook' && (
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14C17.174 2.097 15.943 2 14.643 2 11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/></svg>
+                )}
+                {network === 'instagram' && (
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                )}
+                {network === 'linkedin' && (
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                )}
+                {network === 'x' && (
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                )}
+                {network === 'youtube' && (
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                )}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Toggle hit target over the photo -->
+    <button
+      type="button"
+      class="team-card-toggle absolute inset-0 z-30 cursor-pointer bg-transparent"
+      aria-expanded="false"
+      aria-controls={panelId}
+      aria-label={`Show more about ${name}`}
+    ></button>
+  </div>
+
+  <div class="relative z-10 flex flex-col gap-1 px-4 py-4 text-center bg-white dark:bg-gray-800">
+    <h3 class="text-base font-bold text-gray-900 dark:text-white leading-snug">{name}</h3>
+    <p class="text-sm font-medium text-brand dark:text-brand-light">{role}</p>
+    <p class="text-xs text-gray-500 dark:text-gray-400">{profession}</p>
+  </div>
+</article>
+
+<style>
+  .team-card-panel {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+  }
+
+  .team-card:hover .team-card-panel,
+  .team-card:focus-within .team-card-panel,
+  .team-card.is-open .team-card-panel {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Keep toggle above panel when closed; drop below when open so links are clickable */
+  .team-card:hover .team-card-toggle,
+  .team-card:focus-within .team-card-toggle,
+  .team-card.is-open .team-card-toggle {
+    pointer-events: none;
+  }
+
+  .team-card.is-open .team-card-toggle {
+    /* Re-enable a thin close strip? Better: close via outside click / Escape.
+       On open, allow toggle via a dedicated close — use JS aria-expanded click on card chrome. */
+    pointer-events: none;
+  }
+
+  @media (hover: none) {
+    /* Touch devices: only .is-open reveals (no sticky hover) */
+    .team-card:hover .team-card-panel,
+    .team-card:focus-within .team-card-panel {
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .team-card.is-open .team-card-panel {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .team-card:hover .team-card-toggle,
+    .team-card:focus-within .team-card-toggle {
+      pointer-events: auto;
+    }
+    .team-card.is-open .team-card-toggle {
+      pointer-events: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-card-panel {
+      transition: none;
+    }
+  }
+</style>

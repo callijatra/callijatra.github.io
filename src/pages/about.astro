@@ -1,50 +1,180 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import TeamMemberCard from '../components/TeamMemberCard.astro';
+import { foundingMembers } from '../data/team';
+
+const impactAreas = [
+  'Lipi mobile applications',
+  'Script-based digital fonts',
+  'Calligraphy and Lipi tools',
+  'Video tutorial content and online courses',
+  'Publication of books and learning materials',
+  'Workshops, live calligraphy, exhibitions, and cultural events',
+];
+
+const missionPillars = [
+  'Relevant in modern society',
+  'Accessible through digital tools and learning resources',
+  'Actively practiced, taught, and celebrated',
+  'Sustainable for future generations',
+];
+
+const howWeWork = [
+  {
+    num: '01',
+    title: 'Community Engagement & Skill Development',
+    points: [
+      'Conducting hands-on workshops on Ranjana script, Nepal Lipi, calligraphy, and traditional writing systems.',
+      'Training youth, students, educators, and cultural groups to learn and teach traditional scripts.',
+    ],
+  },
+  {
+    num: '02',
+    title: 'Digital Innovation & Accessible Learning',
+    points: [
+      'Developing Lipi mobile apps for self-paced learning.',
+      'Producing script-based fonts that support digital use of Ranjana script and Nepal Lipi.',
+      'Creating Lipi tools, calligraphy resources, and practice materials.',
+      'Publishing video tutorials, online lessons, and digital guides.',
+    ],
+  },
+  {
+    num: '03',
+    title: 'Cultural Programs & Creative Platforms',
+    points: [
+      'Organizing calligraphy challenges, exhibitions, festivals, and public demonstrations.',
+      'Providing opportunities for local artisans and creatives to teach, earn, and showcase their work.',
+    ],
+  },
+  {
+    num: '04',
+    title: 'Publications & Resource Development',
+    points: [
+      'Producing books, practice guides, educational texts, and printed materials for learners and educators.',
+      'Documenting traditional scripts and knowledge through printed and digital publications.',
+    ],
+  },
+  {
+    num: '05',
+    title: 'Partnerships & Mentorship',
+    points: [
+      'Collaborating with schools, cultural institutions, libraries, and creative communities.',
+      'Encouraging mentorship between script experts, artists, and emerging learners.',
+    ],
+  },
+  {
+    num: '06',
+    title: 'Heritage Preservation & Identity',
+    points: [
+      'Strengthening cultural identity through active use of traditional scripts.',
+      'Ensuring ancient scripts, languages, and artistic traditions remain vibrant, relevant, and respected.',
+    ],
+  },
+];
 ---
 
 <Layout
   title="About Us — Callijatra Foundation | Ranjana Lipi & Nepal Heritage"
-  description="Callijatra Foundation is a non-profit cultural and technological initiative dedicated to keeping indigenous scripts like Ranjana Lipi and Nepal Lipi alive in the digital age."
+  description="Callijatra Foundation is a youth-led initiative dedicated to revitalizing Ranjana script, Nepal Lipi, and the Nepalbhasa language through digital tools, workshops, and cultural programs."
 >
 
   <!-- ── HERO ──────────────────────────────────────────────────────────── -->
-  <section class="bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-950 dark:to-gray-900 text-white py-20 text-center">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-light bg-red-900/40 px-3 py-1 rounded-full border border-red-700/40 mb-4">
+  <section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 text-white py-20 sm:py-24 text-center">
+    <div class="absolute -top-16 -left-16 w-80 h-80 rounded-full bg-[#c0392b]/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#c0392b]/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-light bg-red-900/40 px-3 py-1 rounded-full border border-red-700/40 mb-5">
         About Us
       </span>
+      <img
+        src="/images/logos/callijatra_logo.svg"
+        alt="Callijatra Foundation"
+        class="mx-auto mb-6 h-24 sm:h-28 md:h-32 w-auto brightness-0 invert"
+      />
       <h1 class="text-5xl sm:text-6xl font-light mb-4 leading-tight">
         <span class="font-nithya-ranjana block">क्यालिजात्रा फाउण्डेशन</span>
         <span class="sr-only">Callijatra Foundation — About Our Ranjana &amp; Nepal Lipi Heritage Mission</span>
       </h1>
-      <p class="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
-        Preserving, digitizing, and revitalizing the indigenous scripts and calligraphy of Nepal.
+      <p class="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto mb-10">
+        A youth-led festival of calligraphy — preserving Nepal’s indigenous scripts and Nepalbhasa for the digital age.
+      </p>
+
+      <nav aria-label="Jump to section" class="flex flex-wrap justify-center gap-2">
+        {[
+          { href: '#overview',  label: 'Overview'          },
+          { href: '#story',     label: 'Our Story'         },
+          { href: '#mission',   label: 'Mission'           },
+          { href: '#approach',  label: 'Our Approach'      },
+          { href: '#team',      label: 'Founding Members'  },
+          { href: '#join',      label: 'Get Involved'      },
+        ].map(({ href, label }) => (
+          <a
+            href={href}
+            class="px-4 py-1.5 rounded-full text-sm font-medium
+                   bg-white/10 hover:bg-white/20
+                   border border-white/20 hover:border-white/40
+                   text-white/80 hover:text-white
+                   backdrop-blur-md
+                   transition-all duration-200"
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- ── INTRO ─────────────────────────────────────────────────────────── -->
+  <section id="overview" class="py-16 sm:py-20 relative overflow-hidden
+    bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_45%,_#f3ede9_100%)]
+    dark:bg-none dark:bg-gray-900">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#c0392b]/5 blur-3xl pointer-events-none dark:hidden" aria-hidden="true"></div>
+    <div class="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-[#c0392b]/4 blur-3xl pointer-events-none dark:hidden" aria-hidden="true"></div>
+
+    <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-lg sm:text-xl text-gray-700 dark:text-gray-200 leading-relaxed mb-6">
+        Callijatra Foundation is a dynamic youth-led initiative dedicated to the revival of the <strong class="text-gray-900 dark:text-white">Ranjana script</strong>, <strong class="text-gray-900 dark:text-white">Nepal Lipi</strong>, and the <strong class="text-gray-900 dark:text-white">Nepalbhasa</strong> language, with a mission to preserve Nepal’s rich cultural heritage. By blending traditional practices with modern digital innovation, Callijatra bridges the past and the present—ensuring that ancient scripts, languages, and artistic traditions remain accessible and relevant in today’s digital age.
+      </p>
+      <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+        The initiative brings together a vibrant community of artists, calligraphers, designers, developers, teachers, and cultural enthusiasts, fostering learning through workshops, creative collaborations, calligraphy challenges, educational content, mobile applications, fonts, and public exhibitions. Callijatra works to inspire new generations to appreciate Nepal’s indigenous scripts and apply them in modern creative and technological contexts.
       </p>
     </div>
   </section>
 
-  <!-- ── MISSION ───────────────────────────────────────────────────────── -->
-  <section class="py-20 bg-white dark:bg-gray-950">
+  <!-- ── ABOUT THE FOUNDATION ──────────────────────────────────────────── -->
+  <section id="story" class="py-16 sm:py-20 bg-white dark:bg-gray-950">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
-          <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Our Purpose</span>
-          <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">Mission &amp; Vision</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Callijatra Foundation is a non-profit cultural and technological initiative dedicated to keeping indigenous scripts like <strong class="text-gray-900 dark:text-white">Ranjana Lipi</strong> and <strong class="text-gray-900 dark:text-white">Nepal Lipi (Newa Script)</strong> alive, accessible, and functional in the digital age.
+          <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Our Story</span>
+          <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">About Callijatra Foundation</h2>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Callijatra Foundation is a youth-driven organization established to promote and popularize Nepalbhasa and Nepal’s traditional scripts, including Ranjana script, Nepal Lipi, Devanagari, and others.
           </p>
-          <p class="text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-            Nepal possesses a millennium-long history of epigraphy, manuscript culture, and aesthetic calligraphy. However, the lack of modern digital infrastructure — such as Unicode support, web-ready fonts, input tools, and educational guides — threatened to isolate these scripts from contemporary usage.
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            The word <em>“Jatra”</em> means festival in Nepali—reflecting Callijatra’s spirit as a “festival of calligraphy.”
           </p>
+          <p class="text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+            Founded in 2017 as a creative challenge encouraging participants to submit calligraphy in any script on given themes, Callijatra has grown into a national movement. Over the years, it has expanded its impact through:
+          </p>
+          <ul class="space-y-2.5 mb-6">
+            {impactAreas.map((item) => (
+              <li class="flex items-start gap-3 text-gray-600 dark:text-gray-300">
+                <span class="mt-2 w-1.5 h-1.5 rounded-full bg-brand shrink-0" aria-hidden="true"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
           <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
-            Callijatra bridges this gap between ancient heritage and modern computing through open digital fonts, software widgets, educational video series, and community calligraphy workshops.
+            Its multidisciplinary team includes calligraphers, script experts, designers, artists, teachers, developers, and media professionals who share a deep passion for language, type design, typography, and calligraphy. The Foundation also actively works to promote the Nepalbhasa language through structured learning programs and educational content.
           </p>
         </div>
         <div>
           <img
             src="/images/events/events_4.jpg"
             alt="Callijatra Workshop & Exhibition"
-            class="rounded-2xl w-full object-cover shadow-md max-h-[480px]"
+            class="rounded-2xl w-full object-cover shadow-md max-h-[520px]"
             loading="lazy"
           />
         </div>
@@ -52,52 +182,95 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <!-- ── THREE PILLARS ─────────────────────────────────────────────────── -->
-  <section class="py-20 bg-gray-50 dark:bg-gray-900">
+  <!-- ── MISSION ───────────────────────────────────────────────────────── -->
+  <section id="mission" class="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">What We Do</span>
-        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Our Focus Areas</h2>
-        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Core work in cultural technology and script preservation</p>
+      <div class="max-w-3xl mb-10">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Purpose</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">Mission of Callijatra Foundation</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+          The mission of Callijatra Foundation is to preserve, promote, and revitalize Nepal’s indigenous scripts and the Nepalbhasa language, ensuring these ancient traditions remain:
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        {missionPillars.map((pillar) => (
+          <div class="flex items-start gap-3 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-4">
+            <span class="mt-1.5 w-2 h-2 rounded-full bg-brand shrink-0" aria-hidden="true"></span>
+            <p class="text-gray-700 dark:text-gray-200 font-medium leading-snug">{pillar}</p>
+          </div>
+        ))}
+      </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform">
-          <div class="text-4xl">𑐎𑐏</div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Digital Typography &amp; Fonts</h3>
-          <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-            Designing modern, Unicode-compliant typefaces like <em>Nithya Ranjana</em> and Nepal Lipi fonts optimized for web displays, apps, and print publications.
-          </p>
-        </div>
+      <div class="max-w-3xl space-y-4">
+        <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+          Through calligraphy festivals, exhibitions, educational programs, workshops, and publications, the Foundation fosters cultural pride, creativity, and community engagement.
+        </p>
+        <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+          By supporting artisans, calligraphers, and educators with platforms and opportunities, Callijatra Foundation also contributes to sustainable livelihoods within cultural and creative industries.
+        </p>
+      </div>
+    </div>
+  </section>
 
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform">
-          <div class="text-4xl">⚙️</div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Open Web Tools &amp; Converters</h3>
-          <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-            Building open-source script converters (Devanagari ↔ Nepal Lipi), transliteration keyboards, and JavaScript widgets that make script switching effortless on any website.
-          </p>
-        </div>
+  <!-- ── HOW WE WORK ───────────────────────────────────────────────────── -->
+  <section id="approach" class="py-16 sm:py-20 bg-white dark:bg-gray-950">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Our Approach</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">How We Achieve Our Mission</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          From community workshops to digital tools, every program keeps traditional scripts alive and in use.
+        </p>
+      </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform">
-          <div class="text-4xl">🖋️</div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Workshops &amp; Education</h3>
-          <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-            Conducting hands-on calligraphy training, exhibitions, masterclasses, and producing free educational video tutorials to teach younger generations the art of writing indigenous scripts.
-          </p>
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {howWeWork.map(({ num, title, points }) => (
+          <article class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-7 sm:p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform">
+            <div class="flex items-baseline gap-3">
+              <span class="text-sm font-semibold tracking-widest text-brand dark:text-brand-light">{num}</span>
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-snug">{title}</h3>
+            </div>
+            <ul class="space-y-2.5">
+              {points.map((point) => (
+                <li class="flex items-start gap-3 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                  <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand/70 shrink-0" aria-hidden="true"></span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
+  <!-- ── FOUNDING MEMBERS ──────────────────────────────────────────────── -->
+  <section id="team" class="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">The People</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Founding Members</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          The multidisciplinary team behind Callijatra — hover or tap a card to learn more.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+        {foundingMembers.map((member) => (
+          <TeamMemberCard member={member} />
+        ))}
       </div>
     </div>
   </section>
 
   <!-- ── GET INVOLVED ──────────────────────────────────────────────────── -->
-  <section class="py-20 bg-white dark:bg-gray-950">
+  <section id="join" class="py-16 sm:py-20 bg-white dark:bg-gray-950">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Join Us</span>
       <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Involved</h2>
       <p class="text-gray-500 dark:text-gray-400 leading-relaxed mb-8 max-w-xl mx-auto">
-        Whether you are a developer looking to integrate Newa scripts into your software, a researcher, or a calligraphy enthusiast, we welcome collaboration and contributions.
+        Whether you are an artist, developer, educator, or cultural enthusiast, there is a place for you in Callijatra’s community of learners and creators.
       </p>
       <div class="flex flex-wrap justify-center gap-4">
         <a href="/resources"
@@ -111,5 +284,72 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
   </section>
+
+  <script>
+    (function () {
+      const cards = Array.from(document.querySelectorAll<HTMLElement>('.team-card'));
+      if (!cards.length) return;
+
+      function closeCard(card: HTMLElement) {
+        card.classList.remove('is-open');
+        const btn = card.querySelector<HTMLButtonElement>('.team-card-toggle');
+        const panel = card.querySelector<HTMLElement>('.team-card-panel');
+        if (btn) {
+          btn.setAttribute('aria-expanded', 'false');
+          const name = card.querySelector('h3')?.textContent?.trim() ?? 'member';
+          btn.setAttribute('aria-label', `Show more about ${name}`);
+        }
+        if (panel) panel.setAttribute('aria-hidden', 'true');
+      }
+
+      function openCard(card: HTMLElement) {
+        cards.forEach((c) => {
+          if (c !== card) closeCard(c);
+        });
+        card.classList.add('is-open');
+        const btn = card.querySelector<HTMLButtonElement>('.team-card-toggle');
+        const panel = card.querySelector<HTMLElement>('.team-card-panel');
+        if (btn) {
+          btn.setAttribute('aria-expanded', 'true');
+          const name = card.querySelector('h3')?.textContent?.trim() ?? 'member';
+          btn.setAttribute('aria-label', `Hide details about ${name}`);
+        }
+        if (panel) panel.setAttribute('aria-hidden', 'false');
+      }
+
+      function toggleCard(card: HTMLElement) {
+        if (card.classList.contains('is-open')) closeCard(card);
+        else openCard(card);
+      }
+
+      cards.forEach((card) => {
+        const btn = card.querySelector<HTMLButtonElement>('.team-card-toggle');
+        const closeBtn = card.querySelector<HTMLButtonElement>('.team-card-close');
+        btn?.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleCard(card);
+        });
+        closeBtn?.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          closeCard(card);
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        const target = e.target as Node;
+        cards.forEach((card) => {
+          if (card.classList.contains('is-open') && !card.contains(target)) {
+            closeCard(card);
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') cards.forEach(closeCard);
+      });
+    })();
+  </script>
 
 </Layout>
