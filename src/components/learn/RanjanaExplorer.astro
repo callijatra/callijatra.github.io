@@ -1,0 +1,289 @@
+---
+import { vowels, consonants, matras } from '../../data/ranjana-lipi';
+
+const letterPayload = JSON.stringify({
+  vowels,
+  consonants,
+  matras: matras.map((m) => ({
+    id: m.id,
+    vowelLabel: m.vowelLabel,
+    mark: m.mark,
+    romanPattern: m.romanPattern,
+  })),
+});
+---
+
+<div
+  id="ranjana-explorer"
+  class="ranjana-explorer flex flex-col gap-6"
+  data-letters={letterPayload}
+>
+  <div class="rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_55%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900/60 px-5 py-4 sm:px-6">
+    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+      Tap a letter to explore. Big glyphs show <strong class="text-gray-900 dark:text-white">Ranjana</strong>;
+      the small label underneath is the <strong class="text-gray-900 dark:text-white">Devanagari</strong> mapping —
+      just like a multilingual keyboard.
+    </p>
+  </div>
+
+  <!-- Focus stage -->
+  <div
+    id="focus-stage"
+    class="hidden rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden"
+    aria-live="polite"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-0">
+      <div class="flex flex-col items-center justify-center gap-3 px-6 py-10 bg-gradient-to-b from-[#fdf1f0] to-white dark:from-gray-900 dark:to-gray-800 border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-700">
+        <span id="focus-glyph" class="font-nithya-ranjana text-7xl sm:text-8xl text-gray-900 dark:text-white leading-none select-none transition-transform duration-300" aria-hidden="true"></span>
+        <div class="text-center">
+          <p id="focus-roman" class="text-lg font-semibold text-brand dark:text-brand-light"></p>
+          <p id="focus-devanagari" class="text-sm text-gray-500 dark:text-gray-400"></p>
+        </div>
+      </div>
+
+      <div class="px-5 py-6 sm:px-6 sm:py-8">
+        <div id="matra-panel" class="hidden">
+          <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Matra explorer</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">See how this letter changes with each vowel sound.</p>
+          <div id="matra-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5"></div>
+        </div>
+        <div id="vowel-note" class="hidden">
+          <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Vowel sound</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            This is an independent vowel. Vowels give sound to consonants — pick a consonant tile to see matras like
+            <span class="font-medium text-gray-700 dark:text-gray-200">ka, kaa, ki, kii</span> and more.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vowels -->
+  <section aria-labelledby="vowels-heading">
+    <div class="flex items-baseline justify-between gap-3 mb-3">
+      <h3 id="vowels-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Vowels</h3>
+      <span class="text-xs text-gray-400">{vowels.length} letters</span>
+    </div>
+    <div
+      id="vowel-board"
+      class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2 sm:gap-2.5"
+      role="listbox"
+      aria-label="Ranjana Lipi vowels"
+    >
+      {vowels.map((letter) => (
+        <button
+          type="button"
+          role="option"
+          data-letter-id={letter.id}
+          data-type={letter.type}
+          aria-selected="false"
+          aria-label={`${letter.roman}, Devanagari ${letter.char}`}
+          class="letter-tile group flex flex-col items-center justify-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-3 sm:py-3.5 shadow-sm hover:border-brand/40 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+        >
+          <span class="font-nithya-ranjana text-2xl sm:text-3xl text-gray-900 dark:text-white leading-none">{letter.char}</span>
+          <span class="text-[11px] text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
+          <span class="text-[10px] font-medium uppercase tracking-wide text-brand/80 dark:text-brand-light/80">{letter.roman}</span>
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- Consonants -->
+  <section aria-labelledby="consonants-heading">
+    <div class="flex items-baseline justify-between gap-3 mb-3">
+      <h3 id="consonants-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Consonants</h3>
+      <span class="text-xs text-gray-400">{consonants.length} letters</span>
+    </div>
+    <div
+      id="consonant-board"
+      class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-2.5"
+      role="listbox"
+      aria-label="Ranjana Lipi consonants"
+    >
+      {consonants.map((letter) => (
+        <button
+          type="button"
+          role="option"
+          data-letter-id={letter.id}
+          data-type={letter.type}
+          aria-selected="false"
+          aria-label={`${letter.roman}, Devanagari ${letter.char}`}
+          class="letter-tile group flex flex-col items-center justify-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-3 sm:py-3.5 shadow-sm hover:border-brand/40 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+        >
+          <span class="font-nithya-ranjana text-2xl sm:text-3xl text-gray-900 dark:text-white leading-none">{letter.char}</span>
+          <span class="text-[11px] text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
+          <span class="text-[10px] font-medium uppercase tracking-wide text-brand/80 dark:text-brand-light/80">{letter.roman}</span>
+        </button>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  .letter-tile[aria-selected='true'] {
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand) 35%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .matra-chip {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .matra-chip:hover {
+    transform: translateY(-2px);
+  }
+  .matra-chip.is-active {
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand) 30%, transparent);
+  }
+
+  #focus-glyph.is-pop {
+    transform: scale(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letter-tile,
+    .matra-chip,
+    #focus-glyph {
+      transition: none !important;
+    }
+    .letter-tile:hover,
+    .matra-chip:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  type Letter = { id: string; char: string; roman: string; type: 'vowel' | 'consonant' };
+  type Matra = { id: string; vowelLabel: string; mark: string; romanPattern: string };
+  type Payload = { vowels: Letter[]; consonants: Letter[]; matras: Matra[] };
+
+  (function () {
+    const root = document.getElementById('ranjana-explorer');
+    if (!root) return;
+
+    const raw = root.dataset.letters;
+    if (!raw) return;
+
+    const data = JSON.parse(raw) as Payload;
+    const byId = new Map<string, Letter>(
+      [...data.vowels, ...data.consonants].map((l) => [l.id, l])
+    );
+
+    const focusStage = document.getElementById('focus-stage')!;
+    const focusGlyph = document.getElementById('focus-glyph')!;
+    const focusRoman = document.getElementById('focus-roman')!;
+    const focusDev = document.getElementById('focus-devanagari')!;
+    const matraPanel = document.getElementById('matra-panel')!;
+    const matraGrid = document.getElementById('matra-grid')!;
+    const vowelNote = document.getElementById('vowel-note')!;
+    const tiles = Array.from(root.querySelectorAll<HTMLButtonElement>('.letter-tile'));
+
+    function stem(roman: string) {
+      return roman.endsWith('a') && roman.length > 1 ? roman.slice(0, -1) : roman;
+    }
+
+    function syllable(letter: Letter, matra: Matra) {
+      const roman = matra.romanPattern
+        .replace('{c}', letter.roman)
+        .replace('{stem}', stem(letter.roman));
+      return { glyph: letter.char + matra.mark, roman };
+    }
+
+    function popGlyph() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      focusGlyph.classList.remove('is-pop');
+      void focusGlyph.offsetWidth;
+      focusGlyph.classList.add('is-pop');
+      window.setTimeout(() => focusGlyph.classList.remove('is-pop'), 280);
+    }
+
+    function renderMatras(letter: Letter) {
+      matraGrid.innerHTML = '';
+      data.matras.forEach((matra, index) => {
+        const syl = syllable(letter, matra);
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className =
+          'matra-chip flex flex-col items-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-2 py-3 hover:border-brand/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand';
+        chip.setAttribute('aria-label', `${syl.roman}, ${syl.glyph}`);
+        if (index === 0) chip.classList.add('is-active');
+        chip.innerHTML = `
+          <span class="font-nithya-ranjana text-2xl sm:text-3xl text-gray-900 dark:text-white leading-none">${syl.glyph}</span>
+          <span class="text-[11px] text-gray-500 dark:text-gray-400">${syl.glyph}</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wide text-brand dark:text-brand-light">${syl.roman}</span>
+        `;
+        chip.addEventListener('click', () => {
+          matraGrid.querySelectorAll('.matra-chip').forEach((c) => c.classList.remove('is-active'));
+          chip.classList.add('is-active');
+          focusGlyph.textContent = syl.glyph;
+          focusRoman.textContent = syl.roman;
+          focusDev.textContent = `Devanagari · ${syl.glyph}`;
+          popGlyph();
+        });
+        matraGrid.appendChild(chip);
+      });
+    }
+
+    function selectLetter(id: string) {
+      const letter = byId.get(id);
+      if (!letter) return;
+
+      tiles.forEach((tile) => {
+        tile.setAttribute('aria-selected', tile.dataset.letterId === id ? 'true' : 'false');
+      });
+
+      focusStage.classList.remove('hidden');
+      focusGlyph.textContent = letter.char;
+      focusRoman.textContent = letter.roman;
+      focusDev.textContent = `Devanagari · ${letter.char}`;
+      popGlyph();
+
+      if (letter.type === 'consonant') {
+        matraPanel.classList.remove('hidden');
+        vowelNote.classList.add('hidden');
+        renderMatras(letter);
+      } else {
+        matraPanel.classList.add('hidden');
+        vowelNote.classList.remove('hidden');
+        matraGrid.innerHTML = '';
+      }
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      focusStage.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+    }
+
+    tiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const id = tile.dataset.letterId;
+        if (id) selectLetter(id);
+      });
+
+      tile.addEventListener('keydown', (e) => {
+        const key = e.key;
+        if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(key)) return;
+        e.preventDefault();
+
+        const board = tile.closest('[role="listbox"]');
+        if (!board) return;
+        const boardTiles = Array.from(board.querySelectorAll<HTMLButtonElement>('.letter-tile'));
+        const i = boardTiles.indexOf(tile);
+        const cols = getComputedStyle(board).gridTemplateColumns.split(' ').length;
+
+        let next = i;
+        if (key === 'ArrowRight') next = Math.min(boardTiles.length - 1, i + 1);
+        if (key === 'ArrowLeft') next = Math.max(0, i - 1);
+        if (key === 'ArrowDown') next = Math.min(boardTiles.length - 1, i + cols);
+        if (key === 'ArrowUp') next = Math.max(0, i - cols);
+        if (key === 'Home') next = 0;
+        if (key === 'End') next = boardTiles.length - 1;
+
+        boardTiles[next]?.focus();
+      });
+    });
+
+    // Pre-select क so the matra explorer is discoverable immediately
+    selectLetter('ka');
+  })();
+</script>

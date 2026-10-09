@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RanjanaExplorer from '../components/learn/RanjanaExplorer.astro';
+import { learnTopics } from '../data/ranjana-lipi';
+
+const activeTopic = 'ranjana';
+---
+
+<Layout
+  title="Learn — Ranjana Lipi Interactive Lessons | Callijatra"
+  description="Learn Ranjana Lipi interactively — explore vowels, consonants, and matras with Devanagari mappings. Built for students and curious learners."
+>
+
+  <section class="min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-950">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+
+      <!-- Page intro -->
+      <div class="mb-8">
+        <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-2">Learning Space</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2">Learn with Callijatra</h1>
+        <p class="text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed">
+          Interactive lessons for Nepal’s indigenous scripts — start with Ranjana Lipi, then grow into Nepal Lipi and calligraphy crafts.
+        </p>
+      </div>
+
+      <!-- Mobile topic picker -->
+      <div class="lg:hidden mb-6">
+        <label for="topic-select" class="sr-only">Choose a lesson</label>
+        <select
+          id="topic-select"
+          class="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-4 py-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          {learnTopics.map((topic) => (
+            <option value={topic.id} selected={topic.id === activeTopic} disabled={!topic.available}>
+              {topic.label}{!topic.available ? ' (Soon)' : ''}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] gap-6 lg:gap-8 items-start">
+
+        <!-- Sidebar -->
+        <aside class="hidden lg:block sticky top-24" aria-label="Lesson topics">
+          <nav class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-3 shadow-sm">
+            <p class="px-3 pt-2 pb-3 text-[10px] font-semibold tracking-widest uppercase text-gray-400">Topics</p>
+            <ul class="space-y-1">
+              {learnTopics.map((topic) => (
+                <li>
+                  {topic.available ? (
+                    <a
+                      href={`#${topic.id}`}
+                      id={`nav-${topic.id}`}
+                      class:list={[
+                        'flex flex-col gap-0.5 rounded-xl px-3 py-3 transition-colors',
+                        topic.id === activeTopic
+                          ? 'bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800',
+                      ]}
+                      aria-current={topic.id === activeTopic ? 'page' : undefined}
+                    >
+                      <span class="text-sm font-semibold leading-snug">{topic.label}</span>
+                      <span class="text-xs opacity-70">{topic.description}</span>
+                    </a>
+                  ) : (
+                    <div
+                      class="flex flex-col gap-0.5 rounded-xl px-3 py-3 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                      aria-disabled="true"
+                    >
+                      <span class="flex items-center gap-2 text-sm font-semibold leading-snug">
+                        {topic.label}
+                        <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">Soon</span>
+                      </span>
+                      <span class="text-xs">{topic.description}</span>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main lesson pane -->
+        <div class="min-w-0">
+          <div
+            id="ranjana"
+            class="learn-pane rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-5 sm:p-7"
+          >
+            <div class="mb-6">
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">Learn Ranjana Lipi</h2>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                Explore the alphabet, then open any consonant to see its matra family.
+              </p>
+            </div>
+            <RanjanaExplorer />
+          </div>
+
+          <!-- Coming-soon placeholders (hidden until selected; reserved for future) -->
+          <div id="nepal-lipi" class="learn-pane hidden rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-10 text-center">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Learn Nepal Lipi</h2>
+            <p class="text-gray-500 dark:text-gray-400">This lesson is on the way. Check back soon!</p>
+          </div>
+          <div id="calligraphy-pen" class="learn-pane hidden rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-10 text-center">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Craft a calligraphy pen</h2>
+            <p class="text-gray-500 dark:text-gray-400">Tools and methods for Ranjana pens — coming soon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const select = document.getElementById('topic-select') as HTMLSelectElement | null;
+      select?.addEventListener('change', () => {
+        const id = select.value;
+        document.querySelectorAll('.learn-pane').forEach((pane) => {
+          pane.classList.toggle('hidden', pane.id !== id);
+        });
+        // Only ranjana is available; reset if somehow disabled option selected
+        if (id !== 'ranjana') {
+          select.value = 'ranjana';
+          document.getElementById('ranjana')?.classList.remove('hidden');
+        }
+      });
+    })();
+  </script>
+
+</Layout>
