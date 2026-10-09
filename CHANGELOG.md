@@ -1,0 +1,43 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.2.0] - 2026-10-08
+
+### Added
+- **Astro & Tailwind CSS v4 Redesign**: Modernized site architecture using Astro static site generation and Tailwind CSS v4 with system/toggle dark mode support.
+- **Automated GitHub Pages Deployment**: Added `.github/workflows/deploy.yml` using GitHub Actions with Node 22 for automated builds and deployment on push to `main` and `ui-enhance`.
+- **Multi-Thumbnail Previews**:
+  - Home page Mobile Apps card displays thumbnails for all 3 apps: Nepal Lipi Type Newa, Nepal Lipi Keyboard, and Callijatra Calligraphy.
+  - Home page Fonts card displays side-by-side animated previews for Durga Lal Shrestha Font and Nithya Ranjana / Newa Fonts.
+- **Dedicated Subpages**: Added dedicated pages for Resources (`/resources`), Gallery (`/gallery`), and About Us (`/about`).
+- **Interactive Resource Cards**: Full-card clickable navigation to anchor sections in `/resources` while allowing direct clicks on specific resource pills.
+
+### Changed
+- **Unified Section Ordering**: Reordered resources on both Home page and Resources page to follow a consistent sequence:
+  1. Mobile Apps
+  2. Fonts (Durga Lal Shrestha Font, Nithya Ranjana / Newa Fonts)
+  3. Web Tools (Unicode Converter, Ranjana Webfont, Font Switcher, Transliteration Keyboard)
+- **Refined Title Icons**: Replaced raw emojis with clean SVG icons in styled containers for resource categories.
+- **Aligned App Thumbnails**: Set mobile app thumbnails to `object-left` so key graphics and app icons are prominently framed.
+- **Hero Quick-Nav Pills**: Reordered frosted glass quick-links in the Resources hero section to mirror the updated section hierarchy.
+
+### Fixed
+- **Tailwind v4 Theme Specificity**: Migrated custom brand color utilities in `global.css` to `@theme` directives to resolve CSS specificity issues that caused red text on pills in dark mode.
+- **CI Dependency Resolution**: Resolved cross-platform lockfile differences (`@emnapi` platform bindings) by tuning npm installation steps in GitHub Actions.
+
+---
+
+## [0.1.0] - 2026-10-03
+
+### Added
+- **Initial Static Website**: Original responsive site built with HTML, CSS, and Bootstrap 5.
+- **Fonts Section**: Downloads and documentation for Durga Lal Shrestha handwritten font and Newa typefaces.
+- **Web Tools Integration**: Links and live embeds for Nepal Lipi Unicode Converter, Ranjana Webfont, and Newa Font Switch Widget.
+- **Mobile Apps Release**: Android and iOS download links for Nepal Lipi – Type Newa, Nepal Lipi Keyboard, and Callijatra Calligraphy (v1.0.0-build2).
+- **Event Photo Gallery**: Highlights and photo records from calligraphy workshops and cultural events.
