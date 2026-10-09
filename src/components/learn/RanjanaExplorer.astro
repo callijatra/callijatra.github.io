@@ -1,5 +1,7 @@
 ---
-import { vowels, consonants, matras } from '../../data/ranjana-lipi';
+import { vowels, consonants, matras, letterTraits, type LetterTrait } from '../../data/ranjana-lipi';
+
+const traitOrder: LetterTrait[] = ['normal', 'headless', 'hand-down', 'hand-up'];
 
 const letterPayload = JSON.stringify({
   vowels,
@@ -10,6 +12,7 @@ const letterPayload = JSON.stringify({
     mark: m.mark,
     romanPattern: m.romanPattern,
   })),
+  traits: letterTraits,
 });
 ---
 
@@ -18,12 +21,52 @@ const letterPayload = JSON.stringify({
   class="ranjana-explorer flex flex-col gap-6"
   data-letters={letterPayload}
 >
-  <div class="rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_55%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900/60 px-5 py-4 sm:px-6">
+  <!-- Intro + trait legend -->
+  <div class="rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_55%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900/60 px-5 py-5 sm:px-6 space-y-4">
     <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-      Tap a letter to explore. Big glyphs show <strong class="text-gray-900 dark:text-white">Ranjana</strong>;
-      the small label underneath is the <strong class="text-gray-900 dark:text-white">Devanagari</strong> mapping —
-      just like a multilingual keyboard.
+      Tap a letter to explore. Glyphs are colored by their <strong class="text-gray-900 dark:text-white">calligraphy shape</strong> —
+      because matras attach differently to each family. Small grey labels are Devanagari mappings.
     </p>
+
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by letter characteristic">
+      <button
+        type="button"
+        data-trait-filter="all"
+        class="trait-filter is-active inline-flex items-center gap-2 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors"
+      >
+        All letters
+      </button>
+      {traitOrder.map((id) => {
+        const t = letterTraits[id];
+        return (
+          <button
+            type="button"
+            data-trait-filter={id}
+            class="trait-filter inline-flex items-center gap-2 rounded-full border border-gray-200 dark:border-gray-600 bg-white/70 dark:bg-gray-800/70 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-500 transition-colors"
+            title={t.matraTip}
+          >
+            <span class={`w-2.5 h-2.5 rounded-full shrink-0 ${t.swatchClass}`} aria-hidden="true"></span>
+            {t.label}
+          </button>
+        );
+      })}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400">
+      {traitOrder.map((id) => {
+        const t = letterTraits[id];
+        return (
+          <div class="flex items-start gap-2 rounded-lg bg-white/50 dark:bg-gray-950/40 px-3 py-2">
+            <span class={`mt-1 w-2 h-2 rounded-full shrink-0 ${t.swatchClass}`} aria-hidden="true"></span>
+            <div>
+              <p class="font-semibold text-gray-700 dark:text-gray-200">{t.label}</p>
+              <p class="text-sm leading-tight opacity-80">{t.nepalBhasa}</p>
+              <p class="mt-0.5">{t.short}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
   </div>
 
   <!-- Focus stage -->
@@ -34,24 +77,33 @@ const letterPayload = JSON.stringify({
   >
     <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-0">
       <div class="flex flex-col items-center justify-center gap-3 px-6 py-10 bg-gradient-to-b from-[#fdf1f0] to-white dark:from-gray-900 dark:to-gray-800 border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-700">
-        <span id="focus-glyph" class="font-nithya-ranjana text-7xl sm:text-8xl text-gray-900 dark:text-white leading-none select-none transition-transform duration-300" aria-hidden="true"></span>
+        <span id="focus-trait-badge" class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider border"></span>
+        <span id="focus-glyph" class="font-nithya-ranjana text-7xl sm:text-8xl leading-none select-none transition-transform duration-300" aria-hidden="true"></span>
         <div class="text-center">
-          <p id="focus-roman" class="text-lg font-semibold text-brand dark:text-brand-light"></p>
+          <p id="focus-roman" class="text-lg font-semibold text-gray-900 dark:text-white"></p>
           <p id="focus-devanagari" class="text-sm text-gray-500 dark:text-gray-400"></p>
+          <p id="focus-nepal" class="mt-1 text-xs text-gray-400 dark:text-gray-500"></p>
         </div>
       </div>
 
       <div class="px-5 py-6 sm:px-6 sm:py-8">
+        <div id="trait-tip" class="mb-5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80 px-4 py-3">
+          <p class="text-[10px] font-semibold tracking-widest uppercase text-gray-400 mb-1">Why this color?</p>
+          <p id="trait-tip-text" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"></p>
+        </div>
+
         <div id="matra-panel" class="hidden">
           <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Matra explorer</h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">See how this letter changes with each vowel sound.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Watch how vowel signs attach for this letter’s shape family.
+          </p>
           <div id="matra-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5"></div>
         </div>
         <div id="vowel-note" class="hidden">
           <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Vowel sound</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-            This is an independent vowel. Vowels give sound to consonants — pick a consonant tile to see matras like
-            <span class="font-medium text-gray-700 dark:text-gray-200">ka, kaa, ki, kii</span> and more.
+            Independent vowels are normal letters. Pick a colored consonant to see how matras change with headless,
+            hand-up, and hand-down shapes.
           </p>
         </div>
       </div>
@@ -62,7 +114,7 @@ const letterPayload = JSON.stringify({
   <section aria-labelledby="vowels-heading">
     <div class="flex items-baseline justify-between gap-3 mb-3">
       <h3 id="vowels-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Vowels</h3>
-      <span class="text-xs text-gray-400">{vowels.length} letters</span>
+      <span class="text-xs text-gray-400"><span data-count-board="vowel">{vowels.length}</span> letters</span>
     </div>
     <div
       id="vowel-board"
@@ -70,21 +122,25 @@ const letterPayload = JSON.stringify({
       role="listbox"
       aria-label="Ranjana Lipi vowels"
     >
-      {vowels.map((letter) => (
-        <button
-          type="button"
-          role="option"
-          data-letter-id={letter.id}
-          data-type={letter.type}
-          aria-selected="false"
-          aria-label={`${letter.roman}, Devanagari ${letter.char}`}
-          class="letter-tile group flex flex-col items-center justify-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-3 sm:py-3.5 shadow-sm hover:border-brand/40 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
-        >
-          <span class="font-nithya-ranjana text-2xl sm:text-3xl text-gray-900 dark:text-white leading-none">{letter.char}</span>
-          <span class="text-[11px] text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
-          <span class="text-[10px] font-medium uppercase tracking-wide text-brand/80 dark:text-brand-light/80">{letter.roman}</span>
-        </button>
-      ))}
+      {vowels.map((letter) => {
+        const trait = letterTraits[letter.trait];
+        return (
+          <button
+            type="button"
+            role="option"
+            data-letter-id={letter.id}
+            data-type={letter.type}
+            data-trait={letter.trait}
+            aria-selected="false"
+            aria-label={`${letter.roman}, ${trait.label}, Devanagari ${letter.char}`}
+            class="letter-tile group flex flex-col items-center justify-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-3 sm:py-3.5 shadow-sm hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+          >
+            <span class={`font-nithya-ranjana text-2xl sm:text-3xl leading-none ${trait.glyphClass}`}>{letter.char}</span>
+            <span class="text-[11px] text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
+            <span class="text-[10px] font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">{letter.roman}</span>
+          </button>
+        );
+      })}
     </div>
   </section>
 
@@ -92,7 +148,7 @@ const letterPayload = JSON.stringify({
   <section aria-labelledby="consonants-heading">
     <div class="flex items-baseline justify-between gap-3 mb-3">
       <h3 id="consonants-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Consonants</h3>
-      <span class="text-xs text-gray-400">{consonants.length} letters</span>
+      <span class="text-xs text-gray-400"><span data-count-board="consonant">{consonants.length}</span> letters</span>
     </div>
     <div
       id="consonant-board"
@@ -100,30 +156,51 @@ const letterPayload = JSON.stringify({
       role="listbox"
       aria-label="Ranjana Lipi consonants"
     >
-      {consonants.map((letter) => (
-        <button
-          type="button"
-          role="option"
-          data-letter-id={letter.id}
-          data-type={letter.type}
-          aria-selected="false"
-          aria-label={`${letter.roman}, Devanagari ${letter.char}`}
-          class="letter-tile group flex flex-col items-center justify-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-3 sm:py-3.5 shadow-sm hover:border-brand/40 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
-        >
-          <span class="font-nithya-ranjana text-2xl sm:text-3xl text-gray-900 dark:text-white leading-none">{letter.char}</span>
-          <span class="text-[11px] text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
-          <span class="text-[10px] font-medium uppercase tracking-wide text-brand/80 dark:text-brand-light/80">{letter.roman}</span>
-        </button>
-      ))}
+      {consonants.map((letter) => {
+        const trait = letterTraits[letter.trait];
+        return (
+          <button
+            type="button"
+            role="option"
+            data-letter-id={letter.id}
+            data-type={letter.type}
+            data-trait={letter.trait}
+            aria-selected="false"
+            aria-label={`${letter.roman}, ${trait.label}, Devanagari ${letter.char}`}
+            class="letter-tile group flex flex-col items-center justify-center gap-1 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-3 sm:py-3.5 shadow-sm hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+          >
+            <span class={`font-nithya-ranjana text-2xl sm:text-3xl leading-none ${trait.glyphClass}`}>{letter.char}</span>
+            <span class="text-[11px] text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
+            <span class="text-[10px] font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">{letter.roman}</span>
+          </button>
+        );
+      })}
     </div>
+    <p id="filter-empty" class="hidden mt-4 text-sm text-center text-gray-400">No letters in this family — try another filter.</p>
   </section>
 </div>
 
 <style>
+  .trait-filter.is-active {
+    border-color: #c0392b;
+    background: color-mix(in srgb, #c0392b 10%, white);
+    color: #c0392b;
+  }
+  :global(.dark) .trait-filter.is-active {
+    background: color-mix(in srgb, #c0392b 22%, #111827);
+    color: #e8877f;
+    border-color: color-mix(in srgb, #c0392b 50%, #4b5563);
+  }
+
   .letter-tile[aria-selected='true'] {
-    border-color: var(--color-brand);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand) 35%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, #c0392b 40%, transparent);
     transform: translateY(-2px);
+  }
+
+  .letter-tile.is-dimmed {
+    opacity: 0.22;
+    pointer-events: none;
+    transform: none;
   }
 
   .matra-chip {
@@ -133,8 +210,8 @@ const letterPayload = JSON.stringify({
     transform: translateY(-2px);
   }
   .matra-chip.is-active {
-    border-color: var(--color-brand);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand) 30%, transparent);
+    border-color: #c0392b;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #c0392b 30%, transparent);
   }
 
   #focus-glyph.is-pop {
@@ -155,9 +232,25 @@ const letterPayload = JSON.stringify({
 </style>
 
 <script>
-  type Letter = { id: string; char: string; roman: string; type: 'vowel' | 'consonant' };
+  type LetterTrait = 'normal' | 'headless' | 'hand-down' | 'hand-up';
+  type Letter = { id: string; char: string; roman: string; type: 'vowel' | 'consonant'; trait: LetterTrait };
   type Matra = { id: string; vowelLabel: string; mark: string; romanPattern: string };
-  type Payload = { vowels: Letter[]; consonants: Letter[]; matras: Matra[] };
+  type TraitMeta = {
+    id: LetterTrait;
+    label: string;
+    nepalBhasa: string;
+    short: string;
+    matraTip: string;
+    glyphClass: string;
+    swatchClass: string;
+    ringClass: string;
+  };
+  type Payload = {
+    vowels: Letter[];
+    consonants: Letter[];
+    matras: Matra[];
+    traits: Record<LetterTrait, TraitMeta>;
+  };
 
   (function () {
     const root = document.getElementById('ranjana-explorer');
@@ -175,10 +268,18 @@ const letterPayload = JSON.stringify({
     const focusGlyph = document.getElementById('focus-glyph')!;
     const focusRoman = document.getElementById('focus-roman')!;
     const focusDev = document.getElementById('focus-devanagari')!;
+    const focusNepal = document.getElementById('focus-nepal')!;
+    const focusBadge = document.getElementById('focus-trait-badge')!;
+    const traitTipText = document.getElementById('trait-tip-text')!;
     const matraPanel = document.getElementById('matra-panel')!;
     const matraGrid = document.getElementById('matra-grid')!;
     const vowelNote = document.getElementById('vowel-note')!;
+    const filterEmpty = document.getElementById('filter-empty')!;
     const tiles = Array.from(root.querySelectorAll<HTMLButtonElement>('.letter-tile'));
+    const filters = Array.from(root.querySelectorAll<HTMLButtonElement>('.trait-filter'));
+
+    let activeFilter: LetterTrait | 'all' = 'all';
+    let selectedId: string | null = null;
 
     function stem(roman: string) {
       return roman.endsWith('a') && roman.length > 1 ? roman.slice(0, -1) : roman;
@@ -199,7 +300,34 @@ const letterPayload = JSON.stringify({
       window.setTimeout(() => focusGlyph.classList.remove('is-pop'), 280);
     }
 
+    function applyFilter(filter: LetterTrait | 'all') {
+      activeFilter = filter;
+      filters.forEach((btn) => {
+        btn.classList.toggle('is-active', btn.dataset.traitFilter === filter);
+      });
+
+      let visibleConsonants = 0;
+      let visibleVowels = 0;
+      tiles.forEach((tile) => {
+        const trait = tile.dataset.trait as LetterTrait;
+        const match = filter === 'all' || trait === filter;
+        tile.classList.toggle('is-dimmed', !match);
+        tile.tabIndex = match ? 0 : -1;
+        if (match) {
+          if (tile.dataset.type === 'consonant') visibleConsonants += 1;
+          else visibleVowels += 1;
+        }
+      });
+
+      const vowelCount = root.querySelector<HTMLElement>('[data-count-board="vowel"]');
+      const consonantCount = root.querySelector<HTMLElement>('[data-count-board="consonant"]');
+      if (vowelCount) vowelCount.textContent = String(visibleVowels);
+      if (consonantCount) consonantCount.textContent = String(visibleConsonants);
+      filterEmpty.classList.toggle('hidden', visibleConsonants + visibleVowels > 0);
+    }
+
     function renderMatras(letter: Letter) {
+      const trait = data.traits[letter.trait];
       matraGrid.innerHTML = '';
       data.matras.forEach((matra, index) => {
         const syl = syllable(letter, matra);
@@ -210,14 +338,15 @@ const letterPayload = JSON.stringify({
         chip.setAttribute('aria-label', `${syl.roman}, ${syl.glyph}`);
         if (index === 0) chip.classList.add('is-active');
         chip.innerHTML = `
-          <span class="font-nithya-ranjana text-2xl sm:text-3xl text-gray-900 dark:text-white leading-none">${syl.glyph}</span>
+          <span class="font-nithya-ranjana text-2xl sm:text-3xl leading-none ${trait.glyphClass}">${syl.glyph}</span>
           <span class="text-[11px] text-gray-500 dark:text-gray-400">${syl.glyph}</span>
-          <span class="text-[10px] font-semibold uppercase tracking-wide text-brand dark:text-brand-light">${syl.roman}</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">${syl.roman}</span>
         `;
         chip.addEventListener('click', () => {
           matraGrid.querySelectorAll('.matra-chip').forEach((c) => c.classList.remove('is-active'));
           chip.classList.add('is-active');
           focusGlyph.textContent = syl.glyph;
+          focusGlyph.className = `font-nithya-ranjana text-7xl sm:text-8xl leading-none select-none transition-transform duration-300 ${trait.glyphClass}`;
           focusRoman.textContent = syl.roman;
           focusDev.textContent = `Devanagari · ${syl.glyph}`;
           popGlyph();
@@ -229,6 +358,10 @@ const letterPayload = JSON.stringify({
     function selectLetter(id: string) {
       const letter = byId.get(id);
       if (!letter) return;
+      if (activeFilter !== 'all' && letter.trait !== activeFilter) return;
+
+      selectedId = id;
+      const trait = data.traits[letter.trait];
 
       tiles.forEach((tile) => {
         tile.setAttribute('aria-selected', tile.dataset.letterId === id ? 'true' : 'false');
@@ -236,8 +369,14 @@ const letterPayload = JSON.stringify({
 
       focusStage.classList.remove('hidden');
       focusGlyph.textContent = letter.char;
+      focusGlyph.className = `font-nithya-ranjana text-7xl sm:text-8xl leading-none select-none transition-transform duration-300 ${trait.glyphClass}`;
       focusRoman.textContent = letter.roman;
       focusDev.textContent = `Devanagari · ${letter.char}`;
+      focusNepal.textContent = trait.nepalBhasa;
+      focusBadge.textContent = '';
+      focusBadge.className = `inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider border border-current/20 ${trait.glyphClass}`;
+      focusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${trait.swatchClass}"></span>${trait.label}`;
+      traitTipText.textContent = trait.matraTip;
       popGlyph();
 
       if (letter.type === 'consonant') {
@@ -254,6 +393,22 @@ const letterPayload = JSON.stringify({
       focusStage.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
     }
 
+    filters.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = (btn.dataset.traitFilter || 'all') as LetterTrait | 'all';
+        applyFilter(value);
+        if (selectedId) {
+          const current = byId.get(selectedId);
+          if (current && (value === 'all' || current.trait === value)) {
+            // keep selection
+          } else {
+            const first = tiles.find((t) => !t.classList.contains('is-dimmed'));
+            if (first?.dataset.letterId) selectLetter(first.dataset.letterId);
+          }
+        }
+      });
+    });
+
     tiles.forEach((tile) => {
       tile.addEventListener('click', () => {
         const id = tile.dataset.letterId;
@@ -267,8 +422,9 @@ const letterPayload = JSON.stringify({
 
         const board = tile.closest('[role="listbox"]');
         if (!board) return;
-        const boardTiles = Array.from(board.querySelectorAll<HTMLButtonElement>('.letter-tile'));
+        const boardTiles = Array.from(board.querySelectorAll<HTMLButtonElement>('.letter-tile:not(.is-dimmed)'));
         const i = boardTiles.indexOf(tile);
+        if (i < 0) return;
         const cols = getComputedStyle(board).gridTemplateColumns.split(' ').length;
 
         let next = i;
@@ -283,7 +439,7 @@ const letterPayload = JSON.stringify({
       });
     });
 
-    // Pre-select क so the matra explorer is discoverable immediately
+    applyFilter('all');
     selectLetter('ka');
   })();
 </script>
