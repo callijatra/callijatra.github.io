@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added search engine directives (`robots`, `googlebot`, `bingbot`) with `max-image-preview:large` and `max-snippet:-1`.
   - Added accessible heading text (`sr-only`) and optimized page titles across Home, Resources, About, and Gallery pages for keyword indexing.
   - Added Google Search Console site verification meta tag and verification HTML file (`google70c79cec13865349.html`).
+  - Added standalone [public/sitemap.xml](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/sitemap.xml) for direct submission in Google Search Console.
 
 ## [0.2.0] - 2026-10-08
 
