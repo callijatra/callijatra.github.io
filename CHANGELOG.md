@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added standalone [public/sitemap.xml](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/sitemap.xml) for direct submission in Google Search Console.
 
 ### Changed
+- **Callijatra Calligraphy on Resources**: Replaced the “Review pending” / APK download state with a live Google Play badge; matched Play and App Store badge visual heights.
 - **Learn trait filter dock**: Compact labeled color strip for all screen sizes, docked bottom-right beside scroll-to-top (occupies that corner until the button appears, then slides left).
 - **Learn mobile topic picker**: Custom chevron with extra right padding so the native select arrow no longer sits flush on the edge.
 - **Learn Ranjana UX polish**: Larger vowel/consonant/matra/compound glyphs and labels; smoother focus glyph animation; improved scroll-to-viewer targeting; darkened hand-up blue for light and dark themes.

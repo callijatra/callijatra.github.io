@@ -7,22 +7,32 @@ const { store, href } = Astro.props;
 ---
 
 {store === 'google' && (
-  <a href={href} target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play"
-     class="inline-block hover:opacity-85 active:scale-95 transition-all duration-150">
-    <!-- The Google Play PNG has ~20% built-in padding, so h-[2.6rem] makes
-         the visible badge art the same height as the App Store badge at h-10. -->
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Get it on Google Play"
+    class="store-badge store-badge-google inline-flex items-center justify-center h-10 w-[8.4rem] overflow-hidden hover:opacity-85 active:scale-95 transition-all duration-150"
+  >
+    <!-- Official PNG includes ~16% vertical / ~6% horizontal transparent padding.
+         Scale the image so the visible badge art is h-10, then clip the padding. -->
     <img
       src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
       alt="Get it on Google Play"
-      class="h-[2.6rem] w-auto -my-1"
+      class="h-[3.72rem] w-auto max-w-none shrink-0"
       loading="lazy"
     />
   </a>
 )}
 
 {store === 'apple' && (
-  <a href={href} target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store"
-     class="inline-block hover:opacity-85 active:scale-95 transition-all duration-150">
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Download on the App Store"
+    class="store-badge store-badge-apple inline-flex items-center h-10 hover:opacity-85 active:scale-95 transition-all duration-150"
+  >
     <img
       src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
       alt="Download on the App Store"
