@@ -67,6 +67,9 @@
           </li>
         </ul>
         <p class="small mb-0">
+          <a href="mailto:callijatrafoundation@gmail.com" class="text-light text-decoration-none">callijatrafoundation@gmail.com</a>
+        </p>
+        <p class="small mb-0">
           © 2026 Callijatra Foundation. All rights reserved.
         </p>
       </div>

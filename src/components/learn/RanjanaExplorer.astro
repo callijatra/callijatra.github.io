@@ -1,0 +1,748 @@
+---
+import { vowels, consonants, compoundLetters, matras, letterTraits, type LetterTrait } from '../../data/ranjana-lipi';
+
+const traitOrder: LetterTrait[] = ['normal', 'headless', 'hand-down', 'hand-up'];
+
+const compoundsByTrait = traitOrder.map((trait) => ({
+  trait,
+  meta: letterTraits[trait],
+  items: compoundLetters.filter((c) => c.trait === trait),
+}));
+
+const letterPayload = JSON.stringify({
+  vowels,
+  consonants,
+  compounds: compoundLetters,
+  matras: matras.map((m) => ({
+    id: m.id,
+    vowelLabel: m.vowelLabel,
+    mark: m.mark,
+    romanPattern: m.romanPattern,
+  })),
+  traits: letterTraits,
+});
+---
+
+<div
+  id="ranjana-explorer"
+  class="ranjana-explorer flex flex-col gap-6 pb-24 sm:pb-28"
+  data-letters={letterPayload}
+>
+  <!-- Intro + trait legend -->
+  <div class="rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_55%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900/60 px-5 py-5 sm:px-6 space-y-4">
+    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+      Tap a letter to explore. Glyphs are colored by their <strong class="text-gray-900 dark:text-white">calligraphy shape</strong> —
+      because matras attach differently to each family. Small grey labels are Devanagari mappings.
+      Use the floating filter at the bottom-right anytime while you scroll.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400">
+      {traitOrder.map((id) => {
+        const t = letterTraits[id];
+        return (
+          <div class="flex items-start gap-2 rounded-lg bg-white/50 dark:bg-gray-950/40 px-3 py-2">
+            <span class={`mt-1 w-2 h-2 rounded-full shrink-0 ${t.swatchClass}`} aria-hidden="true"></span>
+            <div>
+              <p class="font-semibold text-gray-700 dark:text-gray-200">{t.label}</p>
+              <p class="text-sm leading-tight opacity-80">{t.nepalBhasa}</p>
+              <p class="mt-0.5">{t.short}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Compact trait filter — mounted into #fab-dock-leading (left of scroll-to-top) -->
+  <div
+    id="trait-filter-dock"
+    class="flex items-stretch gap-0.5 sm:gap-1 rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg p-1 sm:p-1.5 w-max"
+    role="group"
+    aria-label="Filter by letter characteristic"
+  >
+    <button
+      type="button"
+      data-trait-filter="all"
+      class="trait-filter trait-filter-chip is-active inline-flex flex-col items-center justify-center gap-0.5 shrink-0 px-2 sm:px-2.5 py-1.5 rounded-xl border border-transparent text-gray-600 dark:text-gray-300"
+      aria-label="All letters"
+      title="All letters"
+    >
+      <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-gray-400 dark:bg-gray-500" aria-hidden="true"></span>
+      <span class="text-[10px] sm:text-[11px] font-semibold leading-tight tracking-wide whitespace-nowrap">All</span>
+    </button>
+    {traitOrder.map((id) => {
+      const t = letterTraits[id];
+      const short = t.label.replace(' letters', '');
+      return (
+        <button
+          type="button"
+          data-trait-filter={id}
+          class="trait-filter trait-filter-chip inline-flex flex-col items-center justify-center gap-0.5 shrink-0 px-2 sm:px-2.5 py-1.5 rounded-xl border border-transparent text-gray-600 dark:text-gray-300"
+          aria-label={short}
+          title={`${short} — ${t.matraTip}`}
+        >
+          <span class={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0 ${t.swatchClass}`} aria-hidden="true"></span>
+          <span class="text-[10px] sm:text-[11px] font-semibold leading-tight tracking-wide text-center whitespace-nowrap">
+            {short}
+          </span>
+        </button>
+      );
+    })}
+  </div>
+
+  <!-- Focus stage -->
+  <div
+    id="focus-stage"
+    class="hidden scroll-mt-28 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden"
+    aria-live="polite"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-0">
+      <div class="flex flex-col items-center justify-center gap-3 px-4 sm:px-6 py-10 bg-gradient-to-b from-[#fdf1f0] to-white dark:from-gray-900 dark:to-gray-800 border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-700">
+        <span id="focus-trait-badge" class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider border"></span>
+
+        <span id="focus-glyph" class="font-nithya-ranjana text-7xl sm:text-8xl leading-none select-none origin-center text-center" aria-hidden="true"></span>
+
+        <div class="text-center">
+          <p id="focus-roman" class="text-lg font-semibold text-gray-900 dark:text-white"></p>
+          <p id="focus-devanagari" class="text-sm text-gray-500 dark:text-gray-400"></p>
+          <p id="focus-nepal" class="mt-1 text-xs text-gray-400 dark:text-gray-500"></p>
+        </div>
+
+        <div class="mt-2 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            id="focus-prev"
+            aria-label="Previous letter"
+            class="focus-nav shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-brand hover:text-brand dark:hover:border-brand-light dark:hover:text-brand-light disabled:opacity-35 disabled:pointer-events-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <p id="focus-nav-pos" class="min-w-[3.5rem] text-center text-[11px] text-gray-400 dark:text-gray-500 tabular-nums"></p>
+          <button
+            type="button"
+            id="focus-next"
+            aria-label="Next letter"
+            class="focus-nav shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-brand hover:text-brand dark:hover:border-brand-light dark:hover:text-brand-light disabled:opacity-35 disabled:pointer-events-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="px-5 py-6 sm:px-6 sm:py-8">
+        <div id="trait-tip" class="mb-5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80 px-4 py-3">
+          <p class="text-[10px] font-semibold tracking-widest uppercase text-gray-400 mb-1">Why this color?</p>
+          <p id="trait-tip-text" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"></p>
+        </div>
+
+        <div id="matra-panel" class="hidden">
+          <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Matra explorer</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Watch how vowel signs attach for this letter’s shape family.
+          </p>
+          <div id="matra-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5"></div>
+        </div>
+        <div id="vowel-note" class="hidden">
+          <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Vowel sound</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            Independent vowels are normal letters. Pick a colored consonant to see how matras change with headless,
+            hand-up, and hand-down shapes.
+          </p>
+        </div>
+        <div id="compound-note" class="hidden">
+          <h3 class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-1">Compound letter</h3>
+          <p id="compound-note-text" class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            Conjuncts inherit the shape family of their structure — so matras and stacked forms follow the same
+            headless / hand-up / hand-down rules as base letters.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vowels -->
+  <section aria-labelledby="vowels-heading">
+    <div class="flex items-baseline justify-between gap-3 mb-3">
+      <h3 id="vowels-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Vowels</h3>
+      <span class="text-xs text-gray-400"><span data-count-board="vowel">{vowels.length}</span> letters</span>
+    </div>
+    <div
+      id="vowel-board"
+      class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5 sm:gap-3"
+      role="listbox"
+      aria-label="Ranjana Lipi vowels"
+    >
+      {vowels.map((letter) => {
+        const trait = letterTraits[letter.trait];
+        return (
+          <button
+            type="button"
+            role="option"
+            data-letter-id={letter.id}
+            data-type={letter.type}
+            data-trait={letter.trait}
+            aria-selected="false"
+            aria-label={`${letter.roman}, ${trait.label}, Devanagari ${letter.char}`}
+            class="letter-tile group flex flex-col items-center justify-center gap-1.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-3.5 sm:px-3 sm:py-4 shadow-sm hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+          >
+            <span class={`font-nithya-ranjana text-4xl sm:text-5xl leading-none ${trait.glyphClass}`}>{letter.char}</span>
+            <span class="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
+            <span class="text-xs sm:text-sm font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">{letter.roman}</span>
+          </button>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- Consonants -->
+  <section aria-labelledby="consonants-heading">
+    <div class="flex items-baseline justify-between gap-3 mb-3">
+      <h3 id="consonants-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Consonants</h3>
+      <span class="text-xs text-gray-400"><span data-count-board="consonant">{consonants.length}</span> letters</span>
+    </div>
+    <div
+      id="consonant-board"
+      class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 sm:gap-3"
+      role="listbox"
+      aria-label="Ranjana Lipi consonants"
+    >
+      {consonants.map((letter) => {
+        const trait = letterTraits[letter.trait];
+        return (
+          <button
+            type="button"
+            role="option"
+            data-letter-id={letter.id}
+            data-type={letter.type}
+            data-trait={letter.trait}
+            aria-selected="false"
+            aria-label={`${letter.roman}, ${trait.label}, Devanagari ${letter.char}`}
+            class="letter-tile group flex flex-col items-center justify-center gap-1.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-3.5 sm:px-3 sm:py-4 shadow-sm hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+          >
+            <span class={`font-nithya-ranjana text-4xl sm:text-5xl leading-none ${trait.glyphClass}`}>{letter.char}</span>
+            <span class="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-none">{letter.char}</span>
+            <span class="text-xs sm:text-sm font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">{letter.roman}</span>
+          </button>
+        );
+      })}
+    </div>
+    <p id="filter-empty" class="hidden mt-4 text-sm text-center text-gray-400">No letters in this family — try another filter.</p>
+  </section>
+
+  <!-- Compound letters -->
+  <section id="compounds-section" aria-labelledby="compounds-heading">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
+      <div>
+        <h3 id="compounds-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Compound letters</h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 max-w-xl">
+          Conjuncts from the calligraphy manual — grouped by the same four shape families.
+        </p>
+      </div>
+      <span class="text-xs text-gray-400"><span data-count-board="compound">{compoundLetters.length}</span> examples</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {compoundsByTrait.map(({ trait, meta, items }) => (
+        <div class="compound-column rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 sm:p-4" data-compound-trait={trait}>
+          <div class="flex items-center gap-2 mb-3 px-1">
+            <span class={`w-2.5 h-2.5 rounded-full shrink-0 ${meta.swatchClass}`} aria-hidden="true"></span>
+            <h4 class={`text-xs font-bold tracking-wide uppercase ${meta.glyphClass}`}>{meta.label}</h4>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5" role="listbox" aria-label={`${meta.label} compound letters`}>
+            {items.map((item) => (
+              <button
+                type="button"
+                role="option"
+                data-compound-id={item.id}
+                data-trait={item.trait}
+                aria-selected="false"
+                aria-label={`${item.roman}, ${meta.label}, Devanagari ${item.char}`}
+                class="compound-tile letter-tile group flex flex-col items-center justify-center gap-1.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-2.5 py-3.5 sm:px-3 sm:py-4 shadow-sm hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand transition-all duration-200"
+              >
+                <span class={`font-nithya-ranjana text-4xl sm:text-5xl leading-none ${meta.glyphClass}`}>{item.char}</span>
+                <span class="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-none">{item.char}</span>
+                <span class="text-xs sm:text-sm font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">{item.roman}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  .trait-filter.is-active {
+    border-color: color-mix(in srgb, #c0392b 35%, transparent);
+    background: color-mix(in srgb, #c0392b 10%, white);
+    color: #c0392b;
+  }
+  :global(.dark) .trait-filter.is-active {
+    background: color-mix(in srgb, #c0392b 22%, #111827);
+    color: #e8877f;
+    border-color: color-mix(in srgb, #c0392b 50%, #4b5563);
+  }
+  .trait-filter-chip.is-active {
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, #c0392b 55%, transparent);
+  }
+
+  .letter-tile[aria-selected='true'] {
+    box-shadow: 0 0 0 2px color-mix(in srgb, #c0392b 40%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .letter-tile.is-dimmed,
+  .compound-column.is-dimmed {
+    opacity: 0.22;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .matra-chip {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .matra-chip:hover {
+    transform: translateY(-2px);
+  }
+  .matra-chip.is-active {
+    border-color: #c0392b;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #c0392b 30%, transparent);
+  }
+
+  @keyframes glyph-pop {
+    0% {
+      transform: scale(0.92);
+      opacity: 0.85;
+    }
+    55% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  #focus-glyph.is-pop {
+    animation: glyph-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letter-tile,
+    .matra-chip {
+      transition: none !important;
+    }
+    .letter-tile:hover,
+    .matra-chip:hover {
+      transform: none;
+    }
+    #focus-glyph.is-pop {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  type LetterTrait = 'normal' | 'headless' | 'hand-down' | 'hand-up';
+  type Letter = { id: string; char: string; roman: string; type: 'vowel' | 'consonant'; trait: LetterTrait };
+  type Compound = { id: string; char: string; roman: string; trait: LetterTrait };
+  type Matra = { id: string; vowelLabel: string; mark: string; romanPattern: string };
+  type TraitMeta = {
+    id: LetterTrait;
+    label: string;
+    nepalBhasa: string;
+    short: string;
+    matraTip: string;
+    glyphClass: string;
+    swatchClass: string;
+    ringClass: string;
+  };
+  type Payload = {
+    vowels: Letter[];
+    consonants: Letter[];
+    compounds: Compound[];
+    matras: Matra[];
+    traits: Record<LetterTrait, TraitMeta>;
+  };
+
+  (function () {
+    const root = document.getElementById('ranjana-explorer');
+    if (!root) return;
+
+    const raw = root.dataset.letters;
+    if (!raw) return;
+
+    const data = JSON.parse(raw) as Payload;
+    const byId = new Map<string, Letter>(
+      [...data.vowels, ...data.consonants].map((l) => [l.id, l])
+    );
+    const compoundById = new Map<string, Compound>(
+      (data.compounds || []).map((c) => [c.id, c])
+    );
+
+    const focusStage = document.getElementById('focus-stage')!;
+    const focusGlyph = document.getElementById('focus-glyph')!;
+    const focusRoman = document.getElementById('focus-roman')!;
+    const focusDev = document.getElementById('focus-devanagari')!;
+    const focusNepal = document.getElementById('focus-nepal')!;
+    const focusBadge = document.getElementById('focus-trait-badge')!;
+    const traitTipText = document.getElementById('trait-tip-text')!;
+    const matraPanel = document.getElementById('matra-panel')!;
+    const matraGrid = document.getElementById('matra-grid')!;
+    const vowelNote = document.getElementById('vowel-note')!;
+    const compoundNote = document.getElementById('compound-note')!;
+    const filterEmpty = document.getElementById('filter-empty')!;
+    const focusPrev = document.getElementById('focus-prev') as HTMLButtonElement;
+    const focusNext = document.getElementById('focus-next') as HTMLButtonElement;
+    const focusNavPos = document.getElementById('focus-nav-pos')!;
+    const baseTiles = Array.from(root.querySelectorAll<HTMLButtonElement>('.letter-tile[data-letter-id]'));
+    const compoundTiles = Array.from(root.querySelectorAll<HTMLButtonElement>('.compound-tile'));
+    const compoundColumns = Array.from(root.querySelectorAll<HTMLElement>('.compound-column'));
+
+    // Sit beside scroll-to-top in the shared FAB dock (slides left when that button appears)
+    const traitDock = document.getElementById('trait-filter-dock');
+    const fabLeading = document.getElementById('fab-dock-leading');
+    if (traitDock && fabLeading) fabLeading.appendChild(traitDock);
+
+    const filters = Array.from(
+      (traitDock ?? root).querySelectorAll<HTMLButtonElement>('.trait-filter')
+    );
+
+    let activeFilter: LetterTrait | 'all' = 'all';
+    let selectedId: string | null = null;
+    let selectedCompoundId: string | null = null;
+    let navMode: 'letter' | 'compound' = 'letter';
+
+    function stem(roman: string) {
+      return roman.endsWith('a') && roman.length > 1 ? roman.slice(0, -1) : roman;
+    }
+
+    function syllable(letter: Letter, matra: Matra) {
+      const roman = matra.romanPattern
+        .replace('{c}', letter.roman)
+        .replace('{stem}', stem(letter.roman));
+      return { glyph: letter.char + matra.mark, roman };
+    }
+
+    function popGlyph() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      focusGlyph.classList.remove('is-pop');
+      // Retrigger keyframe animation cleanly
+      void focusGlyph.offsetWidth;
+      focusGlyph.classList.add('is-pop');
+      focusGlyph.addEventListener(
+        'animationend',
+        () => focusGlyph.classList.remove('is-pop'),
+        { once: true }
+      );
+    }
+
+    function clearSelections(except: 'letter' | 'compound' | null = null) {
+      if (except !== 'letter') {
+        selectedId = null;
+        baseTiles.forEach((tile) => tile.setAttribute('aria-selected', 'false'));
+      }
+      if (except !== 'compound') {
+        selectedCompoundId = null;
+        compoundTiles.forEach((tile) => tile.setAttribute('aria-selected', 'false'));
+      }
+    }
+
+    function showFocusChrome(trait: TraitMeta, char: string, roman: string) {
+      focusStage.classList.remove('hidden');
+      focusGlyph.textContent = char;
+      focusGlyph.className = `font-nithya-ranjana text-7xl sm:text-8xl leading-none select-none origin-center ${trait.glyphClass}`;
+      focusRoman.textContent = roman;
+      focusDev.textContent = `Devanagari · ${char}`;
+      focusNepal.textContent = trait.nepalBhasa;
+      focusBadge.className = `inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider border border-current/20 ${trait.glyphClass}`;
+      focusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${trait.swatchClass}"></span>${trait.label}`;
+      traitTipText.textContent = trait.matraTip;
+      popGlyph();
+    }
+
+    function applyFilter(filter: LetterTrait | 'all') {
+      activeFilter = filter;
+      filters.forEach((btn) => {
+        btn.classList.toggle('is-active', btn.dataset.traitFilter === filter);
+      });
+
+      let visibleConsonants = 0;
+      let visibleVowels = 0;
+      let visibleCompounds = 0;
+
+      baseTiles.forEach((tile) => {
+        const trait = tile.dataset.trait as LetterTrait;
+        const match = filter === 'all' || trait === filter;
+        tile.classList.toggle('is-dimmed', !match);
+        tile.tabIndex = match ? 0 : -1;
+        if (match) {
+          if (tile.dataset.type === 'consonant') visibleConsonants += 1;
+          else visibleVowels += 1;
+        }
+      });
+
+      compoundTiles.forEach((tile) => {
+        const trait = tile.dataset.trait as LetterTrait;
+        const match = filter === 'all' || trait === filter;
+        tile.classList.toggle('is-dimmed', !match);
+        tile.tabIndex = match ? 0 : -1;
+        if (match) visibleCompounds += 1;
+      });
+
+      compoundColumns.forEach((col) => {
+        const trait = col.dataset.compoundTrait as LetterTrait;
+        const match = filter === 'all' || trait === filter;
+        col.classList.toggle('is-dimmed', !match);
+      });
+
+      const vowelCount = root.querySelector<HTMLElement>('[data-count-board="vowel"]');
+      const consonantCount = root.querySelector<HTMLElement>('[data-count-board="consonant"]');
+      const compoundCount = root.querySelector<HTMLElement>('[data-count-board="compound"]');
+      if (vowelCount) vowelCount.textContent = String(visibleVowels);
+      if (consonantCount) consonantCount.textContent = String(visibleConsonants);
+      if (compoundCount) compoundCount.textContent = String(visibleCompounds);
+      filterEmpty.classList.toggle('hidden', visibleConsonants + visibleVowels > 0);
+    }
+
+    function renderMatras(letter: Letter) {
+      const trait = data.traits[letter.trait];
+      matraGrid.innerHTML = '';
+      data.matras.forEach((matra, index) => {
+        const syl = syllable(letter, matra);
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className =
+          'matra-chip flex flex-col items-center gap-1.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-4 sm:px-4 sm:py-5 hover:border-brand/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand';
+        chip.setAttribute('aria-label', `${syl.roman}, ${syl.glyph}`);
+        if (index === 0) chip.classList.add('is-active');
+        chip.innerHTML = `
+          <span class="font-nithya-ranjana text-4xl sm:text-5xl leading-none ${trait.glyphClass}">${syl.glyph}</span>
+          <span class="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-none">${syl.glyph}</span>
+          <span class="text-xs sm:text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">${syl.roman}</span>
+        `;
+        chip.addEventListener('click', () => {
+          matraGrid.querySelectorAll('.matra-chip').forEach((c) => c.classList.remove('is-active'));
+          chip.classList.add('is-active');
+          focusGlyph.textContent = syl.glyph;
+          focusGlyph.className = `font-nithya-ranjana text-7xl sm:text-8xl leading-none select-none origin-center ${trait.glyphClass}`;
+          focusRoman.textContent = syl.roman;
+          focusDev.textContent = `Devanagari · ${syl.glyph}`;
+          popGlyph();
+        });
+        matraGrid.appendChild(chip);
+      });
+    }
+
+    function visibleLetterIds(): string[] {
+      return baseTiles
+        .filter((t) => !t.classList.contains('is-dimmed'))
+        .map((t) => t.dataset.letterId!)
+        .filter(Boolean);
+    }
+
+    function visibleCompoundIds(): string[] {
+      return compoundTiles
+        .filter((t) => !t.classList.contains('is-dimmed'))
+        .map((t) => t.dataset.compoundId!)
+        .filter(Boolean);
+    }
+
+    function updateNavControls() {
+      const ids = navMode === 'compound' ? visibleCompoundIds() : visibleLetterIds();
+      const current = navMode === 'compound' ? selectedCompoundId : selectedId;
+      const index = current ? ids.indexOf(current) : -1;
+      focusPrev.disabled = index <= 0;
+      focusNext.disabled = index < 0 || index >= ids.length - 1;
+      focusNavPos.textContent =
+        index >= 0 && ids.length > 0 ? `${index + 1} / ${ids.length}` : '';
+    }
+
+    function selectLetter(id: string, opts: { scroll?: boolean } = {}) {
+      const letter = byId.get(id);
+      if (!letter) return;
+      if (activeFilter !== 'all' && letter.trait !== activeFilter) return;
+
+      clearSelections('letter');
+      selectedId = id;
+      selectedCompoundId = null;
+      navMode = 'letter';
+      const trait = data.traits[letter.trait];
+
+      baseTiles.forEach((tile) => {
+        tile.setAttribute('aria-selected', tile.dataset.letterId === id ? 'true' : 'false');
+      });
+
+      showFocusChrome(trait, letter.char, letter.roman);
+      compoundNote.classList.add('hidden');
+
+      if (letter.type === 'consonant') {
+        matraPanel.classList.remove('hidden');
+        vowelNote.classList.add('hidden');
+        renderMatras(letter);
+      } else {
+        matraPanel.classList.add('hidden');
+        vowelNote.classList.remove('hidden');
+        matraGrid.innerHTML = '';
+      }
+
+      updateNavControls();
+      if (opts.scroll !== false) scrollFocusIntoView();
+    }
+
+    function selectCompound(id: string, opts: { scroll?: boolean } = {}) {
+      const item = compoundById.get(id);
+      if (!item) return;
+      if (activeFilter !== 'all' && item.trait !== activeFilter) return;
+
+      clearSelections('compound');
+      selectedCompoundId = id;
+      selectedId = null;
+      navMode = 'compound';
+      const trait = data.traits[item.trait];
+
+      compoundTiles.forEach((tile) => {
+        tile.setAttribute('aria-selected', tile.dataset.compoundId === id ? 'true' : 'false');
+      });
+
+      showFocusChrome(trait, item.char, item.roman);
+      matraPanel.classList.add('hidden');
+      vowelNote.classList.add('hidden');
+      matraGrid.innerHTML = '';
+      compoundNote.classList.remove('hidden');
+
+      updateNavControls();
+      if (opts.scroll !== false) scrollFocusIntoView();
+    }
+
+    function stepFocus(delta: number) {
+      const ids = navMode === 'compound' ? visibleCompoundIds() : visibleLetterIds();
+      const current = navMode === 'compound' ? selectedCompoundId : selectedId;
+      if (!current || !ids.length) return;
+      const index = ids.indexOf(current);
+      if (index < 0) return;
+      const next = ids[index + delta];
+      if (!next) return;
+      if (navMode === 'compound') selectCompound(next, { scroll: false });
+      else selectLetter(next, { scroll: false });
+    }
+
+    function scrollFocusIntoView() {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Wait for layout after revealing the focus card (esp. long jumps from compounds)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const headerOffset = 120; // sticky nav + breathing room
+          const top =
+            focusStage.getBoundingClientRect().top + window.scrollY - headerOffset;
+          window.scrollTo({
+            top: Math.max(0, top),
+            behavior: reduce ? 'auto' : 'smooth',
+          });
+        });
+      });
+    }
+
+    filters.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = (btn.dataset.traitFilter || 'all') as LetterTrait | 'all';
+        applyFilter(value);
+        if (selectedId) {
+          const current = byId.get(selectedId);
+          if (!(current && (value === 'all' || current.trait === value))) {
+            const first = baseTiles.find((t) => !t.classList.contains('is-dimmed'));
+            if (first?.dataset.letterId) selectLetter(first.dataset.letterId, { scroll: false });
+          } else {
+            updateNavControls();
+          }
+        } else if (selectedCompoundId) {
+          const current = compoundById.get(selectedCompoundId);
+          if (!(current && (value === 'all' || current.trait === value))) {
+            const first = compoundTiles.find((t) => !t.classList.contains('is-dimmed'));
+            if (first?.dataset.compoundId) selectCompound(first.dataset.compoundId, { scroll: false });
+            else {
+              selectedCompoundId = null;
+              updateNavControls();
+            }
+          } else {
+            updateNavControls();
+          }
+        } else {
+          updateNavControls();
+        }
+      });
+    });
+
+    focusPrev.addEventListener('click', () => stepFocus(-1));
+    focusNext.addEventListener('click', () => stepFocus(1));
+
+    document.addEventListener('keydown', (e) => {
+      if (focusStage.classList.contains('hidden')) return;
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest('.letter-tile, input, textarea, select')) return;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        stepFocus(-1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        stepFocus(1);
+      }
+    });
+
+    function bindBoardKeys(tiles: HTMLButtonElement[]) {
+      tiles.forEach((tile) => {
+        tile.addEventListener('keydown', (e) => {
+          const key = e.key;
+          if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(key)) return;
+          e.preventDefault();
+
+          const board = tile.closest('[role="listbox"]');
+          if (!board) return;
+          const boardTiles = Array.from(board.querySelectorAll<HTMLButtonElement>('.letter-tile:not(.is-dimmed)'));
+          const i = boardTiles.indexOf(tile);
+          if (i < 0) return;
+          const cols = getComputedStyle(board).gridTemplateColumns.split(' ').length || 1;
+
+          let next = i;
+          if (key === 'ArrowRight' || key === 'ArrowDown') next = Math.min(boardTiles.length - 1, i + 1);
+          if (key === 'ArrowLeft' || key === 'ArrowUp') next = Math.max(0, i - 1);
+          if (key === 'Home') next = 0;
+          if (key === 'End') next = boardTiles.length - 1;
+          // 2D grid boards (vowels/consonants)
+          if (cols > 1 && (key === 'ArrowDown' || key === 'ArrowUp')) {
+            if (key === 'ArrowDown') next = Math.min(boardTiles.length - 1, i + cols);
+            if (key === 'ArrowUp') next = Math.max(0, i - cols);
+          }
+
+          boardTiles[next]?.focus();
+        });
+      });
+    }
+
+    baseTiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const id = tile.dataset.letterId;
+        if (id) selectLetter(id);
+      });
+    });
+    bindBoardKeys(baseTiles);
+
+    compoundTiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const id = tile.dataset.compoundId;
+        if (id) selectCompound(id);
+      });
+    });
+    bindBoardKeys(compoundTiles);
+
+    applyFilter('all');
+    selectLetter('ka', { scroll: false });
+  })();
+</script>
