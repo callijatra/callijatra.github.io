@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added accessible heading text (`sr-only`) and optimized page titles across Home, Resources, About, and Gallery pages for keyword indexing.
   - Added Google Search Console site verification meta tag and verification HTML file (`google70c79cec13865349.html`).
   - Added standalone [public/sitemap.xml](file:///Users/srt/Personal/MyProjects/callijatra.github.io/public/sitemap.xml) for direct submission in Google Search Console.
+- **Web tools in this site**: Ranjana webfont (`/tools/webfont`), Newa font switcher (`/tools/font-switcher`), transliteration keyboard (`/tools/transliterate`), and Nepal Lipi Unicode converter (`/tools/converter`) now live in this repo and share the site navbar, footer, and theme.
 
 ### Changed
 - **Callijatra Calligraphy on Resources**: Replaced the “Review pending” / APK download state with a live Google Play badge; matched Play and App Store badge visual heights.

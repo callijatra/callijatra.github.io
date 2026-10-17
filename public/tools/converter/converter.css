@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'NotoSansNewa';
+  src: url('/tools/converter/fonts/NotoSansNewa-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-newa {
+  font-family: 'NotoSansNewa', sans-serif;
+}
+
+.converter-textarea {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.converter-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+}
+
+.dark .converter-textarea:focus {
+  box-shadow: 0 0 0 3px rgba(232, 135, 127, 0.2);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

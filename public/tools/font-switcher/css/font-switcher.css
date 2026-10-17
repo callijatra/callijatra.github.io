@@ -1,0 +1,381 @@
+/* Font Switcher Widget Styles - Callijatra Foundation */
+
+/* Nithya Ranjana font definitions */
+@font-face {
+  font-family: 'NithyaRanjana';
+  src: url('/tools/webfont/fonts/NithyaRanjanaDU-Regular.woff2') format('woff2'),
+       url('/tools/webfont/fonts/NithyaRanjanaDU-Regular.woff') format('woff'),
+       url('/tools/webfont/fonts/NithyaRanjanaDU-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Nepal Aakha font */
+@font-face {
+  font-family: 'NewaAakha';
+  src: url('/tools/font-switcher/fonts/NEPAL%20AAKHA.woff2') format('woff2'),
+       url('/tools/font-switcher/fonts/NEPAL%20AAKHA.woff') format('woff'),
+       url('/tools/font-switcher/fonts/NEPAL%20AAKHA.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Widget container - base styles */
+.font-switcher-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1f2937;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+/* Fixed positioning (default - top-right corner) */
+.font-switcher-fixed {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Fixed positioning - bottom-right corner */
+.font-switcher-fixed-bottom {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* Inline placement (when inserted into a custom container) */
+.font-switcher-inline {
+  position: relative;
+  display: inline-flex;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+/* Widget label */
+.font-switcher-label {
+  color: inherit;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+/* Custom dropdown */
+.font-switcher-dropdown {
+  position: relative;
+  min-width: 240px;
+}
+
+.font-switcher-selected {
+  padding: 6px 32px 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.font-switcher-selected::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
+  opacity: 0.75;
+}
+
+.font-switcher-open .font-switcher-selected::after {
+  transform: translateY(-50%) rotate(180deg);
+  opacity: 1;
+}
+
+.font-switcher-selected:hover {
+  border-color: #c0392b;
+}
+
+.font-switcher-dropdown:focus-visible .font-switcher-selected,
+.font-switcher-selected:focus {
+  outline: none;
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2);
+}
+
+.font-switcher-options {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  z-index: 10001;
+  overflow: hidden;
+  padding: 4px 0;
+  color: #111827;
+}
+
+/* Upward Dropdown for Bottom Placement */
+.font-switcher-fixed-bottom .font-switcher-options,
+.font-switcher-drop-up .font-switcher-options {
+  top: auto;
+  bottom: calc(100% + 6px);
+  box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.2), 0 -8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.font-switcher-open .font-switcher-options {
+  display: block;
+  animation: fontSwitcherFadeIn 0.15s ease-out;
+}
+
+.font-switcher-fixed-bottom.font-switcher-open .font-switcher-options,
+.font-switcher-drop-up.font-switcher-open .font-switcher-options {
+  animation: fontSwitcherFadeUp 0.15s ease-out;
+}
+
+@keyframes fontSwitcherFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fontSwitcherFadeUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.font-switcher-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+  gap: 12px;
+  color: #111827;
+}
+
+.font-switcher-option:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.font-switcher-option-active {
+  background: #f3f4f6;
+  font-weight: 600;
+  color: #111827;
+  border-left: 3px solid #c0392b;
+  padding-left: 11px;
+}
+
+.font-switcher-option-name {
+  font-size: 13px;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.font-switcher-option-preview {
+  font-size: 16px;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.font-switcher-option:hover .font-switcher-option-preview {
+  color: #374151;
+}
+
+.font-switcher-option-active .font-switcher-option-preview {
+  color: #111827;
+}
+
+/* Dark Theme Dropdown Options */
+html.dark .font-switcher-options {
+  background: #111827;
+  border-color: #1f2937;
+  color: #f9fafb;
+}
+
+html.dark .font-switcher-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f87171;
+}
+
+html.dark .font-switcher-option-active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f87171;
+  border-left: 3px solid #ef4444;
+}
+
+html.dark .font-switcher-option-preview {
+  color: #9ca3af;
+}
+
+html.dark .font-switcher-option:hover .font-switcher-option-preview,
+html.dark .font-switcher-option-active .font-switcher-option-preview {
+  color: #f87171;
+}
+
+/* Font utility classes */
+.font-switcher-ranjana {
+  font-family: 'NithyaRanjana', sans-serif !important;
+}
+
+.font-switcher-newa {
+  font-family: 'NewaAakha', sans-serif !important;
+}
+
+.font-switcher-notoNewa {
+  font-family: 'Noto Sans Newa', sans-serif !important;
+}
+
+/* Dark mode & .dark class support */
+html.dark .font-switcher-container,
+.dark .font-switcher-container {
+  background: #111827;
+  border-color: #1f2937;
+  color: #f9fafb;
+}
+
+html.dark .font-switcher-label,
+.dark .font-switcher-label {
+  color: #e5e7eb;
+}
+
+html.dark .font-switcher-selected,
+.dark .font-switcher-selected {
+  background: #1f2937;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+html.dark .font-switcher-selected:hover,
+.dark .font-switcher-selected:hover {
+  border-color: #e8877f;
+}
+
+html.dark .font-switcher-selected::after,
+.dark .font-switcher-selected::after {
+  border-top-color: #9ca3af;
+}
+
+html.dark .font-switcher-open .font-switcher-selected::after,
+.dark .font-switcher-open .font-switcher-selected::after {
+  border-bottom-color: #e8877f;
+}
+
+html.dark .font-switcher-options,
+.dark .font-switcher-options {
+  background: #111827;
+  border-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .font-switcher-option,
+.dark .font-switcher-option {
+  color: #e5e7eb;
+}
+
+html.dark .font-switcher-option:hover,
+.dark .font-switcher-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f87171;
+}
+
+html.dark .font-switcher-option-active,
+.dark .font-switcher-option-active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f87171;
+  border-left: 3px solid #ef4444;
+}
+
+html.dark .font-switcher-option-preview,
+.dark .font-switcher-option-preview {
+  color: #9ca3af;
+}
+
+html.dark .font-switcher-option:hover .font-switcher-option-preview,
+html.dark .font-switcher-option-active .font-switcher-option-preview,
+.dark .font-switcher-option:hover .font-switcher-option-preview,
+.dark .font-switcher-option-active .font-switcher-option-preview {
+  color: #f87171;
+}
+
+/* System dark mode media query fallback */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .font-switcher-container {
+    background: #111827;
+    border-color: #1f2937;
+    color: #f9fafb;
+  }
+  :root:not(.light) .font-switcher-selected {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+  :root:not(.light) .font-switcher-options {
+    background: #111827;
+    border-color: #1f2937;
+    color: #f9fafb;
+  }
+  :root:not(.light) .font-switcher-option {
+    color: #e5e7eb;
+  }
+  :root:not(.light) .font-switcher-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f87171;
+  }
+  :root:not(.light) .font-switcher-option-active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #f87171;
+    border-left: 3px solid #ef4444;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .font-switcher-fixed {
+    top: 12px;
+    right: 12px;
+  }
+  .font-switcher-container {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+  .font-switcher-dropdown {
+    min-width: 190px;
+  }
+  .font-switcher-selected {
+    padding: 5px 26px 5px 10px;
+    font-size: 13px;
+  }
+}

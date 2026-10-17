@@ -56,7 +56,7 @@ const letterPayload = JSON.stringify({
   <!-- Compact trait filter — mounted into #fab-dock-leading (left of scroll-to-top) -->
   <div
     id="trait-filter-dock"
-    class="flex items-stretch gap-0.5 sm:gap-1 rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg p-1 sm:p-1.5 w-max"
+    class="flex items-stretch gap-0.5 sm:gap-1 rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg p-1 sm:p-1.5 w-max transition-opacity duration-300 ease-out motion-reduce:transition-none"
     role="group"
     aria-label="Filter by letter characteristic"
   >
@@ -276,6 +276,16 @@ const letterPayload = JSON.stringify({
 </div>
 
 <style>
+  /* Site-wide `div { transition: ... }` would otherwise cancel an opacity fade. */
+  :global(#trait-filter-dock) {
+    transition: opacity 0.25s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(#trait-filter-dock) {
+      transition: none;
+    }
+  }
+
   .trait-filter.is-active {
     border-color: color-mix(in srgb, #c0392b 35%, transparent);
     background: color-mix(in srgb, #c0392b 10%, white);
@@ -409,6 +419,17 @@ const letterPayload = JSON.stringify({
     const traitDock = document.getElementById('trait-filter-dock');
     const fabLeading = document.getElementById('fab-dock-leading');
     if (traitDock && fabLeading) fabLeading.appendChild(traitDock);
+
+    const siteFooter = document.querySelector('footer');
+    if (traitDock && siteFooter) {
+      const footerObserver = new IntersectionObserver((entries) => {
+        const atFooter = entries.some((entry) => entry.isIntersecting);
+        traitDock.classList.toggle('opacity-0', atFooter);
+        traitDock.classList.toggle('pointer-events-none', atFooter);
+        traitDock.setAttribute('aria-hidden', atFooter ? 'true' : 'false');
+      });
+      footerObserver.observe(siteFooter);
+    }
 
     const filters = Array.from(
       (traitDock ?? root).querySelectorAll<HTMLButtonElement>('.trait-filter')

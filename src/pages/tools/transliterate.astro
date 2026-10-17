@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Transliteration Keyboard | Callijatra"
+  description="Type Romanized English and get Devanagari or Nepal Lipi, with dictionary suggestions and an on-screen keyboard."
+>
+  <link rel="stylesheet" href="/tools/transliterate/keyboard.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Newa&display=swap" />
+
+  <section class="bg-gray-50 dark:bg-gray-950">
+    <div class="tl-app max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-2">Keyboard</span>
+      <h1 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-white mb-2">Transliteration keyboard</h1>
+      <p class="text-center text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
+        Type in English to get Devanagari or Nepal Lipi, with dictionary suggestions.
+      </p>
+
+      <div class="script-toggle">
+        <button type="button" id="btn-newa">Nepal Lipi (Newa)</button>
+        <button type="button" id="btn-devanagari" class="active">Devanagari</button>
+      </div>
+
+      <div class="editor-area" id="editor-area">
+        <div class="editor-toolbar">
+          <span class="label" id="script-label">Devanagari</span>
+          <div class="actions">
+            <button type="button" class="btn-sm" id="btn-copy">Copy</button>
+            <button type="button" class="btn-sm" id="btn-clear">Clear</button>
+          </div>
+        </div>
+        <textarea id="devanagari-output" placeholder="Type here in English... e.g. namaste, nepal, kathmandu"></textarea>
+        <div class="suggestion-bar" id="suggestion-bar"></div>
+      </div>
+
+      <div class="keyboard-section">
+        <div class="keyboard-header">
+          <h2 id="keyboard-title" class="text-sm font-bold">Devanagari Keyboard</h2>
+          <div class="keyboard-controls">
+            <button type="button" class="keyboard-toggle" id="layout-toggle">बकमान</button>
+            <button type="button" class="keyboard-toggle" id="keyboard-toggle">Hide Keyboard</button>
+          </div>
+        </div>
+        <div class="keyboard-container" id="keyboard-container"></div>
+      </div>
+
+      <div class="help-section" id="help-section"></div>
+
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Related tools:
+        <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/webfont">Ranjana webfont</a>
+        ·
+        <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/font-switcher">Font switcher</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline src="/tools/transliterate/js/ne-dictionary.js"></script>
+<script is:inline src="/tools/transliterate/js/new-dictionary.js"></script>
+<script is:inline src="/tools/transliterate/keyboard.js"></script>

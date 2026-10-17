@@ -1,0 +1,299 @@
+/* Transliteration keyboard — scoped so it does not restyle the site chrome */
+.tl-app {
+  --brand: #c0392b;
+  --brand-subtle: #fbeae9;
+  --brand-subtle-border: #f5c6cb;
+  --bg-main: #ffffff;
+  --bg-card: #f9fafb;
+  --border-color: #e5e7eb;
+  --text-main: #111827;
+  --text-muted: #4b5563;
+  --text-subtle: #6b7280;
+}
+.dark .tl-app {
+  --brand: #e8877f;
+  --brand-subtle: #3b1212;
+  --brand-subtle-border: #7f1d1d;
+  --bg-main: #030712;
+  --bg-card: #111827;
+  --border-color: #1f2937;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --text-subtle: #6b7280;
+}
+    /* Script toggle */
+    .script-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.75rem;
+    }
+    .script-toggle button {
+      padding: 0.65rem 1.6rem;
+      border: 2px solid var(--brand);
+      background: var(--bg-main);
+      color: var(--brand);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .script-toggle button:first-child { border-radius: 8px 0 0 8px; }
+    .script-toggle button:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+    .script-toggle button.active {
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    /* Text areas */
+    .editor-area {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 0.85rem;
+      overflow: visible;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 15px -3px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .editor-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--bg-main);
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 0.75rem 0.75rem 0 0;
+    }
+    .editor-toolbar .label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--brand);
+    }
+    .editor-toolbar .actions { display: flex; gap: 0.5rem; }
+    .btn-sm {
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.4rem;
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-sm:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    #devanagari-output {
+      width: 100%;
+      min-height: 180px;
+      padding: 1.25rem;
+      border: none;
+      outline: none;
+      font-size: 1.35rem;
+      line-height: 1.8;
+      resize: vertical;
+      font-family: inherit;
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border-radius: 0 0 0.85rem 0.85rem;
+    }
+    #devanagari-output.newa-script {
+      font-family: 'Noto Sans Newa', sans-serif;
+    }
+
+    /* Suggestion bar */
+    .suggestion-bar {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -48px;
+      background: var(--bg-main);
+      border: 2px solid var(--brand);
+      border-radius: 0 0 0.75rem 0.75rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      z-index: 1000;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      height: 46px;
+    }
+    .suggestion-bar .suggestion-item {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 44px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      border-right: 1px solid var(--border-color);
+      transition: background 0.15s, color 0.15s;
+      gap: 6px;
+      vertical-align: top;
+      color: var(--text-main);
+    }
+    .suggestion-bar.newa-mode { height: 58px; bottom: -60px; }
+    .suggestion-bar.newa-mode .suggestion-item { height: 56px; }
+    .suggestion-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.2;
+    }
+    .suggestion-text-group .main-text { font-size: 1.15rem; }
+    .suggestion-text-group .suggestion-deva-below {
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+    }
+    .suggestion-bar .suggestion-item:last-child { border-right: none; }
+    .suggestion-bar .suggestion-item:hover,
+    .suggestion-bar .suggestion-item.selected {
+      background: var(--brand-subtle);
+      color: var(--brand);
+    }
+    .suggestion-item .index-hint {
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+      margin-right: 2px;
+    }
+
+    /* Keyboard */
+    .keyboard-section {
+      margin-bottom: 2rem;
+    }
+    .keyboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .keyboard-header h3 {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .keyboard-toggle {
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.4rem;
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .keyboard-toggle:hover { border-color: var(--brand); color: var(--brand); }
+
+    .keyboard-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.85rem;
+      padding: 14px;
+      user-select: none;
+      overflow-x: auto;
+    }
+    .keyboard-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 4px;
+      min-width: 580px;
+    }
+    .keyboard-row:last-child { margin-bottom: 0; }
+
+    .key {
+      min-width: 44px;
+      height: 44px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-size: 1.05rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: all 0.1s;
+      padding: 2px 6px;
+    }
+    .key:hover { background: var(--brand-subtle); border-color: var(--brand-subtle-border); color: var(--brand); }
+    .key:active { transform: translateY(1px); }
+    .key .sub { font-size: 9px; color: var(--text-subtle); margin-top: 1px; }
+    .key .deva-sub { font-size: 9px; color: var(--text-subtle); margin-top: 0; }
+    .key.wide { min-width: 70px; font-size: 0.85rem; font-weight: 600; }
+    .key.space { flex: 1; max-width: 300px; font-size: 0.85rem; color: var(--text-subtle); }
+    .key.backspace { min-width: 70px; font-size: 0.85rem; }
+    .key.newa-key span:first-child {
+      font-family: 'Noto Sans Newa', sans-serif;
+    }
+    .keyboard-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* Help Section */
+    .help-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.85rem;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 640px) {
+      .help-section { padding: 1.25rem; }
+    }
+
+    .help-section h3 {
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .help-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .help-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: var(--bg-main);
+      border-bottom: 2px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .help-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .help-table td:nth-child(2) { font-size: 1.15rem; }
+    .help-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .code-embed-box {
+      background: #111827;
+      color: #f9fafb;
+      padding: 1.25rem;
+      border-radius: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .editor-area.has-suggestions {
+      margin-bottom: calc(1.75em + 58px);
+    }
+

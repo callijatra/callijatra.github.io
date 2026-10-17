@@ -1,0 +1,48 @@
+/* Nithya Ranjana font */
+
+@font-face {
+  font-family: 'NithyaRanjana';
+  src:  url('../fonts/NithyaRanjanaDU-Regular.woff2') format('woff2'),
+        url('../fonts/NithyaRanjanaDU-Regular.woff') format('woff'),
+        url('../fonts/NithyaRanjanaDU-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NithyaRanjanaNU';
+  src:  url('../fonts/NithyaRanjanaNU-Regular.woff2') format('woff2'),
+        url('../fonts/NithyaRanjanaNU-Regular.woff') format('woff'),
+        url('../fonts/NithyaRanjanaNU-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer utilities {
+  .font-nithya-ranjana {
+    font-family: 'NithyaRanjana', sans-serif;
+  }
+
+  .font-nithya-ranjana-nu {
+    font-family: 'NithyaRanjanaNU', sans-serif;
+  }
+
+    /* Stylistic Set 1 */
+    .font-nithya-ranjana-ss01 {
+      font-family: 'NithyaRanjana', sans-serif;
+      font-feature-settings: "ss01" 1;
+    }
+
+}
+
+.text-large {
+  font-size: 8rem;
+  font-weight: normal;
+}
+
+.text-medium {
+  font-size: 4rem;
+  font-weight: normal;
+}

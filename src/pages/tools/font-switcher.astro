@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const cssUrl = 'https://callijatra.github.io/tools/font-switcher/css/font-switcher.css';
+const jsUrl = 'https://callijatra.github.io/tools/font-switcher/js/font-switcher.js';
+const snippet = [
+  `<link rel="stylesheet" href="${cssUrl}">`,
+  `<script src="${jsUrl}"></script>`,
+  `<script>`,
+  `  FontSwitcher.init({`,
+  `    targetClasses: ['newa-content']`,
+  `  });`,
+  `</script>`,
+].join('\n');
+---
+
+<Layout
+  title="Newa Font Switcher | Callijatra"
+  description="A JavaScript widget that lets readers switch Devanagari text into Ranjana Lipi or Nepal Lipi on any webpage."
+>
+  <link rel="stylesheet" href="/tools/font-switcher/css/font-switcher.css" />
+
+  <section class="bg-gray-50 dark:bg-gray-950">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-2">Widget</span>
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">Newa Font Switcher</h1>
+      <p class="text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed mb-6">
+        Readers pick a script. The same Devanagari text redraws in Nithya Ranjana, Nepal Lipi Aakha, or Noto Sans Newa — without a reload.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 mb-4">
+        <p class="text-sm font-medium text-gray-700 dark:text-gray-200">Try it on the passage below</p>
+        <div id="switcher-slot"></div>
+      </div>
+
+      <article class="newa-content rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 sm:p-8 space-y-4 text-lg leading-relaxed text-gray-800 dark:text-gray-100">
+        <h2 class="text-2xl font-bold">नेपाल भाषा</h2>
+        <p>
+          रञ्जना लिपि नेपालमण्डलया प्राचीन लिपि खः। थ्व लिपिं बौद्ध व हिन्दू ग्रन्थ, शिलालेख, व नेपालभाषा च्वयातःगु दु।
+        </p>
+        <p>
+          काठमाडौं उपत्यकाया नेवार समुदायया सांस्कृतिक जीवनय् रञ्जना व नेपाल लिपि आः नं जीवित दु।
+        </p>
+      </article>
+
+      <div class="mt-8 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 sm:p-6">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Embed on your site</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          Mark the text you want to switch with <code class="text-xs">newa-content</code>, then load the stylesheet and script from this site.
+        </p>
+        <pre class="overflow-x-auto rounded-xl bg-gray-950 text-gray-100 text-xs leading-relaxed p-4"><code>{snippet}</code></pre>
+        <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+          Related tools:
+          <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/webfont">Ranjana webfont</a>
+          ·
+          <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/transliterate">Transliteration keyboard</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const slot = document.getElementById('switcher-slot');
+  const start = () => {
+    const api = (window as unknown as { FontSwitcher?: { init: (opts: object) => void } }).FontSwitcher;
+    if (!api || !slot) return;
+    api.init({
+      targetClasses: ['newa-content'],
+      container: slot,
+    });
+  };
+
+  const existing = document.querySelector('script[data-font-switcher]');
+  if (existing) start();
+  else {
+    const s = document.createElement('script');
+    s.src = '/tools/font-switcher/js/font-switcher.js';
+    s.dataset.fontSwitcher = '1';
+    s.onload = () => start();
+    document.body.appendChild(s);
+  }
+</script>

@@ -24,8 +24,8 @@
 @font-face {
   font-family: 'NithyaRanjana';
   src:
-    url('https://cdn.staticdelivr.com/gh/callijatra/nithya-ranjana-webfont1/main/fonts/NithyaRanjanaDU-Regular.woff2') format('woff2'),
-    url('https://cdn.staticdelivr.com/gh/callijatra/nithya-ranjana-webfont1/main/fonts/NithyaRanjanaDU-Regular.woff') format('woff');
+    url('/tools/webfont/fonts/NithyaRanjanaDU-Regular.woff2') format('woff2'),
+    url('/tools/webfont/fonts/NithyaRanjanaDU-Regular.woff') format('woff');
   font-weight: 100;
   font-display: swap;
 }
