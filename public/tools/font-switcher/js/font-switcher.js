@@ -153,6 +153,8 @@
       backgroundColor: null,
       darkBackgroundColor: null,
       position: 'top-right',
+      offsetX: null,
+      offsetY: null,
       dropDirection: 'auto',
       autoLoad: true,
       storageKey: 'font-switcher-selection'
@@ -161,21 +163,25 @@
     fonts: {
       devanagari: {
         name: 'Devanagari',
+        shortName: 'Deva',
         family: null,
         preview: '\u0928\u092E\u0938\u094D\u0924\u0947' // नमस्ते
       },
       ranjana: {
         name: 'Ranjana',
+        shortName: 'Ranjana',
         family: 'NithyaRanjana, sans-serif',
         preview: '\u0928\u092E\u0938\u094D\u0924\u0947' // नमस्ते
       },
       newa: {
         name: 'Nepal Lipi "Aakha"',
+        shortName: 'Aakha',
         family: '"NewaAakha", sans-serif',
         preview: '\u0928\u092E\u0938\u094D\u0924\u0947' // नमस्ते
       },
       notoNewa: {
         name: 'Nepal Lipi (Noto Sans)',
+        shortName: 'Noto',
         family: '"Noto Sans Newa", sans-serif',
         preview: null // set dynamically with converted Newa text
       }
@@ -280,6 +286,73 @@
       return null;
     },
 
+    floatingPositions: {
+      'top-left': { axis: 'left', edge: 'top' },
+      'top-center': { axis: 'center', edge: 'top' },
+      'top-right': { axis: 'right', edge: 'top', legacyClass: 'font-switcher-fixed' },
+      'bottom-left': { axis: 'left', edge: 'bottom' },
+      'bottom-center': { axis: 'center', edge: 'bottom' },
+      'bottom-right': { axis: 'right', edge: 'bottom', legacyClass: 'font-switcher-fixed-bottom' }
+    },
+
+    /**
+     * Turn a config length into a CSS pixel value.
+     * @param {number|string|null} value
+     * @param {number} fallback
+     * @returns {string}
+     */
+    offsetLength: function(value, fallback) {
+      if (value === undefined || value === null || value === '') return fallback + 'px';
+      if (typeof value === 'number' && Number.isFinite(value)) return value + 'px';
+      const text = String(value).trim();
+      if (/^-?\d+(\.\d+)?$/.test(text)) return text + 'px';
+      return fallback + 'px';
+    },
+
+    /**
+     * Pin a floating widget to an edge or the center, using offsetX and offsetY.
+     * @param {HTMLElement} container
+     */
+    applyFloatingPosition: function(container) {
+      const position = this.floatingPositions[this.config.position] ? this.config.position : 'top-right';
+      const spec = this.floatingPositions[position];
+      container.classList.add('font-switcher-floating', 'font-switcher-pos-' + position);
+      if (spec.legacyClass) container.classList.add(spec.legacyClass);
+      container.style.setProperty('--fs-offset-x', this.offsetLength(this.config.offsetX, spec.axis === 'center' ? 0 : 20));
+      container.style.setProperty('--fs-offset-y', this.offsetLength(this.config.offsetY, 20));
+      const dropUp = this.config.dropDirection === 'up' || (this.config.dropDirection !== 'down' && spec.edge === 'bottom');
+      if (dropUp) container.classList.add('font-switcher-drop-up');
+    },
+
+    /**
+     * Closed control shows the full name on wide screens and a short name on small ones.
+     * @param {HTMLElement} selectedEl
+     * @param {string} key
+     */
+    renderSelectedLabel: function(selectedEl, key) {
+      const fontDef = this.fonts[key];
+      if (!selectedEl || !fontDef) return;
+      selectedEl.replaceChildren();
+      selectedEl.style.fontFamily = '';
+
+      const full = document.createElement('span');
+      full.className = 'font-switcher-selected-full';
+      full.textContent = fontDef.name;
+
+      const short = document.createElement('span');
+      short.className = 'font-switcher-selected-short';
+      short.textContent = fontDef.shortName || fontDef.name;
+
+      const preview = document.createElement('span');
+      preview.className = 'font-switcher-selected-preview';
+      if (fontDef.preview) preview.textContent = fontDef.preview;
+      if (fontDef.family) {
+        full.style.fontFamily = fontDef.family;
+        preview.style.fontFamily = fontDef.family;
+      }
+      selectedEl.append(full, short, preview);
+    },
+
     /**
      * Create the widget UI element
      */
@@ -296,15 +369,7 @@
       if (targetContainer) {
         container.classList.add('font-switcher-inline');
       } else {
-        if (this.config.position === 'bottom-right') {
-          container.classList.add('font-switcher-fixed-bottom');
-        } else {
-          container.classList.add('font-switcher-fixed');
-        }
-      }
-
-      if (this.config.dropDirection === 'up' || this.config.position === 'bottom-right') {
-        container.classList.add('font-switcher-drop-up');
+        this.applyFloatingPosition(container);
       }
 
       // Label text customization or removal
@@ -342,16 +407,9 @@
       const self = this;
       const fontKeys = Object.keys(this.fonts);
 
-      function updateSelectedDisplay(key) {
-        const fontDef = self.fonts[key];
-        var previewText = fontDef.preview ? ' - ' + fontDef.preview : '';
-        selected.textContent = fontDef.name + previewText;
-        if (fontDef.family) {
-          selected.style.fontFamily = fontDef.family;
-        } else {
-          selected.style.fontFamily = '';
-        }
-      }
+      const updateSelectedDisplay = (key) => {
+        self.renderSelectedLabel(selected, key);
+      };
 
       fontKeys.forEach(key => {
         const fontDef = this.fonts[key];
@@ -396,19 +454,58 @@
 
       updateSelectedDisplay(this.currentFont);
 
+      const compactQuery = window.matchMedia('(max-width: 640px)');
+      const placeOptionsMenu = () => {
+        if (!compactQuery.matches) {
+          optionsList.style.left = '';
+          optionsList.style.right = '';
+          optionsList.style.width = '';
+          optionsList.style.maxWidth = '';
+          return;
+        }
+        const margin = 8;
+        const limit = Math.max(120, window.innerWidth - margin * 2);
+        optionsList.style.left = '0px';
+        optionsList.style.right = 'auto';
+        optionsList.style.width = 'max-content';
+        optionsList.style.maxWidth = limit + 'px';
+        let rect = optionsList.getBoundingClientRect();
+        if (rect.right > window.innerWidth - margin) {
+          optionsList.style.left = 'auto';
+          optionsList.style.right = '0px';
+          rect = optionsList.getBoundingClientRect();
+        }
+        if (rect.left < margin) {
+          const host = dropdown.getBoundingClientRect();
+          optionsList.style.right = 'auto';
+          optionsList.style.left = (margin - host.left) + 'px';
+          optionsList.style.width = limit + 'px';
+        }
+      };
+      const openMenu = () => {
+        dropdown.classList.toggle('font-switcher-open');
+        if (dropdown.classList.contains('font-switcher-open')) placeOptionsMenu();
+      };
+
       selected.addEventListener('click', (e) => {
         e.stopPropagation();
-        dropdown.classList.toggle('font-switcher-open');
+        openMenu();
       });
 
       dropdown.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          dropdown.classList.toggle('font-switcher-open');
+          openMenu();
         } else if (e.key === 'Escape') {
           dropdown.classList.remove('font-switcher-open');
         }
       });
+
+      if (this._compactResize) window.removeEventListener('resize', this._compactResize);
+      this._compactResize = () => {
+        if (dropdown.classList.contains('font-switcher-open')) placeOptionsMenu();
+      };
+      window.addEventListener('resize', this._compactResize);
 
       document.addEventListener('click', () => {
         dropdown.classList.remove('font-switcher-open');
@@ -702,9 +799,7 @@
       if (dropdown) {
         const selectedEl = dropdown.querySelector('.font-switcher-selected');
         if (selectedEl && font) {
-          var previewText = font.preview ? ' - ' + font.preview : '';
-          selectedEl.textContent = font.name + previewText;
-          selectedEl.style.fontFamily = font.family || '';
+          this.renderSelectedLabel(selectedEl, fontKey);
         }
         dropdown.querySelectorAll('.font-switcher-option').forEach(el => {
           el.classList.toggle('font-switcher-option-active', el.getAttribute('data-value') === fontKey);

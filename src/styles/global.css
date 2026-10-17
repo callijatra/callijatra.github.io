@@ -59,6 +59,8 @@ body, header, footer, section, div, a, p, h1, h2, h3, h4, span {
 /* .nav-collapsed hides the menu */
 .nav-collapsed {
   height: 0;
+  padding: 0;
+  border-width: 0;
   overflow: hidden;
 }
 

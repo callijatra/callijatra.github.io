@@ -259,6 +259,13 @@ export const learnTopics = [
     label: 'Learn Ranjana Lipi',
     description: 'Explore letters and matras',
     available: true,
+    subtopics: [
+      { id: 'ranjana-overview', label: 'Shape families' },
+      { id: 'ranjana-vowels', label: 'Vowels' },
+      { id: 'ranjana-consonants', label: 'Consonants' },
+      { id: 'ranjana-compounds', label: 'Compound letters' },
+      { id: 'ranjana-typeface', label: 'Typeface' },
+    ],
   },
   {
     id: 'nepal-lipi',

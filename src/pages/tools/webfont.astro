@@ -1,133 +1,243 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
-const stylesheetUrl = 'https://callijatra.github.io/tools/webfont/css/nithya-ranjana.css';
-const snippet = `@import url('${stylesheetUrl}');
-
-.ranjana {
-  font-family: 'NithyaRanjana', sans-serif;
-}
-
-/* Newa Unicode text */
-.newa {
-  font-family: 'NithyaRanjanaNU', sans-serif;
-}`;
+const origin = 'https://callijatra.github.io';
+const fontBase = `${origin}/tools/webfont/fonts`;
 ---
 
 <Layout
   title="Ranjana Webfont — Nithya Ranjana | Callijatra"
-  description="Drop-in CSS webfont for rendering Ranjana Lipi on any webpage. Nithya Ranjana for Devanagari Unicode and Newa Unicode."
+  description="Specimen studio and integration snippet for the Nithya Ranjana webfont. Tune text, size, spacing, colour, and stylistic sets, then copy the CSS."
 >
   <link rel="stylesheet" href="/tools/webfont/css/nithya-ranjana.css" />
 
   <section class="bg-gray-50 dark:bg-gray-950">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-2">Webfont</span>
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">Render Ranjana Lipi on the web</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">Ranjana integration studio</h1>
       <p class="text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed mb-8">
-        Nithya Ranjana is a calligraphic Ranjana typeface. This page hosts the font files and a stylesheet you can link from any site. Licensed under the SIL Open Font License.
+        Try Nithya Ranjana here, then copy CSS that matches what you see. The Devanagari Unicode cut is the default. Switch to Newa Unicode when your text is already encoded in Nepal Lipi.
       </p>
 
-      <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm overflow-hidden">
-        <div class="px-5 sm:px-8 py-8 sm:py-12 min-h-[16rem] flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#ffffff_70%)] dark:bg-none">
-          <p
-            id="specimen"
-            class="font-nithya-ranjana text-center leading-none text-gray-900 dark:text-white break-words"
-            style="font-size: 4.75rem; letter-spacing: 0em;"
-          >नित्या रञ्जना</p>
+      <div id="studio" class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_18rem] gap-4 items-stretch">
+        <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 min-h-[16rem] flex items-center justify-center px-5 py-10 overflow-hidden">
+          <p id="specimen" class="font-nithya-ranjana text-center leading-none break-words" style="font-size:76px;color:#c0392b;">नित्या रञ्जना</p>
         </div>
 
-        <div class="border-t border-gray-100 dark:border-gray-800 p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <label class="sm:col-span-2 block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Preview text
-            <input id="specimen-text" type="text" value="नित्या रञ्जना" spellcheck="false"
-              class="mt-1.5 w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2.5 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand" />
+        <aside class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 space-y-4">
+          <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Your text
+            <input id="text-input" type="text" value="नित्या रञ्जना" spellcheck="false"
+              class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white" />
           </label>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Size <span id="size-label" class="text-gray-400 font-normal">76px</span>
-            <input id="specimen-size" type="range" min="28" max="160" value="76" class="mt-2 w-full accent-[#c0392b]" />
+          <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Or pick a sample
+            <select id="sample-select" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white">
+              <option value="">Choose a sample…</option>
+              <option>नित्या रञ्जना</option>
+              <option>ॐ वागिश्वरि मूं</option>
+              <option>नेपालभाषा रञ्जना लिपि</option>
+              <option>सर्वे भवन्तु सुखिनः</option>
+              <option>सङ्गमेन तितिर्याम</option>
+              <option>क्षत्रिय ज्ञानत्र श्रद्धा</option>
+            </select>
           </label>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Spacing <span id="spacing-label" class="text-gray-400 font-normal">0</span>
-            <input id="specimen-spacing" type="range" min="-4" max="24" value="0" class="mt-2 w-full accent-[#c0392b]" />
+          <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Encoding
+            <select id="encoding" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white">
+              <option value="du">Devanagari Unicode (DU)</option>
+              <option value="nu">Newa Unicode (NU)</option>
+            </select>
           </label>
-          <fieldset class="sm:col-span-2 flex flex-wrap gap-2">
-            <legend class="sr-only">Font version</legend>
-            <button type="button" data-family="font-nithya-ranjana" class="family-btn is-active px-3 py-1.5 rounded-full text-xs font-semibold border border-brand bg-brand text-white">Devanagari Unicode</button>
-            <button type="button" data-family="font-nithya-ranjana-nu" class="family-btn px-3 py-1.5 rounded-full text-xs font-semibold border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">Newa Unicode</button>
-            <button type="button" data-family="font-nithya-ranjana-ss01" class="family-btn px-3 py-1.5 rounded-full text-xs font-semibold border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">Stylistic set 1</button>
-          </fieldset>
-        </div>
+          <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Font size <output id="size-output" class="font-normal">76</output>
+            <input id="size-slider" type="range" min="24" max="320" value="76" class="mt-2 w-full accent-[#c0392b]" />
+          </label>
+          <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Letter spacing <output id="spacing-output" class="font-normal">0</output>
+            <input id="spacing-slider" type="range" min="-2" max="24" value="0" step="0.5" class="mt-2 w-full accent-[#c0392b]" />
+          </label>
+          <label class="flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Colour
+            <input id="color-input" type="color" value="#c0392b" class="h-8 w-12 rounded border border-gray-200 dark:border-gray-700 bg-transparent" />
+          </label>
+          <div>
+            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Stylistic sets</p>
+            <div class="grid grid-cols-4 gap-1.5">
+              <button type="button" data-ss="ss01" class="ss-btn rounded-lg border border-gray-200 dark:border-gray-700 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200">ss01</button>
+              <button type="button" data-ss="ss02" class="ss-btn rounded-lg border border-gray-200 dark:border-gray-700 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200">ss02</button>
+              <button type="button" data-ss="ss03" class="ss-btn rounded-lg border border-gray-200 dark:border-gray-700 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200">ss03</button>
+              <button type="button" data-ss="ss04" class="ss-btn rounded-lg border border-gray-200 dark:border-gray-700 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200">ss04</button>
+            </div>
+            <p id="feature-state" class="mt-2 text-[11px] text-gray-400 break-words">font-feature-settings: normal</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" id="random-btn" class="flex-1 rounded-lg bg-brand text-white text-xs font-semibold py-2 hover:bg-brand-hover">Shuffle sample</button>
+            <button type="button" id="reset-btn" class="flex-1 rounded-lg border border-gray-200 dark:border-gray-700 text-xs font-semibold py-2 text-gray-700 dark:text-gray-200">Reset</button>
+          </div>
+        </aside>
       </div>
 
-      <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 sm:p-6">
-          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Use it on a webpage</h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">One stylesheet import. Font files are served from this site.</p>
-          <pre class="overflow-x-auto rounded-xl bg-gray-950 text-gray-100 text-xs leading-relaxed p-4"><code>{snippet}</code></pre>
-          <p class="mt-3 text-xs text-gray-400">
-            <a class="underline hover:text-brand" href="/tools/webfont/OFL.txt">SIL Open Font License</a>
-            · <a class="underline hover:text-brand" href="/tools/webfont/CONTRIBUTORS.txt">Contributors</a>
-          </p>
+      <section class="mt-8" aria-labelledby="integration-heading">
+        <h2 id="integration-heading" class="text-xl font-bold text-gray-900 dark:text-white mb-1">Integration snippet</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Updates as you change the studio. Paste this into your stylesheet.</p>
+        <div class="relative">
+          <button type="button" id="copy-css" class="absolute top-3 right-3 rounded-lg bg-white/10 px-3 py-1 text-xs font-semibold text-white hover:bg-white/20">Copy</button>
+          <pre id="css-output" class="overflow-x-auto rounded-2xl bg-gray-950 text-gray-100 text-xs leading-relaxed p-4 pr-20"></pre>
         </div>
-        <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 sm:p-6">
-          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Two encodings</h2>
-          <ul class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-            <li><strong class="text-gray-900 dark:text-white">NithyaRanjana</strong> — Ranjana shapes for text encoded in Devanagari Unicode. This is what the rest of this site uses.</li>
-            <li><strong class="text-gray-900 dark:text-white">NithyaRanjanaNU</strong> — the same design for text encoded in Newa (Nepal Lipi) Unicode.</li>
-          </ul>
-          <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
-            Related tools:
-            <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/font-switcher">Font switcher</a>
-            ·
-            <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/transliterate">Transliteration keyboard</a>
-          </p>
+      </section>
+
+      <section class="mt-10" aria-labelledby="conjuncts-heading">
+        <h2 id="conjuncts-heading" class="text-xl font-bold text-gray-900 dark:text-white mb-1">Conjuncts</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Combined consonant forms in the same cut you selected above.</p>
+        <div id="conjunct-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+          {['क्ष','त्र','ज्ञ','श्र','द्ध','द्य','क्त','स्त्र','ञ्ज','ङ्क','ण्ड','ह्न'].map((ch) => (
+            <div class="conjunct rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 py-4 text-center font-nithya-ranjana text-4xl text-gray-900 dark:text-white">{ch}</div>
+          ))}
         </div>
-      </div>
+      </section>
+
+      <section class="mt-10" aria-labelledby="credits-heading">
+        <h2 id="credits-heading" class="text-xl font-bold text-gray-900 dark:text-white mb-1">Who made it</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Designed and engineered by EkType, with support from Callijatra. Licensed under the SIL Open Font License.</p>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+          <li class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3"><span class="font-semibold text-gray-900 dark:text-white">Tathagata Biswas</span><span class="block text-gray-500">Type design</span></li>
+          <li class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3"><span class="font-semibold text-gray-900 dark:text-white">Noopur Datye</span><span class="block text-gray-500">Type design</span></li>
+          <li class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3"><span class="font-semibold text-gray-900 dark:text-white">Ananda K. Maharjan</span><span class="block text-gray-500">Script expert</span></li>
+          <li class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3"><span class="font-semibold text-gray-900 dark:text-white">Sarang Kulkarni</span><span class="block text-gray-500">Project management</span></li>
+          <li class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3"><span class="font-semibold text-gray-900 dark:text-white">Murali K. Prahalad</span><span class="block text-gray-500">Sponsor and initiator</span></li>
+          <li class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3"><span class="font-semibold text-gray-900 dark:text-white">Callijatra</span><span class="block text-gray-500">Support, Kathmandu</span></li>
+        </ul>
+        <p class="mt-4 text-sm">
+          <a class="font-semibold text-brand dark:text-brand-light hover:underline" href="https://ektype.in" target="_blank" rel="noopener noreferrer">EkType</a>
+          <span aria-hidden="true"> · </span>
+          <a class="font-semibold text-brand dark:text-brand-light hover:underline" href="https://github.com/EkType/Nithya-Ranjana/releases" target="_blank" rel="noopener noreferrer">Font releases</a>
+          <span aria-hidden="true"> · </span>
+          <a class="font-semibold text-brand dark:text-brand-light hover:underline" href="/tools/webfont/OFL.txt">SIL Open Font License</a>
+        </p>
+      </section>
     </div>
   </section>
 </Layout>
 
-<script>
-  const specimen = document.getElementById('specimen') as HTMLElement;
-  const text = document.getElementById('specimen-text') as HTMLInputElement;
-  const size = document.getElementById('specimen-size') as HTMLInputElement;
-  const spacing = document.getElementById('specimen-spacing') as HTMLInputElement;
-  const sizeLabel = document.getElementById('size-label')!;
-  const spacingLabel = document.getElementById('spacing-label')!;
-  const faces: Record<string, { family: string; features: string }> = {
-    'font-nithya-ranjana': { family: "'NithyaRanjana', sans-serif", features: 'normal' },
-    'font-nithya-ranjana-nu': { family: "'NithyaRanjanaNU', sans-serif", features: 'normal' },
-    'font-nithya-ranjana-ss01': { family: "'NithyaRanjana', sans-serif", features: '"ss01" 1' },
-  };
-  let face = 'font-nithya-ranjana';
+<script define:vars={{ fontBase }}>
+  const specimen = document.getElementById('specimen');
+  const textInput = document.getElementById('text-input');
+  const sampleSelect = document.getElementById('sample-select');
+  const encoding = document.getElementById('encoding');
+  const sizeSlider = document.getElementById('size-slider');
+  const spacingSlider = document.getElementById('spacing-slider');
+  const colorInput = document.getElementById('color-input');
+  const sizeOutput = document.getElementById('size-output');
+  const spacingOutput = document.getElementById('spacing-output');
+  const featureState = document.getElementById('feature-state');
+  const cssOutput = document.getElementById('css-output');
+  const copyBtn = document.getElementById('copy-css');
+  const featureButtons = Array.from(document.querySelectorAll('.ss-btn'));
+  const conjuncts = Array.from(document.querySelectorAll('.conjunct'));
+  const samples = Array.from(sampleSelect.options).map((o) => o.value).filter(Boolean);
+  let savedSample = 'नित्या रञ्जना';
+  let rawCss = '';
 
-  function paint() {
-    const chosen = faces[face];
-    specimen.textContent = text.value || ' ';
-    specimen.style.fontFamily = chosen.family;
-    specimen.style.fontFeatureSettings = chosen.features;
-    specimen.style.fontSize = `${size.value}px`;
-    specimen.style.letterSpacing = `${Number(spacing.value) / 100}em`;
-    sizeLabel.textContent = `${size.value}px`;
-    spacingLabel.textContent = `${Number(spacing.value) / 100}`;
+  function activeSets() {
+    return featureButtons.filter((b) => b.classList.contains('is-on')).map((b) => b.dataset.ss);
   }
 
-  paint();
-  text.addEventListener('input', paint);
-  size.addEventListener('input', paint);
-  spacing.addEventListener('input', paint);
+  function featureSettings() {
+    const sets = activeSets();
+    return sets.length ? sets.map((s) => `"${s}" 1`).join(', ') : 'normal';
+  }
 
-  document.querySelectorAll<HTMLButtonElement>('.family-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      face = btn.dataset.family!;
-      paint();
-      document.querySelectorAll('.family-btn').forEach((el) => {
-        el.classList.remove('is-active', 'bg-brand', 'text-white', 'border-brand');
-        el.classList.add('border-gray-200', 'dark:border-gray-700', 'text-gray-600', 'dark:text-gray-300');
-      });
-      btn.classList.add('is-active', 'bg-brand', 'text-white', 'border-brand');
-      btn.classList.remove('border-gray-200', 'text-gray-600');
+  function renderSnippet() {
+    const nu = encoding.value === 'nu';
+    const family = nu ? 'NithyaRanjanaNU' : 'NithyaRanjana';
+    const file = nu ? 'NithyaRanjanaNU-Regular' : 'NithyaRanjanaDU-Regular';
+    const features = featureSettings();
+    rawCss = `@font-face {
+  font-family: '${family}';
+  src: url('${fontBase}/${file}.woff2') format('woff2'),
+       url('${fontBase}/${file}.woff') format('woff'),
+       url('${fontBase}/${file}.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.nithya-ranjana {
+  font-family: '${family}', sans-serif;
+  font-size: ${sizeSlider.value}px;
+  letter-spacing: ${spacingSlider.value}px;
+  color: ${colorInput.value};
+  font-feature-settings: ${features};
+}`;
+    cssOutput.textContent = rawCss;
+  }
+
+  function apply() {
+    const nu = encoding.value === 'nu';
+    specimen.style.fontFamily = nu ? "'NithyaRanjanaNU', sans-serif" : "'NithyaRanjana', sans-serif";
+    specimen.style.fontSize = `${sizeSlider.value}px`;
+    specimen.style.letterSpacing = `${spacingSlider.value}px`;
+    specimen.style.color = colorInput.value;
+    specimen.style.fontFeatureSettings = featureSettings();
+    sizeOutput.textContent = sizeSlider.value;
+    spacingOutput.textContent = spacingSlider.value;
+    featureState.textContent = `font-feature-settings: ${featureSettings()}`;
+    conjuncts.forEach((el) => {
+      el.style.fontFamily = specimen.style.fontFamily;
+      el.style.fontFeatureSettings = specimen.style.fontFeatureSettings;
+    });
+    renderSnippet();
+  }
+
+  textInput.addEventListener('input', () => {
+    specimen.textContent = textInput.value || ' ';
+    sampleSelect.value = '';
+    renderSnippet();
+  });
+  sampleSelect.addEventListener('change', () => {
+    if (!sampleSelect.value) return;
+    savedSample = sampleSelect.value;
+    textInput.value = savedSample;
+    specimen.textContent = savedSample;
+  });
+  featureButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const on = button.classList.toggle('is-on');
+      button.classList.toggle('bg-brand', on);
+      button.classList.toggle('text-white', on);
+      button.classList.toggle('border-brand', on);
+      apply();
     });
   });
+  document.getElementById('random-btn').addEventListener('click', () => {
+    const pool = samples.filter((s) => s !== savedSample);
+    savedSample = pool[Math.floor(Math.random() * pool.length)];
+    textInput.value = savedSample;
+    specimen.textContent = savedSample;
+    sampleSelect.value = savedSample;
+  });
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    sizeSlider.value = '76';
+    spacingSlider.value = '0';
+    colorInput.value = '#c0392b';
+    encoding.value = 'du';
+    featureButtons.forEach((b) => {
+      b.classList.remove('is-on', 'bg-brand', 'text-white', 'border-brand');
+    });
+    savedSample = 'नित्या रञ्जना';
+    textInput.value = savedSample;
+    specimen.textContent = savedSample;
+    sampleSelect.value = '';
+    apply();
+  });
+  [sizeSlider, spacingSlider, colorInput, encoding].forEach((control) => {
+    control.addEventListener('input', apply);
+  });
+  copyBtn.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(rawCss);
+    copyBtn.textContent = 'Copied';
+    setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1600);
+  });
+  apply();
 </script>

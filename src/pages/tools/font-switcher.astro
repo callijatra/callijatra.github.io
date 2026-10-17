@@ -3,20 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 
 const cssUrl = 'https://callijatra.github.io/tools/font-switcher/css/font-switcher.css';
 const jsUrl = 'https://callijatra.github.io/tools/font-switcher/js/font-switcher.js';
-const snippet = [
-  `<link rel="stylesheet" href="${cssUrl}">`,
-  `<script src="${jsUrl}"></script>`,
-  `<script>`,
-  `  FontSwitcher.init({`,
-  `    targetClasses: ['newa-content']`,
-  `  });`,
-  `</script>`,
-].join('\n');
 ---
 
 <Layout
   title="Newa Font Switcher | Callijatra"
-  description="A JavaScript widget that lets readers switch Devanagari text into Ranjana Lipi or Nepal Lipi on any webpage."
+  description="Configure the Newa font switcher and copy integration code for your site. Compare Devanagari, Ranjana, Nepal Lipi Aakha, and Noto Sans Newa."
 >
   <link rel="stylesheet" href="/tools/font-switcher/css/font-switcher.css" />
 
@@ -24,60 +15,336 @@ const snippet = [
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light mb-2">Widget</span>
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">Newa Font Switcher</h1>
-      <p class="text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed mb-6">
-        Readers pick a script. The same Devanagari text redraws in Nithya Ranjana, Nepal Lipi Aakha, or Noto Sans Newa — without a reload.
+      <p class="text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed mb-8">
+        Tune placement, colours, and borders, then copy the snippet. The preview on this page follows those settings.
       </p>
 
-      <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 mb-4">
-        <p class="text-sm font-medium text-gray-700 dark:text-gray-200">Try it on the passage below</p>
-        <div id="switcher-slot"></div>
+      <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Navbar slot</p>
+        <div id="navbar-widget-slot" class="min-h-10 flex items-center justify-end"></div>
       </div>
 
-      <article class="newa-content rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 sm:p-8 space-y-4 text-lg leading-relaxed text-gray-800 dark:text-gray-100">
-        <h2 class="text-2xl font-bold">नेपाल भाषा</h2>
-        <p>
-          रञ्जना लिपि नेपालमण्डलया प्राचीन लिपि खः। थ्व लिपिं बौद्ध व हिन्दू ग्रन्थ, शिलालेख, व नेपालभाषा च्वयातःगु दु।
-        </p>
-        <p>
-          काठमाडौं उपत्यकाया नेवार समुदायया सांस्कृतिक जीवनय् रञ्जना व नेपाल लिपि आः नं जीवित दु।
-        </p>
+      <article class="newa-content rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 sm:p-8 space-y-3 text-lg leading-relaxed text-gray-800 dark:text-gray-100 mb-8">
+        <h2 class="text-2xl font-bold">अःपुगु ‘नित्या रञ्जना’ लिपिया युनिकोड फन्ट सार्वजनिक</h2>
+        <p>विश्वया हे सुन्दर लिपि कथं नांजाःगु रञ्जना लिपिया न्हूगु युनिकोड फन्ट सार्वजनिक जूगु दु। क्यालिजात्रा फाउन्डेसनपाखें तयार याःगु ‘नित्या रञ्जना’ येँ महानगरपालिकाया उपमेयर सुनिता डंगोलं सार्वजनिक यानादीगु खः।</p>
       </article>
 
-      <div class="mt-8 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 sm:p-6">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Embed on your site</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Mark the text you want to switch with <code class="text-xs">newa-content</code>, then load the stylesheet and script from this site.
-        </p>
-        <pre class="overflow-x-auto rounded-xl bg-gray-950 text-gray-100 text-xs leading-relaxed p-4"><code>{snippet}</code></pre>
-        <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
-          Related tools:
-          <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/webfont">Ranjana webfont</a>
-          ·
-          <a class="text-brand dark:text-brand-light font-medium hover:underline" href="/tools/transliterate">Transliteration keyboard</a>
-        </p>
-      </div>
+      <section class="mb-10" aria-labelledby="matrix-heading">
+        <h2 id="matrix-heading" class="text-xl font-bold text-gray-900 dark:text-white mb-1">Four-script comparison</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Type Devanagari or Nepal Bhasa. Noto Sans Newa shows the converted Newa Unicode.</p>
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <label class="block flex-1 min-w-[16rem] text-xs font-semibold text-gray-500 dark:text-gray-400">
+            Text
+            <textarea id="sandbox-input" rows="3" class="mt-1 w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-base text-gray-900 dark:text-white">येँ महानगरपालिका व क्यालिजात्रा फाउन्डेसन</textarea>
+          </label>
+          <div id="playground-slot" class="min-h-10 self-end"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Devanagari</p>
+            <p id="preview-devanagari" class="text-xl leading-relaxed"></p>
+          </div>
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Nithya Ranjana</p>
+            <p id="preview-ranjana" class="font-switcher-ranjana text-2xl leading-relaxed"></p>
+          </div>
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Nepal Lipi Aakha</p>
+            <p id="preview-aakha" class="font-switcher-newa text-2xl leading-relaxed"></p>
+          </div>
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Noto Sans Newa</p>
+            <p id="preview-notonewa" class="font-switcher-notoNewa text-2xl leading-relaxed"></p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="generator-heading">
+        <h2 id="generator-heading" class="text-xl font-bold text-gray-900 dark:text-white mb-1">Integration code</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">The snippet uses the font files hosted on this site.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+          <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 space-y-4">
+            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+              Placement
+              <span class="relative mt-1 block">
+                <select id="cfg-placement" class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 pl-3 pr-12 py-2 text-sm text-gray-900 dark:text-white">
+                  <option value="header" selected>Header navbar (#navbar-widget-slot)</option>
+                  <option value="playground">Comparison area (#playground-slot)</option>
+                  <option value="fixed-top-left">Floating, top left</option>
+                  <option value="fixed-top-center">Floating, top center</option>
+                  <option value="fixed-top">Floating, top right</option>
+                  <option value="fixed-bottom-left">Floating, bottom left</option>
+                  <option value="fixed-bottom-center">Floating, bottom center</option>
+                  <option value="fixed-bottom">Floating, bottom right</option>
+                  <option value="custom">Custom container selector</option>
+                </select>
+                <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400 dark:text-gray-500" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </span>
+            </label>
+            <label id="cfg-container-group" class="text-xs font-semibold text-gray-500 dark:text-gray-400" style="display:none">
+              Container selector
+              <input id="cfg-container-id" type="text" value="#main-nav" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white" />
+              <span class="mt-1 block font-normal text-gray-400">The copied code uses this selector. If it is not on this page, the preview stays in the navbar slot.</span>
+            </label>
+            <div id="cfg-offset-group" class="grid grid-cols-2 gap-2" style="display:none">
+              <label class="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                <span id="cfg-offset-x-label">From the right</span>
+                <input id="cfg-offset-x" type="number" value="20" step="1" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white" />
+              </label>
+              <label class="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                <span id="cfg-offset-y-label">From the top</span>
+                <input id="cfg-offset-y" type="number" value="20" step="1" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white" />
+              </label>
+              <p id="cfg-offset-hint" class="col-span-2 text-[11px] font-normal leading-relaxed text-gray-400"></p>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+                Label
+                <input id="cfg-label-text" type="text" value="Font:" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white" />
+              </label>
+              <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200"><input id="cfg-show-label" type="checkbox" checked /> Show label</label>
+            </div>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200"><input id="cfg-show-container-border" type="checkbox" checked /> Outer border</label>
+              <div id="container-border-colors" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label class="text-xs text-gray-500">Light border
+                  <span class="mt-1 flex gap-2"><input id="cfg-container-border-picker" type="color" value="#e5e7eb" class="h-9 w-12 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-transparent" /><input id="cfg-container-border" type="text" value="#e5e7eb" class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-2 text-sm text-gray-900 dark:text-white" /></span>
+                </label>
+                <label class="text-xs text-gray-500">Dark border
+                  <span class="mt-1 flex gap-2"><input id="cfg-dark-container-border-picker" type="color" value="#1f2937" class="h-9 w-12 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-transparent" /><input id="cfg-dark-container-border" type="text" value="#1f2937" class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-2 text-sm text-gray-900 dark:text-white" /></span>
+                </label>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200"><input id="cfg-show-select-border" type="checkbox" checked /> Dropdown border</label>
+              <div id="select-border-colors" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label class="text-xs text-gray-500">Light select
+                  <span class="mt-1 flex gap-2"><input id="cfg-select-border-picker" type="color" value="#e5e7eb" class="h-9 w-12 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-transparent" /><input id="cfg-select-border" type="text" value="#e5e7eb" class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-2 text-sm text-gray-900 dark:text-white" /></span>
+                </label>
+                <label class="text-xs text-gray-500">Dark select
+                  <span class="mt-1 flex gap-2"><input id="cfg-dark-select-border-picker" type="color" value="#1f2937" class="h-9 w-12 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-transparent" /><input id="cfg-dark-select-border" type="text" value="#1f2937" class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-2 text-sm text-gray-900 dark:text-white" /></span>
+                </label>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <label class="text-xs text-gray-500">Light background
+                <span class="mt-1 flex gap-2"><input id="cfg-bg-picker" type="color" value="#ffffff" class="h-9 w-12 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-transparent" /><input id="cfg-bg" type="text" value="#ffffff" class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-2 text-sm text-gray-900 dark:text-white" /></span>
+              </label>
+              <label class="text-xs text-gray-500">Dark background
+                <span class="mt-1 flex gap-2"><input id="cfg-dark-bg-picker" type="color" value="#0f172a" class="h-9 w-12 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-transparent" /><input id="cfg-dark-bg" type="text" value="#0f172a" class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-2 text-sm text-gray-900 dark:text-white" /></span>
+              </label>
+            </div>
+            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400">
+              Target classes
+              <input id="cfg-target" type="text" value="newa-content" class="mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 px-3 py-2 text-sm text-gray-900 dark:text-white" />
+            </label>
+            <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200"><input id="cfg-autoload" type="checkbox" checked /> Load Noto Sans Newa from Google Fonts</label>
+          </div>
+          <div class="relative">
+            <button type="button" id="btn-copy-code" class="absolute top-3 right-3 rounded-lg bg-white/10 px-3 py-1 text-xs font-semibold text-white hover:bg-white/20">Copy</button>
+            <pre id="code-snippet-output" class="overflow-x-auto rounded-2xl bg-gray-950 text-gray-100 text-xs leading-relaxed p-4 pr-20 min-h-[16rem]"></pre>
+          </div>
+        </div>
+      </section>
     </div>
   </section>
 </Layout>
 
-<script>
-  const slot = document.getElementById('switcher-slot');
-  const start = () => {
-    const api = (window as unknown as { FontSwitcher?: { init: (opts: object) => void } }).FontSwitcher;
-    if (!api || !slot) return;
-    api.init({
-      targetClasses: ['newa-content'],
-      container: slot,
-    });
-  };
+<script define:vars={{ cssUrl, jsUrl }}>
+  const closeTag = '<' + '/script>';
+  const $ = (id) => document.getElementById(id);
 
-  const existing = document.querySelector('script[data-font-switcher]');
-  if (existing) start();
-  else {
-    const s = document.createElement('script');
-    s.src = '/tools/font-switcher/js/font-switcher.js';
-    s.dataset.fontSwitcher = '1';
-    s.onload = () => start();
-    document.body.appendChild(s);
+  function start() {
+    const api = window.FontSwitcher;
+    if (!api) return;
+
+    const sandbox = $('sandbox-input');
+    const paintMatrix = () => {
+      const val = sandbox.value || '';
+      $('preview-devanagari').textContent = val;
+      $('preview-ranjana').textContent = val;
+      $('preview-aakha').textContent = val;
+      $('preview-notonewa').textContent = api.toNewa(val);
+    };
+    sandbox.addEventListener('input', paintMatrix);
+    paintMatrix();
+
+    const placement = $('cfg-placement');
+    const containerGroup = $('cfg-container-group');
+    const offsetGroup = $('cfg-offset-group');
+    const quote = (value) => String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const floatingPositions = {
+      'fixed-top-left': 'top-left',
+      'fixed-top-center': 'top-center',
+      'fixed-top': 'top-right',
+      'fixed-bottom-left': 'bottom-left',
+      'fixed-bottom-center': 'bottom-center',
+      'fixed-bottom': 'bottom-right',
+    };
+    let lastFloating = null;
+
+    function readOffset(id, fallback) {
+      const raw = $(id).value.trim();
+      if (raw === '') return fallback;
+      const value = Number(raw);
+      return Number.isFinite(value) ? value : fallback;
+    }
+
+    function describeFloating(position) {
+      const center = position.endsWith('center');
+      const fromLeft = position.endsWith('left');
+      const fromBottom = position.startsWith('bottom');
+      const x = $('cfg-offset-x');
+      const wasCenter = lastFloating && lastFloating.endsWith('center');
+      if (center && !wasCenter && x.value.trim() === '20') x.value = '0';
+      if (!center && wasCenter && x.value.trim() === '0') x.value = '20';
+      lastFloating = position;
+      $('cfg-offset-x-label').textContent = center ? 'Shift from center (px)' : (fromLeft ? 'From the left (px)' : 'From the right (px)');
+      $('cfg-offset-y-label').textContent = fromBottom ? 'From the bottom (px)' : 'From the top (px)';
+      const verticalHint = fromBottom
+        ? 'Increase the bottom offset to clear a footer or another fixed control.'
+        : 'This site’s navbar is 80px tall, so a top offset around 96px sits the widget just below it.';
+      const horizontalHint = center ? ' Positive shift moves the widget right. Negative shift moves it left.' : '';
+      $('cfg-offset-hint').textContent = verticalHint + horizontalHint;
+    }
+
+    function bindColor(pickerId, textId) {
+      const picker = $(pickerId);
+      const text = $(textId);
+      picker.addEventListener('input', () => {
+        text.value = picker.value;
+        update();
+      });
+      text.addEventListener('input', () => {
+        if (/^#[0-9a-f]{6}$/i.test(text.value.trim())) picker.value = text.value.trim();
+        update();
+      });
+    }
+    bindColor('cfg-bg-picker', 'cfg-bg');
+    bindColor('cfg-dark-bg-picker', 'cfg-dark-bg');
+    bindColor('cfg-container-border-picker', 'cfg-container-border');
+    bindColor('cfg-dark-container-border-picker', 'cfg-dark-container-border');
+    bindColor('cfg-select-border-picker', 'cfg-select-border');
+    bindColor('cfg-dark-select-border-picker', 'cfg-dark-select-border');
+
+    function update() {
+      const mode = placement.value;
+      const floating = floatingPositions[mode] || null;
+      containerGroup.style.display = mode === 'custom' ? 'block' : 'none';
+      offsetGroup.style.display = floating ? '' : 'none';
+      if (floating) describeFloating(floating);
+      $('container-border-colors').style.display = $('cfg-show-container-border').checked ? '' : 'none';
+      $('select-border-colors').style.display = $('cfg-show-select-border').checked ? '' : 'none';
+      $('cfg-label-text').disabled = !$('cfg-show-label').checked;
+
+      const targetCls = $('cfg-target').value.split(',').map((s) => s.trim()).filter(Boolean);
+      const showLabel = $('cfg-show-label').checked;
+      const labelText = $('cfg-label-text').value;
+      const showContainerBorder = $('cfg-show-container-border').checked;
+      const showSelectBorder = $('cfg-show-select-border').checked;
+      const autoload = $('cfg-autoload').checked;
+      const bg = $('cfg-bg').value.trim();
+      const darkBg = $('cfg-dark-bg').value.trim();
+      const containerBorder = $('cfg-container-border').value.trim();
+      const darkContainerBorder = $('cfg-dark-container-border').value.trim();
+      const selectBorder = $('cfg-select-border').value.trim();
+      const darkSelectBorder = $('cfg-dark-select-border').value.trim();
+
+      let containerOpt = null;
+      let positionOpt = floating || 'top-right';
+      const defaultOffsetX = positionOpt.endsWith('center') ? 0 : 20;
+      const offsetX = floating ? readOffset('cfg-offset-x', defaultOffsetX) : defaultOffsetX;
+      const offsetY = floating ? readOffset('cfg-offset-y', 20) : 20;
+      if (mode === 'header') containerOpt = '#navbar-widget-slot';
+      else if (mode === 'playground') containerOpt = '#playground-slot';
+      else if (mode === 'custom') containerOpt = $('cfg-container-id').value.trim() || null;
+
+      let js = 'FontSwitcher.init({\n';
+      if (targetCls.length) js += `  targetClasses: [${targetCls.map((c) => `'${quote(c)}'`).join(', ')}],\n`;
+      if (containerOpt) js += `  container: '${quote(containerOpt)}',\n`;
+      else if (floating) {
+        if (positionOpt !== 'top-right') js += `  position: '${positionOpt}',\n`;
+        if (offsetX !== defaultOffsetX) js += `  offsetX: ${offsetX},\n`;
+        if (offsetY !== 20) js += `  offsetY: ${offsetY},\n`;
+      }
+      if (!showLabel) js += `  labelText: '',\n`;
+      else if (labelText !== 'Font:') js += `  labelText: '${quote(labelText)}',\n`;
+      if (!showContainerBorder) js += `  showContainerBorder: false,\n`;
+      else {
+        if (containerBorder && containerBorder !== '#e5e7eb') js += `  containerBorderColor: '${quote(containerBorder)}',\n`;
+        if (darkContainerBorder && darkContainerBorder !== '#1f2937') js += `  darkContainerBorderColor: '${quote(darkContainerBorder)}',\n`;
+      }
+      if (!showSelectBorder) js += `  showSelectBorder: false,\n`;
+      else {
+        if (selectBorder && selectBorder !== '#e5e7eb') js += `  selectBorderColor: '${quote(selectBorder)}',\n`;
+        if (darkSelectBorder && darkSelectBorder !== '#1f2937') js += `  darkSelectBorderColor: '${quote(darkSelectBorder)}',\n`;
+      }
+      if (bg) js += `  backgroundColor: '${quote(bg)}',\n`;
+      if (darkBg) js += `  darkBackgroundColor: '${quote(darkBg)}',\n`;
+      if (!autoload) js += `  autoLoad: false,\n`;
+      js = js.replace(/,\n$/, '\n') + '});';
+
+      const snippet = [
+        '<!-- Include Font Switcher CSS -->',
+        `<link rel="stylesheet" href="${cssUrl}">`,
+        '',
+        '<!-- Include Font Switcher JS -->',
+        `<script src="${jsUrl}">${closeTag}`,
+        '',
+        '<!-- Initialize Widget -->',
+        '<script>',
+        js,
+        closeTag,
+      ].join('\n');
+
+      const out = $('code-snippet-output');
+      out.textContent = snippet;
+      out.dataset.rawCode = snippet;
+
+      const options = {
+        targetClasses: targetCls.length ? targetCls : ['newa-content'],
+        container: containerOpt && document.querySelector(containerOpt) ? containerOpt : (containerOpt ? '#navbar-widget-slot' : null),
+        position: positionOpt,
+        offsetX: floating ? offsetX : null,
+        offsetY: floating ? offsetY : null,
+        labelText: showLabel ? labelText : '',
+        showContainerBorder,
+        showSelectBorder,
+        autoLoad: autoload,
+      };
+      if (bg) options.backgroundColor = bg;
+      if (darkBg) options.darkBackgroundColor = darkBg;
+      if (showContainerBorder) {
+        if (containerBorder) options.containerBorderColor = containerBorder;
+        if (darkContainerBorder) options.darkContainerBorderColor = darkContainerBorder;
+      }
+      if (showSelectBorder) {
+        if (selectBorder) options.selectBorderColor = selectBorder;
+        if (darkSelectBorder) options.darkSelectBorderColor = darkSelectBorder;
+      }
+      api.init(options);
+    }
+
+    ['cfg-placement', 'cfg-container-id', 'cfg-label-text', 'cfg-show-label', 'cfg-show-container-border', 'cfg-show-select-border', 'cfg-target', 'cfg-autoload', 'cfg-offset-x', 'cfg-offset-y'].forEach((id) => {
+      $(id).addEventListener('input', update);
+      $(id).addEventListener('change', update);
+    });
+    update();
+
+    $('btn-copy-code').addEventListener('click', async () => {
+      const out = $('code-snippet-output');
+      await navigator.clipboard.writeText(out.dataset.rawCode || out.textContent);
+      $('btn-copy-code').textContent = 'Copied';
+      setTimeout(() => { $('btn-copy-code').textContent = 'Copy'; }, 1600);
+    });
   }
+
+  const script = document.createElement('script');
+  script.src = '/tools/font-switcher/js/font-switcher.js';
+  script.onload = () => start();
+  document.body.appendChild(script);
 </script>

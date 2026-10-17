@@ -39,22 +39,59 @@
   user-select: none;
 }
 
-/* Fixed positioning (default - top-right corner) */
-.font-switcher-fixed {
+/* Floating placement. offsetX / offsetY set --fs-offset-x and --fs-offset-y. */
+.font-switcher-floating,
+.font-switcher-fixed,
+.font-switcher-fixed-bottom {
   position: fixed;
-  top: 20px;
-  right: 20px;
   z-index: 10000;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* Fixed positioning - bottom-right corner */
+.font-switcher-pos-top-right,
+.font-switcher-fixed {
+  top: var(--fs-offset-y, 20px);
+  right: var(--fs-offset-x, 20px);
+  bottom: auto;
+  left: auto;
+}
+
+.font-switcher-pos-top-left {
+  top: var(--fs-offset-y, 20px);
+  left: var(--fs-offset-x, 20px);
+  bottom: auto;
+  right: auto;
+}
+
+.font-switcher-pos-top-center {
+  top: var(--fs-offset-y, 20px);
+  left: calc(50% + var(--fs-offset-x, 0px));
+  right: auto;
+  bottom: auto;
+  transform: translateX(-50%);
+}
+
+.font-switcher-pos-bottom-right,
 .font-switcher-fixed-bottom {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 10000;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  bottom: var(--fs-offset-y, 20px);
+  right: var(--fs-offset-x, 20px);
+  top: auto;
+  left: auto;
+}
+
+.font-switcher-pos-bottom-left {
+  bottom: var(--fs-offset-y, 20px);
+  left: var(--fs-offset-x, 20px);
+  top: auto;
+  right: auto;
+}
+
+.font-switcher-pos-bottom-center {
+  bottom: var(--fs-offset-y, 20px);
+  left: calc(50% + var(--fs-offset-x, 0px));
+  top: auto;
+  right: auto;
+  transform: translateX(-50%);
 }
 
 /* Inline placement (when inserted into a custom container) */
@@ -82,6 +119,7 @@
 }
 
 .font-switcher-selected {
+  position: relative;
   padding: 6px 32px 6px 12px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
@@ -95,7 +133,16 @@
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0;
+}
+
+.font-switcher-selected-short {
+  display: none;
+}
+
+.font-switcher-selected-preview:not(:empty)::before {
+  content: ' \2013 ';
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .font-switcher-selected::after {
@@ -330,52 +377,98 @@ html.dark .font-switcher-option-active .font-switcher-option-preview,
   color: #f87171;
 }
 
-/* System dark mode media query fallback */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) .font-switcher-container {
-    background: #111827;
-    border-color: #1f2937;
-    color: #f9fafb;
-  }
-  :root:not(.light) .font-switcher-selected {
-    background: #1f2937;
-    border-color: #374151;
-    color: #f9fafb;
-  }
-  :root:not(.light) .font-switcher-options {
-    background: #111827;
-    border-color: #1f2937;
-    color: #f9fafb;
-  }
-  :root:not(.light) .font-switcher-option {
-    color: #e5e7eb;
-  }
-  :root:not(.light) .font-switcher-option:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #f87171;
-  }
-  :root:not(.light) .font-switcher-option-active {
-    background: rgba(255, 255, 255, 0.12);
-    color: #f87171;
-    border-left: 3px solid #ef4444;
-  }
+/* Light theme wins over the operating system's dark preference. */
+html:not(.dark) .font-switcher-option {
+  color: #111827;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .font-switcher-fixed {
-    top: 12px;
-    right: 12px;
-  }
+html:not(.dark) .font-switcher-option-preview {
+  color: #6b7280;
+}
+
+/* Compact widget for phones and other narrow viewports */
+@media (max-width: 640px) {
   .font-switcher-container {
-    padding: 5px 10px;
-    font-size: 13px;
+    gap: 0;
+    padding: 3px;
+    max-width: calc(100vw - 1rem);
   }
+
+  .font-switcher-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .font-switcher-dropdown {
-    min-width: 190px;
+    min-width: 0;
   }
+
   .font-switcher-selected {
-    padding: 5px 26px 5px 10px;
-    font-size: 13px;
+    max-width: 7.25rem;
+    padding: 4px 22px 4px 8px;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .font-switcher-selected-full,
+  .font-switcher-selected-preview {
+    display: none;
+  }
+
+  .font-switcher-selected-short {
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .font-switcher-selected::after {
+    right: 6px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .font-switcher-options {
+    left: 0;
+    right: auto;
+    width: max-content;
+    min-width: 100%;
+    max-width: calc(100vw - 1rem);
+  }
+
+  .font-switcher-pos-top-right .font-switcher-options,
+  .font-switcher-pos-bottom-right .font-switcher-options,
+  .font-switcher-fixed .font-switcher-options,
+  .font-switcher-fixed-bottom .font-switcher-options {
+    left: auto;
+    right: 0;
+    max-width: calc(100vw - var(--fs-offset-x, 12px) - 8px);
+  }
+
+  .font-switcher-pos-top-left .font-switcher-options,
+  .font-switcher-pos-bottom-left .font-switcher-options {
+    left: 0;
+    right: auto;
+    max-width: calc(100vw - var(--fs-offset-x, 12px) - 8px);
+  }
+
+  .font-switcher-option {
+    gap: 8px;
+    padding: 7px 10px;
+  }
+
+  .font-switcher-option-name {
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .font-switcher-option-preview {
+    font-size: 14px;
   }
 }

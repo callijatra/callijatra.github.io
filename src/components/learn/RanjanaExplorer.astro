@@ -29,7 +29,7 @@ const letterPayload = JSON.stringify({
   data-letters={letterPayload}
 >
   <!-- Intro + trait legend -->
-  <div class="rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_55%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900/60 px-5 py-5 sm:px-6 space-y-4">
+  <div id="ranjana-overview" class="scroll-mt-32 rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_55%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900/60 px-5 py-5 sm:px-6 space-y-4">
     <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
       Tap a letter to explore. Glyphs are colored by their <strong class="text-gray-900 dark:text-white">calligraphy shape</strong> —
       because matras attach differently to each family. Small grey labels are Devanagari mappings.
@@ -165,7 +165,7 @@ const letterPayload = JSON.stringify({
   </div>
 
   <!-- Vowels -->
-  <section aria-labelledby="vowels-heading">
+  <section id="ranjana-vowels" class="scroll-mt-32" aria-labelledby="vowels-heading">
     <div class="flex items-baseline justify-between gap-3 mb-3">
       <h3 id="vowels-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Vowels</h3>
       <span class="text-xs text-gray-400"><span data-count-board="vowel">{vowels.length}</span> letters</span>
@@ -199,7 +199,7 @@ const letterPayload = JSON.stringify({
   </section>
 
   <!-- Consonants -->
-  <section aria-labelledby="consonants-heading">
+  <section id="ranjana-consonants" class="scroll-mt-32" aria-labelledby="consonants-heading">
     <div class="flex items-baseline justify-between gap-3 mb-3">
       <h3 id="consonants-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Consonants</h3>
       <span class="text-xs text-gray-400"><span data-count-board="consonant">{consonants.length}</span> letters</span>
@@ -234,7 +234,7 @@ const letterPayload = JSON.stringify({
   </section>
 
   <!-- Compound letters -->
-  <section id="compounds-section" aria-labelledby="compounds-heading">
+  <section id="ranjana-compounds" class="scroll-mt-32" aria-labelledby="compounds-heading">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
       <div>
         <h3 id="compounds-heading" class="text-sm font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-400">Compound letters</h3>

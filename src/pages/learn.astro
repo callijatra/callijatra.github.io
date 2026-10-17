@@ -4,6 +4,8 @@ import RanjanaExplorer from '../components/learn/RanjanaExplorer.astro';
 import { learnTopics } from '../data/ranjana-lipi';
 
 const activeTopic = 'ranjana';
+const activeLesson = learnTopics.find((topic) => topic.id === activeTopic);
+const activeSubtopics = activeLesson && 'subtopics' in activeLesson ? activeLesson.subtopics : [];
 ---
 
 <Layout
@@ -43,30 +45,85 @@ const activeTopic = 'ranjana';
         </span>
       </div>
 
+      {activeSubtopics.length > 0 && (
+        <nav
+          class="lg:hidden sticky top-[calc(5rem+1px)] z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2.5 pb-2 mb-4 bg-gray-50/95 dark:bg-gray-950/95 backdrop-blur border-b border-gray-200/80 dark:border-gray-800"
+          aria-label="Lesson sections"
+        >
+          <ul class="flex gap-1.5 overflow-x-auto">
+            {activeSubtopics.map((subtopic) => (
+              <li class="shrink-0">
+                <a
+                  href={`#${subtopic.id}`}
+                  data-subtopic={subtopic.id}
+                  class="subtopic-link inline-flex rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                >
+                  {subtopic.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+
       <div class="grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] gap-6 lg:gap-8 items-start">
 
         <!-- Sidebar -->
-        <aside class="hidden lg:block sticky top-24" aria-label="Lesson topics">
+        <aside class="hidden lg:block sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto" aria-label="Lesson topics">
           <nav class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-3 shadow-sm">
             <p class="px-3 pt-2 pb-3 text-[10px] font-semibold tracking-widest uppercase text-gray-400">Topics</p>
             <ul class="space-y-1">
               {learnTopics.map((topic) => (
                 <li>
                   {topic.available ? (
-                    <a
-                      href={`#${topic.id}`}
-                      id={`nav-${topic.id}`}
-                      class:list={[
-                        'flex flex-col gap-0.5 rounded-xl px-3 py-3 transition-colors',
-                        topic.id === activeTopic
-                          ? 'bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800',
-                      ]}
-                      aria-current={topic.id === activeTopic ? 'page' : undefined}
-                    >
-                      <span class="text-sm font-semibold leading-snug">{topic.label}</span>
-                      <span class="text-xs opacity-70">{topic.description}</span>
-                    </a>
+                    <>
+                      <div
+                        class:list={[
+                          'flex items-stretch rounded-xl transition-colors',
+                          topic.id === activeTopic
+                            ? 'bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800',
+                        ]}
+                      >
+                        <a
+                          href={`#${topic.id}`}
+                          id={`nav-${topic.id}`}
+                          class="flex min-w-0 flex-1 flex-col gap-0.5 rounded-xl px-3 py-3"
+                          aria-current={topic.id === activeTopic ? 'page' : undefined}
+                        >
+                          <span class="text-sm font-semibold leading-snug">{topic.label}</span>
+                          <span class="text-xs opacity-70">{topic.description}</span>
+                        </a>
+                        {'subtopics' in topic && topic.subtopics.length > 0 && (
+                          <button
+                            type="button"
+                            class="topic-toggle mr-1.5 shrink-0 self-center rounded-lg p-1.5 opacity-70 hover:opacity-100 transition-opacity"
+                            aria-expanded="true"
+                            aria-controls={`subtopics-${topic.id}`}
+                            aria-label={`Hide ${topic.label} sections`}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                      {'subtopics' in topic && topic.subtopics.length > 0 && (
+                        <ul id={`subtopics-${topic.id}`} class="mt-1 mb-2 ml-3 border-l border-gray-200 dark:border-gray-700 pl-2 space-y-0.5" aria-label={`${topic.label} sections`}>
+                          {topic.subtopics.map((subtopic) => (
+                            <li>
+                              <a
+                                href={`#${subtopic.id}`}
+                                data-subtopic={subtopic.id}
+                                class="subtopic-link block rounded-lg px-2.5 py-1.5 text-xs text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                              >
+                                {subtopic.label}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </>
                   ) : (
                     <div
                       class="flex flex-col gap-0.5 rounded-xl px-3 py-3 text-gray-400 dark:text-gray-600 cursor-not-allowed"
@@ -99,8 +156,8 @@ const activeTopic = 'ranjana';
             </div>
             <RanjanaExplorer />
 
-            <section aria-labelledby="ranjana-typeface" class="mt-8 pt-8 border-t border-gray-100 dark:border-gray-800">
-              <h3 id="ranjana-typeface" class="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500">Typeface used in this lesson</h3>
+            <section id="ranjana-typeface" aria-labelledby="ranjana-typeface-heading" class="scroll-mt-32 mt-8 pt-8 border-t border-gray-100 dark:border-gray-800">
+              <h3 id="ranjana-typeface-heading" class="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500">Typeface used in this lesson</h3>
               <div class="mt-4 grid grid-cols-1 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] gap-4 sm:gap-6 items-stretch">
                 <div class="rounded-2xl border border-red-100/80 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_70%)] dark:bg-none dark:bg-gray-950 flex items-center justify-center px-4 py-8">
                   <p class="font-nithya-ranjana text-5xl leading-none text-gray-900 dark:text-white">रञ्जना</p>
@@ -108,10 +165,12 @@ const activeTopic = 'ranjana';
                 <div class="min-w-0">
                   <h4 class="text-lg font-bold text-gray-900 dark:text-white">Nithya Ranjana</h4>
                   <p class="mt-1 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                    Letters, matras, and compounds in this lesson are drawn with Nithya Ranjana, a Ranjana typeface designed and engineered by EkType. This lesson uses the Devanagari Unicode version, so each Ranjana form sits next to its Devanagari mapping.
+                    Letters, matras, and compounds in this lesson are drawn with Nithya Ranjana, a Ranjana typeface designed and engineered by EkType together with Callijatra. This lesson uses the Devanagari Unicode version, so each Ranjana form sits next to its Devanagari mapping.
                   </p>
                   <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">
                     <a href="https://ektype.in" target="_blank" rel="noopener noreferrer" class="font-semibold text-brand dark:text-brand-light hover:underline">EkType</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="/about" class="font-semibold text-brand dark:text-brand-light hover:underline">Callijatra</a>
                     <span aria-hidden="true"> · </span>
                     <a href="/tools/webfont" class="font-semibold text-brand dark:text-brand-light hover:underline">Webfont</a>
                     <span aria-hidden="true"> · </span>
@@ -138,6 +197,18 @@ const activeTopic = 'ranjana';
 
   <script>
     (function () {
+      document.querySelectorAll<HTMLButtonElement>('.topic-toggle').forEach((button) => {
+        const list = document.getElementById(button.getAttribute('aria-controls') || '');
+        const icon = button.querySelector('svg');
+        button.addEventListener('click', () => {
+          const open = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', open ? 'false' : 'true');
+          button.setAttribute('aria-label', button.getAttribute('aria-label')?.replace(open ? 'Hide' : 'Show', open ? 'Show' : 'Hide') || '');
+          list?.classList.toggle('hidden', open);
+          icon?.classList.toggle('-rotate-90', open);
+        });
+      });
+
       const select = document.getElementById('topic-select') as HTMLSelectElement | null;
       select?.addEventListener('change', () => {
         const id = select.value;
@@ -150,7 +221,64 @@ const activeTopic = 'ranjana';
           document.getElementById('ranjana')?.classList.remove('hidden');
         }
       });
+
+      const sublinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-subtopic]'));
+      const sections = [...new Map(
+        sublinks
+          .map((link) => document.getElementById(link.hash.slice(1)))
+          .filter((section): section is HTMLElement => section !== null)
+          .map((section) => [section.id, section] as const)
+      ).values()];
+
+      let currentId: string | null = null;
+
+      const markCurrent = (id: string | null) => {
+        if (id === currentId) return;
+        currentId = id;
+        sublinks.forEach((link) => {
+          const on = id !== null && link.hash === `#${id}`;
+          link.classList.toggle('is-current', on);
+          if (on) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+          const scroller = link.closest('ul');
+          if (on && scroller?.classList.contains('overflow-x-auto')) {
+            const delta = link.getBoundingClientRect().left - scroller.getBoundingClientRect().left;
+            const left = scroller.scrollLeft + delta - scroller.clientWidth / 2 + link.clientWidth / 2;
+            scroller.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+          }
+        });
+      };
+
+      const trackSections = () => {
+        const line = 180;
+        let current: string | null = null;
+        sections.forEach((section) => {
+          if (section.getBoundingClientRect().top <= line) current = section.id;
+        });
+        if (!current) {
+          const visible = sections.find((section) => {
+            const box = section.getBoundingClientRect();
+            return box.bottom > line && box.top < window.innerHeight;
+          });
+          current = visible?.id ?? null;
+        }
+        markCurrent(current);
+      };
+
+      trackSections();
+      window.addEventListener('scroll', trackSections, { passive: true });
+      window.addEventListener('resize', trackSections);
     })();
   </script>
 
+  <style>
+    .subtopic-link.is-current {
+      color: #111827;
+      background: #f9fafb;
+    }
+    :global(.dark) .subtopic-link.is-current {
+      color: #f3f4f6;
+      background: #1f2937;
+    }
+  </style>
 </Layout>
