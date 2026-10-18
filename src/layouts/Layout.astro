@@ -14,6 +14,21 @@ const {
   ogImage = '/images/banners/banner_1.jpg',
 } = Astro.props;
 
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/resources', label: 'Resources' },
+  { href: '/learn', label: 'Learn' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/journey', label: 'Our Journey' },
+  { href: '/about', label: 'About Us' },
+];
+
+function currentNav(href: string) {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 const siteName = 'Callijatra Foundation';
 const siteOrigin = Astro.site ? Astro.site.href : 'https://callijatra.github.io/';
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteOrigin).href;
@@ -122,12 +137,21 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
         </a>
 
         <!-- Desktop nav -->
-        <ul class="hidden md:flex items-center gap-1 text-sm font-medium">
-          <li><a href="/" class="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Home</a></li>
-          <li><a href="/resources" class="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Resources</a></li>
-          <li><a href="/learn" class="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Learn</a></li>
-          <li><a href="/gallery" class="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Gallery</a></li>
-          <li><a href="/about" class="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">About Us</a></li>
+        <ul class="hidden lg:flex items-center gap-1 text-sm font-medium">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={currentNav(item.href) ? 'page' : undefined}
+                class:list={[
+                  'whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-lg transition-colors',
+                  currentNav(item.href)
+                    ? 'text-brand dark:text-brand-light bg-brand/10 dark:bg-brand/15'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]}
+              >{item.label}</a>
+            </li>
+          ))}
           <li>
             <a href="https://www.instagram.com/callijatra" target="_blank" rel="noopener noreferrer"
                class="ml-2 px-4 py-2 rounded-lg bg-brand text-white hover:bg-brand-hover transition-colors">
@@ -156,7 +180,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
 
           <!-- Mobile hamburger -->
           <button id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"
-            class="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
             <svg id="nav-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path id="bar-top"    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" />
               <path id="bar-middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" />
@@ -168,13 +192,22 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
       </nav>
 
       <!-- Mobile menu -->
-      <div id="mobile-menu" class="nav-collapsed md:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 px-4 pb-4">
+      <div id="mobile-menu" class="nav-collapsed lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 px-4 pb-4">
         <ul id="mobile-menu-list" class="flex flex-col gap-1 text-sm font-medium mt-2">
-          <li><a href="/" class="nav-link block px-3 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Home</a></li>
-          <li><a href="/resources" class="nav-link block px-3 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Resources</a></li>
-          <li><a href="/learn" class="nav-link block px-3 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Learn</a></li>
-          <li><a href="/gallery" class="nav-link block px-3 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Gallery</a></li>
-          <li><a href="/about" class="nav-link block px-3 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">About Us</a></li>
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={currentNav(item.href) ? 'page' : undefined}
+                class:list={[
+                  'nav-link block px-3 py-3 rounded-lg',
+                  currentNav(item.href)
+                    ? 'text-brand dark:text-brand-light bg-brand/10 dark:bg-brand/15'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]}
+              >{item.label}</a>
+            </li>
+          ))}
           <li><a href="https://www.instagram.com/callijatra" target="_blank" rel="noopener noreferrer" class="nav-link block px-3 py-3 rounded-lg text-brand hover:bg-red-50 dark:hover:bg-red-950">Contact</a></li>
         </ul>
       </div>

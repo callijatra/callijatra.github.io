@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StoreBadge from '../components/StoreBadge.astro';
+import { journeyHighlights } from '../data/journey';
 ---
 
 <Layout title="Callijatra Foundation — Ranjana Lipi, Nepal Lipi & Calligraphy">
@@ -421,6 +422,50 @@ import StoreBadge from '../components/StoreBadge.astro';
           </svg>
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- ── OUR JOURNEY ────────────────────────────────────────────────────── -->
+  <section id="our-journey" class="py-20 bg-white dark:bg-gray-950">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-brand dark:text-brand-light">Chronicle</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Our Journey</h2>
+        <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          From the first Baisakh workshop at Itumbahal in 2018 to Nepalakshara and the Nepal Lipi keyboard in 2026.
+        </p>
+      </div>
+
+      <a href="/journey"
+         class="group block max-w-3xl mx-auto rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md hover:border-brand/30 dark:hover:border-brand/40 transition-all overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr]">
+          <div class="p-7 sm:p-9">
+            <ol class="space-y-4">
+              {journeyHighlights.map((stop, index) => (
+                <li class="flex gap-4">
+                  <div class="flex flex-col items-center">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand ring-4 ring-brand/15"></span>
+                    {index < journeyHighlights.length - 1 && <span class="w-px flex-1 bg-gray-200 dark:bg-gray-700 mt-1"></span>}
+                  </div>
+                  <div class="pb-1">
+                    <p class="text-xs font-semibold tracking-wide text-brand dark:text-brand-light">{stop.year}</p>
+                    <p class="text-sm text-gray-800 dark:text-gray-100">{stop.label}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div class="p-7 sm:p-9 flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-100 dark:border-gray-700 bg-[radial-gradient(ellipse_at_top,_#fdf1f0_0%,_#f9f5f4_50%,_#f3ede9_100%)] dark:bg-none dark:bg-gray-900">
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              Workshops, live calligraphy, teacher training, and digital tools — read the chronicle with each year in focus as you scroll.
+            </p>
+            <span class="inline-flex items-center gap-2 text-brand dark:text-brand-light font-semibold group-hover:gap-3 transition-all">
+              Explore our journey
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </div>
   </section>
 

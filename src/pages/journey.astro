@@ -1,0 +1,590 @@
+---
+import Layout from '../layouts/Layout.astro';
+import JourneyEventCard from '../components/JourneyEventCard.astro';
+import { journeyEvents, journeyKindFilters } from '../data/journey';
+import '../styles/journey.css';
+
+type YearGroup = {
+  year: number;
+  bsYear: string;
+  months: { monthShort: string; targetId: string }[];
+};
+
+const yearGroups: YearGroup[] = [];
+for (const event of journeyEvents) {
+  let group = yearGroups.find((entry) => entry.year === event.year);
+  if (!group) {
+    group = { year: event.year, bsYear: event.bsYear, months: [] };
+    yearGroups.push(group);
+  }
+  if (!group.months.some((month) => month.monthShort === event.monthShort)) {
+    group.months.push({ monthShort: event.monthShort, targetId: event.id });
+  }
+}
+
+const latest = journeyEvents[journeyEvents.length - 1];
+const oldest = journeyEvents[0];
+---
+
+<Layout
+  title="Our Journey — Callijatra Foundation"
+  description="A year-by-year chronicle of Callijatra, from the first Itumbahal workshop in 2018 (2075 BS) to Nepalakshara and the Nepal Lipi keyboard in 2026."
+>
+  <div id="journey-focus-band" class="journey-focus-band is-quiet" aria-hidden="true">
+    <div class="journey-focus-band-inner"></div>
+  </div>
+
+  <div id="journey-root" class="journey-root relative z-10">
+    <div id="journey-toolbar" class="sticky top-[calc(5rem+1px)] z-30 border-b border-gray-200/80 dark:border-gray-800 bg-white/90 dark:bg-gray-950/90 backdrop-blur">
+      <div class="journey-stage max-w-4xl mx-auto px-4 sm:px-6 py-2.5 flex flex-col gap-2">
+        <div class="flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <h1 class="text-sm font-semibold text-gray-900 dark:text-white leading-none">Our Journey</h1>
+            <p id="journey-focus" class="text-[11px] text-gray-500 dark:text-gray-400 mt-1 truncate">{latest.dateFormatted}</p>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" id="btn-jump-oldest" class="journey-jump" title="Go to the earliest visible event">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+              2018
+            </button>
+            <button type="button" id="btn-jump-latest" class="journey-jump journey-jump-latest" title="Go to the latest visible event">
+              Latest
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+          <label class="sr-only" for="journey-search">Search the chronicle</label>
+          <input id="journey-search" type="search" placeholder="Search place, event, or year" class="journey-search" autocomplete="off" />
+          <div class="flex items-center gap-1 overflow-x-auto" role="group" aria-label="Filter by kind of event">
+            {journeyKindFilters.map((filter) => (
+              <button type="button" class:list={['journey-filter', filter.id === 'all' && 'is-current']} data-kind={filter.id} aria-pressed={filter.id === 'all' ? 'true' : 'false'}>
+                {filter.label}
+              </button>
+            ))}
+          </div>
+          <p id="journey-result-count" class="text-[11px] text-gray-400 shrink-0 sm:ml-auto"></p>
+        </div>
+      </div>
+    </div>
+
+    <aside id="journey-scrubber" class="journey-scrubber" aria-label="Jump to a year">
+      <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-900/90 backdrop-blur shadow-sm px-2.5 py-2.5">
+        <p class="text-[9px] uppercase tracking-widest text-gray-400 text-right mb-1.5 pr-1">BS / AD</p>
+        <nav class="flex flex-col items-end gap-1">
+          {yearGroups.map((group) => (
+            <div class="scrubber-year-group flex flex-col items-end" data-year={group.year}>
+              <button
+                type="button"
+                class="scrubber-year-btn"
+                data-scroll-event={group.months[0].targetId}
+              >
+                <span>{group.year}</span>
+                <span class="year-dot"></span>
+              </button>
+              <div class="scrubber-months">
+                <div class="overflow-hidden flex flex-col items-end gap-0.5 py-0.5">
+                  {group.months.map((month) => (
+                    <button
+                      type="button"
+                      class="scrubber-month-btn"
+                      data-scrubber-month={`${group.year}-${month.monthShort}`}
+                      data-scroll-event={month.targetId}
+                    >
+                      <span>{month.monthShort}</span>
+                      <span class="w-1 h-1 rounded-full bg-current opacity-60"></span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </nav>
+      </div>
+    </aside>
+
+    <div class="journey-stage relative max-w-4xl mx-auto px-4 sm:px-8 pt-16 pb-28">
+      <div class="relative z-10 min-h-[58vh] flex flex-col justify-end text-center max-w-md mx-auto mb-16">
+        <p class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-brand/10 text-brand dark:text-brand-light text-[10px] font-semibold uppercase tracking-wider mb-2">
+          Origin · 1 Baisakh 2075 BS
+        </p>
+        <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Where the movement began</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+          Public workshops started at Itumbahal on Nepali New Year, 14 April 2018. The latest milestones are at the bottom of this page — scroll up to walk back through the years.
+        </p>
+      </div>
+
+      <div class="relative">
+        <div class="timeline-spine" aria-hidden="true"></div>
+        <div id="timeline-events" class="relative z-10">
+          {journeyEvents.map((item, index) => {
+            const isLeft = index % 2 === 0;
+            const showYear = index === 0 || journeyEvents[index - 1].year !== item.year;
+            return (
+              <div class="journey-block">
+                {showYear && (
+                  <div class="year-marker relative flex justify-start md:justify-center my-6 pl-20 md:pl-0 pointer-events-none" data-year={item.year}>
+                    <span class="year-pill">{item.year} · {item.bsYear}</span>
+                  </div>
+                )}
+                <article
+                  id={item.id}
+                  class="timeline-item relative py-3"
+                  data-year={item.year}
+                  data-month={item.monthShort}
+                  data-date={item.dateFormatted}
+                >
+                  <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-start gap-x-3">
+                    <div class="hidden md:flex items-start justify-end">
+                      {isLeft && <JourneyEventCard item={item} align="end" />}
+                    </div>
+                    <div class="hidden md:flex flex-col items-center pt-1.5">
+                      <button type="button" class="spine-node" data-scroll-event={item.id} aria-label={`Show ${item.title}`}></button>
+                    </div>
+                    <div class="flex items-start pl-20 md:pl-0">
+                      <div class="flex md:hidden items-center absolute left-3 top-4">
+                        <button type="button" class="spine-node" data-scroll-event={item.id} aria-label={`Show ${item.title}`}></button>
+                        <div class="connector-branch branch-right"></div>
+                      </div>
+                      {isLeft ? (
+                        <div class="md:hidden w-full">
+                          <JourneyEventCard item={item} align="start" />
+                        </div>
+                      ) : (
+                        <JourneyEventCard item={item} align="start" showDesktopConnector />
+                      )}
+                    </div>
+                  </div>
+                </article>
+              </div>
+            );
+          })}
+        </div>
+        <p id="journey-empty" class="hidden text-center text-sm text-gray-500 dark:text-gray-400 py-16">No events match that search.</p>
+      </div>
+
+      <div id="present-day-anchor" class="relative z-10 text-center max-w-md mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+        <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand text-white text-[10px] font-semibold uppercase tracking-widest mb-2.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+          Latest · {latest.dateFormatted}
+        </p>
+        <h2 class="text-base font-semibold text-gray-900 dark:text-white">Scroll up to explore</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+          This is the newest point in the chronicle, {latest.title}. Scroll upward for workshops, talks, and jatras back to {oldest.dateFormatted}.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="journey-modal" class="journey-modal" role="dialog" aria-modal="true" aria-labelledby="journey-modal-title" hidden>
+    <div class="journey-modal-panel">
+      <div class="flex items-start justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-3.5">
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <p id="journey-modal-date" class="text-[11px] font-medium uppercase tracking-wider text-brand dark:text-brand-light"></p>
+            <p id="journey-modal-bs" class="text-[10px] px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"></p>
+          </div>
+          <h3 id="journey-modal-title" class="text-base font-semibold text-gray-900 dark:text-white mt-1"></h3>
+        </div>
+        <button type="button" id="journey-modal-close" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Close">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <p id="journey-modal-details" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mt-4 whitespace-pre-line"></p>
+      <ul id="journey-modal-stops" class="event-stops mt-3"></ul>
+      <div id="journey-modal-links" class="mt-4 flex flex-wrap gap-2"></div>
+      <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800">
+        <p class="text-[10px] uppercase tracking-wider text-gray-400 mb-2">Highlights</p>
+        <div id="journey-modal-chips" class="flex flex-wrap gap-1.5"></div>
+      </div>
+      <div class="mt-5 pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between gap-3">
+        <p id="journey-modal-location" class="text-[11px] text-gray-500 dark:text-gray-400"></p>
+        <button type="button" id="journey-modal-done" class="text-xs font-medium bg-brand text-white px-3.5 py-1.5 rounded-lg hover:bg-brand-hover">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="journey-year-dock" role="group" aria-label="Jump to a year">
+    {yearGroups.map((group) => (
+      <button type="button" class="journey-year-chip" data-year={group.year}>
+        {group.year}
+      </button>
+    ))}
+  </div>
+
+<script>
+  import { journeyEvents, journeyIcons, type JourneyIcon, type JourneyKind } from '../data/journey';
+
+  const byId = new Map(journeyEvents.map((event) => [event.id, event]));
+  const root = document.getElementById('journey-root');
+  const focusLabel = document.getElementById('journey-focus');
+  const focusBand = document.getElementById('journey-focus-band');
+  const toolbar = document.getElementById('journey-toolbar');
+  const scrubber = document.getElementById('journey-scrubber');
+  const searchInput = document.getElementById('journey-search') as HTMLInputElement | null;
+  const countLabel = document.getElementById('journey-result-count');
+  const emptyState = document.getElementById('journey-empty');
+  const yearDock = document.getElementById('journey-year-dock');
+  const modal = document.getElementById('journey-modal');
+  const modalDate = document.getElementById('journey-modal-date');
+  const modalBs = document.getElementById('journey-modal-bs');
+  const modalTitle = document.getElementById('journey-modal-title');
+  const modalDetails = document.getElementById('journey-modal-details');
+  const modalStops = document.getElementById('journey-modal-stops');
+  const modalLinks = document.getElementById('journey-modal-links');
+  const modalChips = document.getElementById('journey-modal-chips');
+  const modalLocation = document.getElementById('journey-modal-location');
+
+  let activeKind: 'all' | JourneyKind = 'all';
+  let query = '';
+  let focusedId = '';
+
+  function chromeTop() {
+    const nav = 81;
+    return nav + (toolbar?.offsetHeight ?? 0);
+  }
+
+  function focusCenter() {
+    const top = chromeTop();
+    if (focusBand) focusBand.style.top = `${top}px`;
+    if (scrubber) scrubber.style.top = `${top + 12}px`;
+    return top + (window.innerHeight - top) / 2;
+  }
+
+  function visibleItems() {
+    return [...document.querySelectorAll<HTMLElement>('.timeline-item')].filter(
+      (item) => !item.classList.contains('is-filtered-out'),
+    );
+  }
+
+  function eventMatches(event: (typeof journeyEvents)[number]) {
+    if (activeKind !== 'all' && !event.kinds.includes(activeKind)) return false;
+    if (!query) return true;
+    const haystack = [
+      event.title,
+      event.summary,
+      event.details,
+      event.location,
+      event.dateFormatted,
+      event.nepaliDate,
+      String(event.year),
+      event.bsYear,
+      ...(event.stops?.map((stop) => stop.label) ?? []),
+      ...event.chips.map((chip) => chip.label),
+    ]
+      .join(' ')
+      .toLowerCase();
+    return haystack.includes(query);
+  }
+
+  function syncYearDock(year: string) {
+    if (!yearDock) return;
+    yearDock.querySelectorAll<HTMLElement>('.journey-year-chip').forEach((chip) => {
+      const current = chip.dataset.year === year && !chip.classList.contains('is-filtered-out');
+      chip.classList.toggle('is-current', current);
+      if (!current) return;
+      const left = chip.offsetLeft - (yearDock.clientWidth - chip.offsetWidth) / 2;
+      yearDock.scrollTo({ left: Math.max(0, left) });
+    });
+  }
+
+  function setHash(id: string) {
+    const next = `#${id}`;
+    if (location.hash === next) return;
+    history.replaceState(null, '', next);
+  }
+
+  function visibleTitle(target: HTMLElement) {
+    const titles = [...target.querySelectorAll<HTMLElement>('.event-title')];
+    return titles.find((title) => title.getClientRects().length > 0) ?? titles[0] ?? target;
+  }
+
+  function visibleNode(item: HTMLElement) {
+    const nodes = [...item.querySelectorAll<HTMLElement>('.spine-node')];
+    return nodes.find((node) => node.getClientRects().length > 0) ?? null;
+  }
+
+  function syncFocusBand() {
+    const zone = focusBand?.querySelector('.journey-focus-band-inner')?.getBoundingClientRect();
+    if (!focusBand || !zone) return;
+    const hasEvent = visibleItems().some((item) => {
+      const point = visibleNode(item);
+      if (!point) return false;
+      const rect = point.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      return mid >= zone.top && mid <= zone.bottom;
+    });
+    focusBand.classList.toggle('is-quiet', !hasEvent);
+  }
+
+  function scrollToEvent(id: string, behavior: ScrollBehavior) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const title = visibleTitle(target);
+    const rect = title.getBoundingClientRect();
+    const top = window.scrollY + rect.top - focusCenter() + rect.height / 2;
+    const scrolling = document.documentElement;
+    if (behavior === 'auto') {
+      const previous = scrolling.style.scrollBehavior;
+      scrolling.style.scrollBehavior = 'auto';
+      window.scrollTo(0, Math.max(0, top));
+      scrolling.style.scrollBehavior = previous;
+    } else {
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
+  }
+
+  let ticking = false;
+  function evaluateCenterFocus() {
+    const center = focusCenter();
+    const viewport = window.innerHeight;
+    const enterThreshold = viewport * 0.2;
+    const exitThreshold = viewport * 0.28;
+    const items = document.querySelectorAll<HTMLElement>('.timeline-item');
+    let closest: HTMLElement | null = null;
+    let minDistance = Infinity;
+
+    items.forEach((item) => {
+      if (item.classList.contains('is-filtered-out')) {
+        item.classList.remove('is-active');
+        return;
+      }
+      const title = visibleTitle(item);
+      const rect = title.getBoundingClientRect();
+      const anchor = rect.top + rect.height / 2;
+      const distance = Math.abs(center - anchor);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closest = item;
+      }
+      const active = item.classList.contains('is-active');
+      const threshold = active ? exitThreshold : enterThreshold;
+      item.classList.toggle('is-active', distance < threshold);
+    });
+
+    if (closest && minDistance < viewport * 0.36) {
+      (closest as HTMLElement).classList.add('is-active');
+    }
+
+    if (closest && (closest as HTMLElement).classList.contains('is-active')) {
+      const current = closest as HTMLElement;
+      if (focusLabel) focusLabel.textContent = current.dataset.date || '';
+      const year = current.dataset.year || '';
+      const month = current.dataset.month || '';
+      document.querySelectorAll('.scrubber-year-group').forEach((group) => {
+        group.classList.toggle('active', (group as HTMLElement).dataset.year === year);
+      });
+      document.querySelectorAll('.scrubber-month-btn').forEach((button) => {
+        const hidden = (button as HTMLElement).classList.contains('is-filtered-out');
+        button.classList.toggle(
+          'is-current',
+          !hidden && (button as HTMLElement).dataset.scrubberMonth === `${year}-${month}`,
+        );
+      });
+      if (focusedId !== current.id) {
+        focusedId = current.id;
+        setHash(current.id);
+      }
+      syncYearDock(year);
+    }
+    syncFocusBand();
+    ticking = false;
+  }
+
+  function applyFilters(reposition = true) {
+    const visibleYears = new Set<string>();
+    journeyEvents.forEach((event) => {
+      const article = document.getElementById(event.id);
+      const show = eventMatches(event);
+      article?.classList.toggle('is-filtered-out', !show);
+      if (show) visibleYears.add(String(event.year));
+    });
+    document.querySelectorAll<HTMLElement>('.year-marker, .scrubber-year-group, .journey-year-chip').forEach((node) => {
+      node.classList.toggle('is-filtered-out', !visibleYears.has(node.dataset.year || ''));
+    });
+    document.querySelectorAll<HTMLElement>('.scrubber-month-btn').forEach((button) => {
+      const target = button.dataset.scrollEvent ? document.getElementById(button.dataset.scrollEvent) : null;
+      button.classList.toggle('is-filtered-out', !target || target.classList.contains('is-filtered-out'));
+    });
+    const visible = visibleItems();
+    if (countLabel) countLabel.textContent = visible.length === 1 ? '1 event' : `${visible.length} events`;
+    emptyState?.classList.toggle('hidden', visible.length > 0);
+    if (!reposition) {
+      evaluateCenterFocus();
+      return;
+    }
+    const current = focusedId ? document.getElementById(focusedId) : null;
+    if (!current || current.classList.contains('is-filtered-out')) {
+      const next = visible[visible.length - 1];
+      if (next) scrollToEvent(next.id, 'auto');
+    }
+    evaluateCenterFocus();
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(evaluateCenterFocus);
+  }
+
+  function openModal(id: string) {
+    const item = byId.get(id);
+    if (!item || !modal || !modalChips) return;
+    if (modalDate) modalDate.textContent = item.dateFormatted;
+    if (modalBs) modalBs.textContent = item.nepaliDate;
+    if (modalTitle) modalTitle.textContent = item.title;
+    if (modalDetails) modalDetails.textContent = item.details;
+    if (modalLocation) modalLocation.textContent = item.location;
+    if (modalStops) {
+      modalStops.replaceChildren();
+      item.stops?.forEach((stop) => {
+        const line = document.createElement('li');
+        line.textContent = stop.label;
+        modalStops.append(line);
+      });
+      modalStops.hidden = !item.stops?.length;
+    }
+    if (modalLinks) {
+      modalLinks.replaceChildren();
+      item.links?.forEach((link) => {
+        const anchor = document.createElement('a');
+        anchor.className = 'journey-modal-link';
+        anchor.href = link.href;
+        anchor.textContent = link.label;
+        modalLinks.append(anchor);
+      });
+      modalLinks.hidden = !item.links?.length;
+    }
+    modalChips.replaceChildren();
+    item.chips.forEach((chip) => {
+      const pill = document.createElement('span');
+      pill.className = 'event-chip';
+      const icon = journeyIcons[chip.icon as JourneyIcon];
+      if (icon) pill.insertAdjacentHTML('beforeend', icon);
+      const label = document.createElement('span');
+      label.textContent = chip.label;
+      pill.append(label);
+      modalChips.append(pill);
+    });
+    modal.hidden = false;
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  root?.addEventListener('click', (event) => {
+    const opener = (event.target as HTMLElement).closest<HTMLElement>('[data-open-event]');
+    if (opener?.dataset.openEvent) {
+      openModal(opener.dataset.openEvent);
+      return;
+    }
+    const jumper = (event.target as HTMLElement).closest<HTMLElement>('[data-scroll-event]');
+    if (!jumper?.dataset.scrollEvent) return;
+    const target = document.getElementById(jumper.dataset.scrollEvent);
+    if (target && !target.classList.contains('is-filtered-out')) {
+      scrollToEvent(target.id, 'auto');
+      return;
+    }
+    const year = jumper.closest<HTMLElement>('.scrubber-year-group')?.dataset.year;
+    const fallback = year ? visibleItems().find((item) => item.dataset.year === year) : null;
+    if (fallback) scrollToEvent(fallback.id, 'auto');
+  });
+
+  yearDock?.addEventListener('click', (event) => {
+    const chip = (event.target as HTMLElement).closest<HTMLElement>('.journey-year-chip');
+    const year = chip?.dataset.year;
+    const target = year ? visibleItems().find((item) => item.dataset.year === year) : null;
+    if (target) scrollToEvent(target.id, 'auto');
+  });
+
+  document.getElementById('btn-jump-oldest')?.addEventListener('click', () => {
+    const first = visibleItems()[0];
+    if (first) scrollToEvent(first.id, 'auto');
+  });
+  document.getElementById('btn-jump-latest')?.addEventListener('click', () => {
+    const items = visibleItems();
+    const last = items[items.length - 1];
+    if (last) scrollToEvent(last.id, 'auto');
+  });
+  document.getElementById('journey-modal-close')?.addEventListener('click', closeModal);
+  document.getElementById('journey-modal-done')?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeModal();
+      return;
+    }
+    if (modal?.classList.contains('is-open')) return;
+    const tag = (event.target as HTMLElement).tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    const items = visibleItems();
+    if (!items.length) return;
+    const index = items.findIndex((item) => item.id === focusedId);
+    const delta = event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1 : 1;
+    const start = index < 0 ? items.length - 1 : index;
+    const next = items[Math.min(items.length - 1, Math.max(0, start + delta))];
+    if (!next || next.id === focusedId) return;
+    event.preventDefault();
+    scrollToEvent(next.id, 'auto');
+    evaluateCenterFocus();
+  });
+
+  searchInput?.addEventListener('input', () => {
+    query = searchInput.value.trim().toLowerCase();
+    applyFilters();
+  });
+  document.querySelectorAll<HTMLButtonElement>('.journey-filter').forEach((button) => {
+    button.addEventListener('click', () => {
+      activeKind = (button.dataset.kind as 'all' | JourneyKind) || 'all';
+      document.querySelectorAll<HTMLButtonElement>('.journey-filter').forEach((other) => {
+        const on = other === button;
+        other.classList.toggle('is-current', on);
+        other.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      applyFilters();
+    });
+  });
+
+  const fabLeading = document.getElementById('fab-dock-leading');
+  if (yearDock && fabLeading) fabLeading.append(yearDock);
+  const siteFooter = document.querySelector('footer');
+  if (yearDock && siteFooter) {
+    const footerObserver = new IntersectionObserver((entries) => {
+      const atFooter = entries.some((entry) => entry.isIntersecting);
+      yearDock.classList.toggle('is-quiet', atFooter);
+      yearDock.setAttribute('aria-hidden', atFooter ? 'true' : 'false');
+    });
+    footerObserver.observe(siteFooter);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => requestAnimationFrame(evaluateCenterFocus));
+
+  const requestedId = location.hash.replace(/^#/, '');
+  applyFilters(false);
+  const startId = byId.has(requestedId) ? requestedId : journeyEvents[journeyEvents.length - 1]?.id;
+
+  function settle(id: string) {
+    scrollToEvent(id, 'auto');
+    evaluateCenterFocus();
+  }
+
+  if (startId) {
+    settle(startId);
+    requestAnimationFrame(() => settle(startId));
+    if (document.readyState === 'complete') settle(startId);
+    else window.addEventListener('load', () => settle(startId));
+  } else {
+    evaluateCenterFocus();
+  }
+</script>
+</Layout>

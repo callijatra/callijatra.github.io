@@ -1,0 +1,66 @@
+---
+import { journeyIcons, type JourneyEvent } from '../data/journey';
+
+interface Props {
+  item: JourneyEvent;
+  align: 'start' | 'end';
+  showDesktopConnector?: boolean;
+}
+
+const { item, align, showDesktopConnector = false } = Astro.props;
+---
+
+<div class:list={['flex items-start w-full', align === 'end' && 'justify-end']}>
+  {align === 'end' && (
+    <button type="button" class="event-card align-end pr-2 pt-0.5" data-open-event={item.id}>
+      <h3 class="event-title">{item.title}</h3>
+      <p class="event-date">{item.dateFormatted} · {item.nepaliDate}</p>
+      <div class="details-collapse-wrapper">
+        <p class="event-summary">{item.summary}</p>
+        {item.stops && item.stops.length > 0 && (
+          <ul class="event-stops">
+            {item.stops.map((stop) => <li>{stop.label}</li>)}
+          </ul>
+        )}
+        <div class="event-chips">
+          {item.chips.map((chip) => (
+            <span class="event-chip">
+              <Fragment set:html={journeyIcons[chip.icon]} />
+              <span>{chip.label}</span>
+            </span>
+          ))}
+        </div>
+        <span class="event-more">Read archive note
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </button>
+  )}
+  {align === 'end' && <div class="connector-branch branch-left mt-2.5 shrink-0"></div>}
+  {align === 'start' && showDesktopConnector && <div class="connector-branch branch-right mt-2.5 shrink-0 hidden md:block"></div>}
+  {align === 'start' && (
+    <button type="button" class="event-card align-start pl-2 pt-0.5 w-full" data-open-event={item.id}>
+      <h3 class="event-title">{item.title}</h3>
+      <p class="event-date">{item.dateFormatted} · {item.nepaliDate}</p>
+      <div class="details-collapse-wrapper">
+        <p class="event-summary">{item.summary}</p>
+        {item.stops && item.stops.length > 0 && (
+          <ul class="event-stops">
+            {item.stops.map((stop) => <li>{stop.label}</li>)}
+          </ul>
+        )}
+        <div class="event-chips">
+          {item.chips.map((chip) => (
+            <span class="event-chip">
+              <Fragment set:html={journeyIcons[chip.icon]} />
+              <span>{chip.label}</span>
+            </span>
+          ))}
+        </div>
+        <span class="event-more">Read archive note
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </button>
+  )}
+</div>
